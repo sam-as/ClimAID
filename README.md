@@ -20,6 +20,21 @@ ClimAID is an integrated toolkit for modeling, forecasting, and projecting clima
 
 ---
 
+## Installation
+
+```pip install climaid```
+
+## PyPI
+
+https://pypi.org/project/climaid/
+
+## Documentation
+
+The full documentation is available here: [https://sam-as.github.io/ClimAID/](https://sam-as.github.io/ClimAID/) 
+
+---
+
+
 ## Quick Example using Codes
 
 ```python
@@ -54,12 +69,6 @@ ClimAID has two interfaces,
     ```text
         climaid wizard
     ```
----
-
-## Documentation
-
-The full documentation is available here: [https://sam-as.github.io/ClimAID/](https://sam-as.github.io/ClimAID/) 
-
 ---
 
 ## Designed for
@@ -137,3 +146,4 @@ Designed by **Avik Kumar Sam** & **Harish C. Phuleria** as an open-access softwa
     - See the complete license here: [https://github.com/sam-as/ClimAID/blob/main/LICENSE](https://github.com/sam-as/ClimAID/blob/main/LICENSE)
 
 ---
+
