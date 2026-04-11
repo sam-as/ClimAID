@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClimAID Browser Interface</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="nav-container">
+<div class="nav-left">
+    <a href="/" class="logo-link">
+        <span class="short-text">ClimAID</span>
+        <span class="full-text">Climate change impact using AI on diseases</span>
+    </a>
+</div>
+
+<div class="nav-right">
+    <a href="https://sam-as.github.io/ClimAID/api/llmclient/">AI Guide</a>
+    <a href="https://sam-as.github.io/ClimAID/">Documentation</a>
+    <a href="https://github.com/sam-as" target="_blank">GitHub</a>
+    <a href="https://sam-as.github.io/ClimAID/api/resources/">Sample Datasets</a>
+    </div>
+    </div>
+</nav>
+
+
+<div class="page">
+<div class="wizard">
+
+<header class="header">
+<div class="header-text">
+    <h1>ClimAID Browser Interface</h1>
+    <p class="subtitle">
+    Configure climate change impact projections through your browser.
+    </p>
+</div>
+
+<img src="ClimAID logo.png" class="logo">
+</header>
+
+
+<!-- MODE TOGGLE -->
+
+<div class="mode-toggle">
+
+<button id="saModeBtn" class="mode-btn active" onclick="setMode('southasia')">
+South Asia
+</button>
+
+<button id="globalModeBtn" class="mode-btn" onclick="setMode('global')">
+Global
+</button>
+
+</div>
+
+
+<!-- LOCATION SELECTOR -->
+
+<div class="input-grid">
+
+<div class="input-group">
+    <label>Country</label>
+    <select id="country"></select>
+</div>
+
+<div class="input-group">
+    <label>State</label>
+
+    <select id="state"></select>
+
+    <input id="manual_state"
+        style="display:none"
+        placeholder="Enter State / Province">
+
+</div>
+
+<div class="input-group">
+    <label>District</label>
+
+    <select id="district"></select>
+
+    <input id="manual_district"
+    style="display:none"
+    placeholder="Enter District / City">
+
+</div>
+
+</div>
+
+
+<!-- CLIMATE MODE PANEL -->
+
+<div id="climateModePanel" class="mode-panel"></div>
+
+
+<!-- GLOBAL MODE FILES -->
+
+<div id="externalClimateSection" style="display:none">
+
+<label>Weather Dataset</label>
+
+<div id="weatherDropzone" class="dropzone">
+    <p>Drop CSV, Excel or Parquet file here</p>
+    <span>or click to upload</span>
+</div>
+
+<input type="file" id="weather_file" hidden>
+<p id="weather_filename"></p>
+
+
+<label>Projection Dataset</label>
+
+<div id="projectionDropzone" class="dropzone">
+    <p>Drop CSV, Excel or Parquet file here</p>
+    <span>or click to upload</span>
+</div>
+
+<input type="file" id="projection_file" hidden>
+<p id="projection_filename"></p>
+
+</div>
+
+
+<label>Disease Name</label>
+<input id="disease" placeholder="e.g., Dengue, Malaria">
+
+<label>Test Year (optional)</label>
+<input id="test_year" type="number" placeholder="e.g., 2021">
+
+
+<label>Disease Dataset</label>
+
+<div id="dropzone" class="dropzone">
+<p>Drop CSV or Excel file here</p>
+<span>or click to upload</span>
+</div>
+
+<input type="file" id="fileInput" hidden>
+<p id="filename"></p>
+
+
+<label>Optimization Preset</label>
+
+<select id="preset">
+<option value="fast" selected>Fast (50 trials)</option>
+<option value="balanced">Balanced (200 trials)</option>
+<option value="deep">Deep (500 trials)</option>
+<option value="custom">Custom</option>
+</select>
+
+
+
+<!-- MODEL SELECTION -->
+
+<div id="model-selection" style="display:none">
+
+<h2 class="section-title">Model Configuration</h2>
+
+<div class="model-category-card">
+
+<div class="card-header">
+<h3>Base Models</h3>
+
+<div class="model-actions">
+<button onclick="selectAllModels('base_models_container')">Select All</button>
+<button onclick="clearModels('base_models_container')">Clear</button>
+</div>
+
+</div>
+
+<div id="base_models_container" class="model-grid"></div>
+
+</div>
+
+
+<div class="model-category-card">
+
+<div class="card-header">
+<h3>Residual Models</h3>
+
+<div class="model-actions">
+<button onclick="selectAllModels('residual_models_container')">Select All</button>
+<button onclick="clearModels('residual_models_container')">Clear</button>
+</div>
+
+</div>
+
+<div id="residual_models_container" class="model-grid"></div>
+
+</div>
+
+
+<div class="model-category-card">
+
+<div class="card-header">
+<h3>Correction Models</h3>
+
+<div class="model-actions">
+<button onclick="selectAllModels('correction_models_container')">Select All</button>
+<button onclick="clearModels('correction_models_container')">Clear</button>
+</div>
+
+</div>
+
+<div id="correction_models_container" class="model-grid"></div>
+
+</div>
+
+
+<label>Optimization Trials</label>
+<input id="trials" placeholder="200">
+
+</div>
+
+
+<button class="run-btn" onclick="runClimAID()">
+Run ClimAID Analysis
+</button>
+
+<pre id="status"></pre>
+
+</div>
+
+
+<footer class="footer">
+<div class="footer-container">
+<span>ClimAID — Climate change impact using AI on diseases</span>
+<span>Developed by Avik Kumar Sam & Harish C. Phuleria, IIT Bombay</span>
+</div>
+</footer>
+
+</div>
+
+<script src="browser.js"></script>
+
+</body>
+</html>
