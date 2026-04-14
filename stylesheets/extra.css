@@ -1,0 +1,180 @@
+/* ================= HEADER CLEANUP ================= */
+
+/* Reduce search bar dominance */
+.md-search__input {
+    max-width: 200px;
+}
+
+/* Align header nicely */
+.md-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Logo styling */
+.md-header__button.md-logo img {
+    height:50px;
+    margin-right: 10px;
+}
+
+/* Hide title (logo-only header) */
+.md-header__title {
+    display: none;
+}
+
+
+/* ================= COLOR SYSTEM ================= */
+
+/* LIGHT MODE */
+:root {
+    --md-primary-fg-color: #7b5b64;
+    --md-primary-fg-color--light: #a07d88;
+    --md-primary-fg-color--dark: #5a4249;
+
+    --md-accent-fg-color: #d1b3c4;
+}
+
+/* DARK MODE */
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #1e293b;
+    --md-primary-fg-color--light: #334155;
+    --md-primary-fg-color--dark: #0f172a;
+
+    --md-accent-fg-color: #d1b3c4;
+}
+
+
+/* ================= HERO SECTION ================= */
+
+.hero {
+    text-align: center;
+    padding: 90px 20px 70px;
+    background: linear-gradient(135deg, #7b5b64, #3e2c33);
+    color: white;
+    border-radius: 12px;
+}
+
+.hero h1 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.8;
+    margin-bottom: 10px;
+}
+
+.hero-tagline {
+    font-size: 1rem;
+    opacity: 0.7;
+    margin-bottom: 25px;
+}
+
+.hero-buttons .md-button {
+    margin: 8px;
+    padding: 10px 22px;
+}
+
+
+/* ================= TYPOGRAPHY ================= */
+
+body {
+    font-family: "Inter", sans-serif;
+}
+
+.md-typeset h2 {
+    margin-top: 40px;
+}
+
+
+/* ================= BACKGROUND ================= */
+
+.md-main {
+    background-color: #fafafa;
+}
+
+
+/* ================= BUTTONS ================= */
+
+.md-button--primary {
+    background-color: #7b5b64;
+    border: none;
+}
+
+.md-button--primary:hover {
+    background-color: #5a4249;
+}
+
+
+/* ================= IMAGES ================= */
+
+.md-typeset img {
+    display: block;
+    margin: 25px auto;
+    max-width: 85%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+/* ================= ADMONITIONS ================= */
+
+.md-typeset .admonition,
+.md-typeset details {
+    border: 1px solid #e6d9de;
+    border-left: 3px solid #7b5b64;
+    background-color: #faf7f8;
+    border-radius: 10px;
+}
+
+/* Title (minimal style) */
+.md-typeset .admonition-title,
+.md-typeset summary {
+    background-color: transparent;
+    color: #7b5b64;
+    font-weight: 600;
+}
+
+/* Icon color */
+.md-typeset .admonition-title::before,
+.md-typeset summary::before {
+    background-color: #7b5b64;
+}
+
+/* Change warning box colors */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  border-color: #e29578;           /* border */
+}
+
+.md-typeset .admonition.warning > .admonition-title,
+.md-typeset details.warning > summary {
+  background-color: #FFF1ed;       /* header */
+  color: black;
+}
+
+.md-typeset .admonition.warning {
+  background-color: #FFF4F1;       /* body */
+}
+
+/* ================= FUNCTION / METHOD STYLING ================= */
+
+/* Function names (mkdocstrings - precise targeting) */
+.md-typeset .doc-signature .nf {
+    color: #7b5b64 !important;
+    font-weight: 700;
+}
+
+/* Slightly soften full signature */
+.md-typeset .doc-signature {
+    opacity: 0.9;
+}
+
+/* Improve spacing between functions */
+.md-typeset .doc-function,
+.md-typeset .doc-method {
+    margin-bottom: 25px;
+}
