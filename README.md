@@ -32,6 +32,10 @@ https://pypi.org/project/climaid/
 
 The full documentation is available here: [https://sam-as.github.io/ClimAID/](https://sam-as.github.io/ClimAID/) 
 
+## Paper
+
+The paper is available here: [https://doi.org/10.21203/rs.3.rs-9394047/v1](https://doi.org/10.21203/rs.3.rs-9394047/v1)
+
 ---
 
 
