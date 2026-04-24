@@ -1,4 +1,4 @@
-# ClimAID - **Climate Change impact using AI on Diseases**
+# ClimAID - **Climate change impact using AI on Diseases**
 
 ClimAID is an integrated toolkit for modeling, forecasting, and projecting climate-sensitive diseases such as dengue and malaria using machine learning and climate model ensembles.
 
