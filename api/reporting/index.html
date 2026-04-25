@@ -2504,7 +2504,7 @@ implements the following interface:</p>
 <span class="normal">1096</span>
 <span class="normal">1097</span>
 <span class="normal">1098</span>
-<span class="normal">1099</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DiseaseReporter</span><span class="p">:</span>
+<span class="normal">1099</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DiseaseReporter</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    High-level reporting interface for ClimAID.</span>
 
@@ -2547,7 +2547,7 @@ implements the following interface:</p>
 <span class="sd">    - Designed for reproducibility and flexible deployment (offline/online).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">llm_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_json_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8000</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">llm_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_json_chars</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8000</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -2565,7 +2565,7 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># INTERNAL: SAFE LLM GENERATION (NO CRASHES)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">_llm_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_llm_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Safe wrapper around LLM call.</span>
 <span class="sd">        Prevents crashes if:</span>
@@ -2589,13 +2589,13 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># INTERNAL: SAFE JSON TRUNCATION (CRITICAL FOR LOCAL LLM)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">_safe_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_safe_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Safely serialize large dictionaries (e.g., CMIP6 projection summaries)</span>
 <span class="sd">        without overwhelming local LLM context windows.</span>
 <span class="sd">        Automatically rounds floats to 2 decimals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">climaid.utils</span> <span class="kn">import</span> <span class="n">_round_numeric</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_round_numeric</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Round numeric values first</span>
             <span class="n">cleaned_obj</span> <span class="o">=</span> <span class="n">_round_numeric</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
@@ -2613,7 +2613,7 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># MAIN REPORT (SCIENTIFIC / SUMMARY)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;summary&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;summary&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a disease risk report.</span>
 
@@ -2633,7 +2633,7 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># POLICY BRIEF (GOVERNMENT / WHO STYLE)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">policy_brief</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">policy_brief</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a policy-oriented disease climate risk brief.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2725,7 +2725,7 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># INTERACTIVE CHAT (RESEARCH MODE)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">chat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Ask research questions about model outputs interactively.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -2758,7 +2758,7 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># CORE PROMPT (CMIP6 + SCIENTIFIC INTERPRETATION)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">_build_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct the LLM prompt for scientific report generation.</span>
 
@@ -2801,7 +2801,7 @@ implements the following interface:</p>
 <span class="sd">        - Compatible with both local and remote LLM backends.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">climaid.utils</span> <span class="kn">import</span> <span class="n">_json_safe_numbers</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_json_safe_numbers</span>
 
         <span class="c1"># Formatting</span>
         <span class="n">district_state</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&quot;district&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown Region&quot;</span><span class="p">)</span>
@@ -2890,7 +2890,7 @@ implements the following interface:</p>
     <span class="c1"># =====================================================</span>
     <span class="c1"># ClimAID Deterministic Scientific Interpreter (DSI)</span>
     <span class="c1"># =====================================================</span>
-    <span class="k">def</span> <span class="nf">_deterministic_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_deterministic_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        ClimAID Deterministic Scientific Interpreter (C-DSI).</span>
 
@@ -2924,9 +2924,9 @@ implements the following interface:</p>
 <span class="sd">        - Intended for secure, offline, or high-integrity workflows.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">textwrap</span>
-        <span class="kn">import</span> <span class="nn">markdown</span>
-        <span class="kn">import</span> <span class="nn">calendar</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">markdown</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
 
         <span class="c1"># -------------------------------------------------</span>
         <span class="c1"># BUG FIX: Initialize variables to prevent UnboundLocalError</span>
@@ -3031,7 +3031,7 @@ implements the following interface:</p>
             <span class="n">interaction_lag_text</span> <span class="o">=</span> <span class="s2">&quot;- No interaction lags selected&quot;</span>
 
         <span class="c1"># Function for interpreting interactions. </span>
-        <span class="k">def</span> <span class="nf">interpret_interactions</span><span class="p">(</span><span class="n">interactions</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">interpret_interactions</span><span class="p">(</span><span class="n">interactions</span><span class="p">):</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interactions</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">interactions</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;No significant climate–ENSO interaction terms were detected.&quot;</span>
@@ -3091,7 +3091,7 @@ implements the following interface:</p>
                     <span class="s2">&quot;Year&quot;</span><span class="p">:</span> <span class="s2">&quot;Long-term Trend (Year)&quot;</span>
                 <span class="p">}</span>
 
-                <span class="k">def</span> <span class="nf">pretty_feature</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">pretty_feature</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
                     <span class="c1"># Interaction terms</span>
                     <span class="k">if</span> <span class="s2">&quot;_x_&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
@@ -3163,7 +3163,7 @@ implements the following interface:</p>
             <span class="n">end</span> <span class="o">=</span> <span class="n">projection_period_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
             <span class="n">steps</span> <span class="o">=</span> <span class="n">projection_period_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_timesteps&quot;</span><span class="p">)</span>
 
-            <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">start_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
@@ -3245,8 +3245,8 @@ implements the following interface:</p>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">risk_matrix</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">risk_matrix</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
             <span class="k">try</span><span class="p">:</span>
-                <span class="kn">import</span> <span class="nn">calendar</span>
-                <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+                <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
                 <span class="n">monthly_risk</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
@@ -4257,7 +4257,7 @@ summaries, statistics).</p>
 <span class="normal">1096</span>
 <span class="normal">1097</span>
 <span class="normal">1098</span>
-<span class="normal">1099</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_deterministic_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">1099</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_deterministic_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifacts</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    ClimAID Deterministic Scientific Interpreter (C-DSI).</span>
 
@@ -4291,9 +4291,9 @@ summaries, statistics).</p>
 <span class="sd">    - Intended for secure, offline, or high-integrity workflows.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">textwrap</span>
-    <span class="kn">import</span> <span class="nn">markdown</span>
-    <span class="kn">import</span> <span class="nn">calendar</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">markdown</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
 
     <span class="c1"># -------------------------------------------------</span>
     <span class="c1"># BUG FIX: Initialize variables to prevent UnboundLocalError</span>
@@ -4398,7 +4398,7 @@ summaries, statistics).</p>
         <span class="n">interaction_lag_text</span> <span class="o">=</span> <span class="s2">&quot;- No interaction lags selected&quot;</span>
 
     <span class="c1"># Function for interpreting interactions. </span>
-    <span class="k">def</span> <span class="nf">interpret_interactions</span><span class="p">(</span><span class="n">interactions</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interpret_interactions</span><span class="p">(</span><span class="n">interactions</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interactions</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">interactions</span><span class="p">:</span>
             <span class="k">return</span> <span class="s2">&quot;No significant climate–ENSO interaction terms were detected.&quot;</span>
@@ -4458,7 +4458,7 @@ summaries, statistics).</p>
                 <span class="s2">&quot;Year&quot;</span><span class="p">:</span> <span class="s2">&quot;Long-term Trend (Year)&quot;</span>
             <span class="p">}</span>
 
-            <span class="k">def</span> <span class="nf">pretty_feature</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="nf">pretty_feature</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
                 <span class="c1"># Interaction terms</span>
                 <span class="k">if</span> <span class="s2">&quot;_x_&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
@@ -4530,7 +4530,7 @@ summaries, statistics).</p>
         <span class="n">end</span> <span class="o">=</span> <span class="n">projection_period_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;end&quot;</span><span class="p">)</span>
         <span class="n">steps</span> <span class="o">=</span> <span class="n">projection_period_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;n_timesteps&quot;</span><span class="p">)</span>
 
-        <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">start_dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
@@ -4612,8 +4612,8 @@ summaries, statistics).</p>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">risk_matrix</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">risk_matrix</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">calendar</span>
-            <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">calendar</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 
             <span class="n">monthly_risk</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
@@ -5106,7 +5106,7 @@ summary statistics, and derived indicators.</p>
 <span class="normal">437</span>
 <span class="normal">438</span>
 <span class="normal">439</span>
-<span class="normal">440</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_build_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="normal">440</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_build_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">ReportArtifacts</span><span class="p">,</span> <span class="n">style</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Construct the LLM prompt for scientific report generation.</span>
 
@@ -5149,7 +5149,7 @@ summary statistics, and derived indicators.</p>
 <span class="sd">    - Compatible with both local and remote LLM backends.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">climaid.utils</span> <span class="kn">import</span> <span class="n">_json_safe_numbers</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_json_safe_numbers</span>
 
     <span class="c1"># Formatting</span>
     <span class="n">district_state</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s2">&quot;district&quot;</span><span class="p">,</span> <span class="s2">&quot;Unknown Region&quot;</span><span class="p">)</span>
@@ -5425,7 +5425,7 @@ summary statistics, and derived indicators.</p>
 <span class="normal">1221</span>
 <span class="normal">1222</span>
 <span class="normal">1223</span>
-<span class="normal">1224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">build_projection_from_summary</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="normal">1224</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_projection_from_summary</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create an interactive mean projection plot from summary outputs.</span>
 
@@ -5441,7 +5441,7 @@ summary statistics, and derived indicators.</p>
 <span class="sd">    plot : </span>
 <span class="sd">        plotly.graph_objects.Figure </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
 
     <span class="n">timeseries</span> <span class="o">=</span> <span class="n">projection_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ensemble_timeseries&quot;</span><span class="p">,</span> <span class="p">[])</span>
 
@@ -5774,7 +5774,7 @@ summary statistics, and derived indicators.</p>
 <span class="normal">1412</span>
 <span class="normal">1413</span>
 <span class="normal">1414</span>
-<span class="normal">1415</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">build_dual_seasonal_heatmap</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">years_ahead</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="normal">1415</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_dual_seasonal_heatmap</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">years_ahead</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create dual heatmaps of seasonal projections and uncertainty.</span>
 
@@ -5794,9 +5794,9 @@ summary statistics, and derived indicators.</p>
 <span class="sd">        plotly.graph_objects.Figure or str </span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
-    <span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
 
     <span class="n">ssp_data</span> <span class="o">=</span> <span class="n">projection_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ssp_timeseries&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
@@ -6128,7 +6128,7 @@ summary statistics, and derived indicators.</p>
 <span class="normal">1543</span>
 <span class="normal">1544</span>
 <span class="normal">1545</span>
-<span class="normal">1546</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">build_ssp_projection_grid</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="normal">1546</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_ssp_projection_grid</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a grid of SSP-specific projection time series.</span>
 
@@ -6147,8 +6147,8 @@ summary statistics, and derived indicators.</p>
 <span class="sd">        plotly.graph_objects.Figure </span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
-    <span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">plotly.subplots</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_subplots</span>
 
     <span class="n">ssp_data</span> <span class="o">=</span> <span class="n">projection_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ssp_timeseries&quot;</span><span class="p">,</span> <span class="p">{})</span>
 
@@ -6453,7 +6453,7 @@ based on the base model selected inside the DiseaseModel Class.</p>
 <span class="normal">1705</span>
 <span class="normal">1706</span>
 <span class="normal">1707</span>
-<span class="normal">1708</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">build_climate_sensitivity_panel</span><span class="p">(</span><span class="n">importance</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="normal">1708</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_climate_sensitivity_panel</span><span class="p">(</span><span class="n">importance</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Visualize feature importance for climate sensitivity </span>
 <span class="sd">    based on the base model selected inside the DiseaseModel Class.</span>
@@ -6470,7 +6470,7 @@ based on the base model selected inside the DiseaseModel Class.</p>
 <span class="sd">    plot : </span>
 <span class="sd">        plotly.graph_objects.Figure or str </span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">importance</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&lt;p&gt;&lt;b&gt;No feature importance data available.&lt;/b&gt;&lt;/p&gt;&quot;</span>
@@ -6495,7 +6495,7 @@ based on the base model selected inside the DiseaseModel Class.</p>
     <span class="c1"># ----------------------------------</span>
     <span class="c1"># Feature name formatter</span>
     <span class="c1"># ----------------------------------</span>
-    <span class="k">def</span> <span class="nf">pretty_feature</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pretty_feature</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
         <span class="c1"># Interaction terms</span>
         <span class="k">if</span> <span class="s2">&quot;_x_&quot;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
@@ -6836,7 +6836,7 @@ based on the base model selected inside the DiseaseModel Class.</p>
 <span class="normal">1890</span>
 <span class="normal">1891</span>
 <span class="normal">1892</span>
-<span class="normal">1893</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">build_risk_matrix</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">years_per_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="normal">1893</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">build_risk_matrix</span><span class="p">(</span><span class="n">projection_summary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">years_per_period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a temporal risk matrix visualization.</span>
 
@@ -6856,9 +6856,9 @@ based on the base model selected inside the DiseaseModel Class.</p>
 <span class="sd">        plotly.graph_objects.Figure or str</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
     <span class="n">risk_data</span> <span class="o">=</span> <span class="n">projection_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;risk_matrix&quot;</span><span class="p">,</span> <span class="p">[])</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">risk_data</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;&lt;div&gt;No data provided.&lt;/div&gt;&quot;</span>
@@ -6960,7 +6960,7 @@ based on the base model selected inside the DiseaseModel Class.</p>
     <span class="c1"># -----------------------------</span>
     <span class="c1"># Dynamic visibility logic</span>
     <span class="c1"># -----------------------------</span>
-    <span class="k">def</span> <span class="nf">create_vis_list</span><span class="p">(</span><span class="n">target_ssp</span><span class="p">,</span> <span class="n">target_p_idx</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_vis_list</span><span class="p">(</span><span class="n">target_ssp</span><span class="p">,</span> <span class="n">target_p_idx</span><span class="p">):</span>
         <span class="n">vis</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">trace_map</span><span class="p">:</span>
             <span class="n">is_match</span> <span class="o">=</span> <span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;ssp&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">target_ssp</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;period&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">target_p_idx</span><span class="p">)</span>

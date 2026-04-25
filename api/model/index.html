@@ -3461,7 +3461,7 @@ Used for reporting and visualization.</p>
 <span class="normal">2236</span>
 <span class="normal">2237</span>
 <span class="normal">2238</span>
-<span class="normal">2239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DiseaseModel</span><span class="p">:</span>
+<span class="normal">2239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DiseaseModel</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Climate-informed disease prediction and projection model.</span>
 
@@ -3541,7 +3541,7 @@ Used for reporting and visualization.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">district</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">disease_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -3645,7 +3645,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Global Random Seed</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">_set_global_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_global_seed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set global random seeds for full pipeline reproducibility.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>  <span class="c1"># Do not override global RNG if user did not specify seed</span>
@@ -3657,7 +3657,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Runtime correcter</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">_update_total_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_update_total_runtime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute corrected total runtime excluding idle time.&quot;&quot;&quot;</span>
 
         <span class="n">components</span> <span class="o">=</span> <span class="p">[</span>
@@ -3675,9 +3675,9 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Load disease data</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">_load_disease_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_disease_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">get_close_matches</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">difflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_close_matches</span>
 
         <span class="n">suffix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">disease_file</span><span class="o">.</span><span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
@@ -3772,9 +3772,9 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Merge climate + disease</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">_merge_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">difflib</span> <span class="kn">import</span> <span class="n">get_close_matches</span>
-        <span class="kn">from</span> <span class="nn">climaid.utils</span> <span class="kn">import</span> <span class="n">_map_columns</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_merge_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">difflib</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_close_matches</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_map_columns</span>
         <span class="n">climate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_climate_hist</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="n">climate</span> <span class="o">=</span> <span class="n">_map_columns</span><span class="p">(</span><span class="n">climate</span><span class="p">)</span>
@@ -3969,7 +3969,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># train/test split splitting</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">_train_test_split</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_train_test_split</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">train_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">test_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -4082,7 +4082,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Detect outbreaks</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">detect_historical_outbreaks</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">detect_historical_outbreaks</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;zscore&quot;</span><span class="p">,</span>
         <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
@@ -4163,7 +4163,7 @@ Used for reporting and visualization.</p>
         <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;historical_outbreak_flag&quot;</span><span class="p">]]</span>
 
     <span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;lag_optimization_seconds&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">optimize_lags</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">optimize_lags</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">base_models</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;xgb&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">),</span>
         <span class="n">residual_models</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;extratrees&quot;</span><span class="p">),</span>
@@ -4271,13 +4271,13 @@ Used for reporting and visualization.</p>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-        <span class="kn">import</span> <span class="nn">time</span>
-        <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
-        <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
 
-        <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="p">(</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
             <span class="n">StandardScaler</span><span class="p">,</span>
             <span class="n">MinMaxScaler</span><span class="p">,</span>
             <span class="n">MaxAbsScaler</span><span class="p">,</span>
@@ -4455,7 +4455,7 @@ Used for reporting and visualization.</p>
         <span class="c1"># --------------------------------------------------</span>
         <span class="c1"># Stage 1: Base screening</span>
         <span class="c1"># --------------------------------------------------</span>
-        <span class="k">def</span> <span class="nf">_evaluate_base_screen</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">base_model</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_base_screen</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">base_model</span><span class="p">):</span>
 
             <span class="k">try</span><span class="p">:</span>
 
@@ -4606,7 +4606,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># Train final triple-stacked model</span>
     <span class="c1"># -------------------------------------------------</span>
     <span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;training_seconds&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">train_final_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">train_final_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Train the final disease prediction model using the optimized feature set.</span>
 
@@ -4641,9 +4641,9 @@ Used for reporting and visualization.</p>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Run optimize_lags() first.&quot;</span><span class="p">)</span>
 
-        <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-        <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-        <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
 
         <span class="n">feats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_config</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span>
         <span class="n">X_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_df</span><span class="p">[</span><span class="n">feats</span><span class="p">]</span>
@@ -4703,7 +4703,7 @@ Used for reporting and visualization.</p>
             <span class="n">final_test</span> <span class="o">=</span> <span class="n">raw_test_preds</span>
 
         <span class="k">elif</span> <span class="n">corr_model_name</span> <span class="o">==</span> <span class="s2">&quot;isotonic&quot;</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">sklearn.isotonic</span> <span class="kn">import</span> <span class="n">IsotonicRegression</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.isotonic</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsotonicRegression</span>
 
             <span class="n">iso</span> <span class="o">=</span> <span class="n">IsotonicRegression</span><span class="p">(</span><span class="n">out_of_bounds</span><span class="o">=</span><span class="s2">&quot;clip&quot;</span><span class="p">)</span>
             <span class="n">iso</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">raw_train_preds</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -4793,7 +4793,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># AUTO BUILD REPORT ARTIFACTS </span>
     <span class="c1"># --------------------------------------------------</span>
     <span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;report_generation_seconds&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">build_report_artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection_summary</span><span class="p">,</span> <span class="n">tidy_df</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_report_artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection_summary</span><span class="p">,</span> <span class="n">tidy_df</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct standardized reporting artifacts from model outputs.</span>
 
@@ -4834,7 +4834,7 @@ Used for reporting and visualization.</p>
 <span class="sd">        - Designed to support reproducible research workflows.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">from</span> <span class="nn">climaid.reporting</span> <span class="kn">import</span> <span class="n">ReportArtifacts</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReportArtifacts</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Run optimize_lags() first.&quot;</span><span class="p">)</span>
@@ -4959,7 +4959,7 @@ Used for reporting and visualization.</p>
         <span class="k">return</span> <span class="n">artifacts</span>
 
     <span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;prediction_seconds&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate disease case predictions using the trained stacked model.</span>
 
@@ -5039,7 +5039,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># Reporting</span>
     <span class="c1"># --------------------------------------------------</span>
     <span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;report_generation_seconds&quot;</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">generate_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                         <span class="n">projection_summary</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
                         <span class="n">llm_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                         <span class="n">tidy_df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
@@ -5106,8 +5106,8 @@ Used for reporting and visualization.</p>
 <span class="sd">        - Supports integration with LLMs for enhanced interpretability.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">time</span>
-        <span class="kn">from</span> <span class="nn">climaid.reporting</span> <span class="kn">import</span> <span class="n">DiseaseReporter</span><span class="p">,</span> <span class="n">open_report_in_browser</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiseaseReporter</span><span class="p">,</span> <span class="n">open_report_in_browser</span>
 
         <span class="k">if</span> <span class="n">projection_summary</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">projection_summary</span> <span class="o">=</span> <span class="p">{</span>
@@ -5129,7 +5129,7 @@ Used for reporting and visualization.</p>
 
         <span class="k">if</span> <span class="n">open_browser</span><span class="p">:</span>
 
-            <span class="kn">from</span> <span class="nn">climaid.reporting</span> <span class="kn">import</span> <span class="n">open_report_in_browser</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_report_in_browser</span>
 
             <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ClimAID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">disease_name</span><span class="si">}</span><span class="s2"> Risk Intelligence Report&quot;</span>
 
@@ -5147,7 +5147,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># PLOTTING FUNCTION</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">plot_historical_predictions</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_historical_predictions</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">actual_color</span><span class="o">=</span><span class="s1">&#39;#006d77&#39;</span><span class="p">,</span>
             <span class="n">prediction_color</span><span class="o">=</span><span class="s1">&#39;#e29578&#39;</span><span class="p">,</span>
@@ -5219,9 +5219,9 @@ Used for reporting and visualization.</p>
 <span class="sd">            - Useful for diagnostic evaluation of model performance.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
 
-            <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-            <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-            <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.dates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mdates</span>
 
             <span class="k">if</span> <span class="s2">&quot;Actual&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dpred</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Dataframe must contain &#39;Actual&#39; column.&quot;</span><span class="p">)</span>
@@ -5274,7 +5274,7 @@ Used for reporting and visualization.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Time Summary</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">print_runtime_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_runtime_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Prints a clean runtime summary for the full pipeline.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -5474,7 +5474,7 @@ baseline statistics such as mean and standard deviation.</p>
 <span class="normal">1101</span>
 <span class="normal">1102</span>
 <span class="normal">1103</span>
-<span class="normal">1104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">detect_historical_outbreaks</span><span class="p">(</span>
+<span class="normal">1104</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">detect_historical_outbreaks</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;zscore&quot;</span><span class="p">,</span>
     <span class="n">window</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
@@ -6140,7 +6140,7 @@ model architecture using a hybrid AutoML framework.</p>
 <span class="normal">1542</span>
 <span class="normal">1543</span>
 <span class="normal">1544</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;lag_optimization_seconds&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">optimize_lags</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">optimize_lags</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">base_models</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;xgb&quot;</span><span class="p">,</span> <span class="s2">&quot;rf&quot;</span><span class="p">),</span>
     <span class="n">residual_models</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;rf&quot;</span><span class="p">,</span> <span class="s2">&quot;extratrees&quot;</span><span class="p">),</span>
@@ -6248,13 +6248,13 @@ model architecture using a hybrid AutoML framework.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="kn">import</span> <span class="nn">time</span>
-    <span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
-    <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
 
-    <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
         <span class="n">StandardScaler</span><span class="p">,</span>
         <span class="n">MinMaxScaler</span><span class="p">,</span>
         <span class="n">MaxAbsScaler</span><span class="p">,</span>
@@ -6432,7 +6432,7 @@ model architecture using a hybrid AutoML framework.</p>
     <span class="c1"># --------------------------------------------------</span>
     <span class="c1"># Stage 1: Base screening</span>
     <span class="c1"># --------------------------------------------------</span>
-    <span class="k">def</span> <span class="nf">_evaluate_base_screen</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">base_model</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_base_screen</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">base_model</span><span class="p">):</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -6804,7 +6804,7 @@ and projection tasks.</p>
 <span class="normal">1729</span>
 <span class="normal">1730</span>
 <span class="normal">1731</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;training_seconds&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">train_final_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_final_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Train the final disease prediction model using the optimized feature set.</span>
 
@@ -6839,9 +6839,9 @@ and projection tasks.</p>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Run optimize_lags() first.&quot;</span><span class="p">)</span>
 
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-    <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">root_mean_squared_error</span>
 
     <span class="n">feats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_config</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]</span>
     <span class="n">X_train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_df</span><span class="p">[</span><span class="n">feats</span><span class="p">]</span>
@@ -6901,7 +6901,7 @@ and projection tasks.</p>
         <span class="n">final_test</span> <span class="o">=</span> <span class="n">raw_test_preds</span>
 
     <span class="k">elif</span> <span class="n">corr_model_name</span> <span class="o">==</span> <span class="s2">&quot;isotonic&quot;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">sklearn.isotonic</span> <span class="kn">import</span> <span class="n">IsotonicRegression</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.isotonic</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsotonicRegression</span>
 
         <span class="n">iso</span> <span class="o">=</span> <span class="n">IsotonicRegression</span><span class="p">(</span><span class="n">out_of_bounds</span><span class="o">=</span><span class="s2">&quot;clip&quot;</span><span class="p">)</span>
         <span class="n">iso</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">raw_train_preds</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
@@ -7163,7 +7163,7 @@ in disease reporting and transmission patterns.</p>
 <span class="normal">1018</span>
 <span class="normal">1019</span>
 <span class="normal">1020</span>
-<span class="normal">1021</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">_train_test_split</span><span class="p">(</span>
+<span class="normal">1021</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">_train_test_split</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">train_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">test_year</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -7496,7 +7496,7 @@ after model training and projection steps.</li>
 <span class="normal">1898</span>
 <span class="normal">1899</span>
 <span class="normal">1900</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;report_generation_seconds&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">build_report_artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection_summary</span><span class="p">,</span> <span class="n">tidy_df</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_report_artifacts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection_summary</span><span class="p">,</span> <span class="n">tidy_df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Construct standardized reporting artifacts from model outputs.</span>
 
@@ -7537,7 +7537,7 @@ after model training and projection steps.</li>
 <span class="sd">    - Designed to support reproducible research workflows.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">climaid.reporting</span> <span class="kn">import</span> <span class="n">ReportArtifacts</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReportArtifacts</span>
 
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_config</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Run optimize_lags() first.&quot;</span><span class="p">)</span>
@@ -7787,7 +7787,7 @@ the input samples in <code>X</code>.</p>
 <span class="normal">1975</span>
 <span class="normal">1976</span>
 <span class="normal">1977</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;prediction_seconds&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate disease case predictions using the trained stacked model.</span>
 
@@ -8059,7 +8059,7 @@ If not specified, a default output location is used.</p>
 <span class="normal">2084</span>
 <span class="normal">2085</span>
 <span class="normal">2086</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@track_time</span><span class="p">(</span><span class="s2">&quot;report_generation_seconds&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">generate_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                     <span class="n">projection_summary</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
                     <span class="n">llm_client</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                     <span class="n">tidy_df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
@@ -8126,8 +8126,8 @@ If not specified, a default output location is used.</p>
 <span class="sd">    - Supports integration with LLMs for enhanced interpretability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">import</span> <span class="nn">time</span>
-    <span class="kn">from</span> <span class="nn">climaid.reporting</span> <span class="kn">import</span> <span class="n">DiseaseReporter</span><span class="p">,</span> <span class="n">open_report_in_browser</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiseaseReporter</span><span class="p">,</span> <span class="n">open_report_in_browser</span>
 
     <span class="k">if</span> <span class="n">projection_summary</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">projection_summary</span> <span class="o">=</span> <span class="p">{</span>
@@ -8149,7 +8149,7 @@ If not specified, a default output location is used.</p>
 
     <span class="k">if</span> <span class="n">open_browser</span><span class="p">:</span>
 
-        <span class="kn">from</span> <span class="nn">climaid.reporting</span> <span class="kn">import</span> <span class="n">open_report_in_browser</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">climaid.reporting</span><span class="w"> </span><span class="kn">import</span> <span class="n">open_report_in_browser</span>
 
         <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ClimAID </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">disease_name</span><span class="si">}</span><span class="s2"> Risk Intelligence Report&quot;</span>
 
@@ -8376,7 +8376,7 @@ observed and predicted values.</p>
 <span class="normal">2210</span>
 <span class="normal">2211</span>
 <span class="normal">2212</span>
-<span class="normal">2213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot_historical_predictions</span><span class="p">(</span>
+<span class="normal">2213</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_historical_predictions</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">actual_color</span><span class="o">=</span><span class="s1">&#39;#006d77&#39;</span><span class="p">,</span>
         <span class="n">prediction_color</span><span class="o">=</span><span class="s1">&#39;#e29578&#39;</span><span class="p">,</span>
@@ -8448,9 +8448,9 @@ observed and predicted values.</p>
 <span class="sd">        - Useful for diagnostic evaluation of model performance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-        <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-        <span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.dates</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mdates</span>
 
         <span class="k">if</span> <span class="s2">&quot;Actual&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dpred</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Dataframe must contain &#39;Actual&#39; column.&quot;</span><span class="p">)</span>
@@ -8542,7 +8542,7 @@ observed and predicted values.</p>
 <span class="normal">2236</span>
 <span class="normal">2237</span>
 <span class="normal">2238</span>
-<span class="normal">2239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">print_runtime_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">2239</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">print_runtime_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Prints a clean runtime summary for the full pipeline.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
