@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block announce %}
+  <strong>ClimAID 0.3.0 is under active testing.</strong>
+  Methods are checked on synthetic data only; results on real data are not yet validated.
+  {% if config.use_directory_urls %}
+    <a href="{{ 'guide/status/' | url }}">What has been tested</a>
+  {% else %}
+    <a href="{{ 'guide/status.html' | url }}">What has been tested</a>
+  {% endif %}
+{% endblock %}

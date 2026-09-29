@@ -1,1 +1,3 @@
-__version__ = "0.1.0"
+__version__ = "0.3.0"
+
+# ClimAID v2 is additive; legacy modules remain import-compatible.

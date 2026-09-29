@@ -1,15 +1,54 @@
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
 
-# Packaging
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging / build artifacts
 build/
 dist/
 *.egg-info/
+.eggs/
 
-# Virtual env
-.venv/
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
 
-# OS
-Thumbs.db
+# Type checking / linters
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local/generated ClimAID outputs
+climaid_outputs/
+catboost_info/
+
+# Local documentation build artifacts
+site/
+site_docs/
+
+# OS/editor
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets / environment
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.tmp
+*.log

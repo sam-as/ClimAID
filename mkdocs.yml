@@ -1,0 +1,86 @@
+site_name: ClimAID
+docs_dir: site_docs
+
+theme:
+  name: material
+  custom_dir: overrides        # site-wide "under testing" banner (overrides/main.html)
+
+  logo: assets/ClimAID_logo_AS.png
+  favicon: assets/ClimAID_logo_AS.png
+
+  palette:
+    - scheme: default
+      primary: custom
+      accent: custom
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+    - content.action.edit
+    - toc.integrate
+    - header.autohide
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [.]
+          options:
+            docstring_style: numpy
+            show_source: false
+
+nav:
+  - Home: index.md
+
+  - User guide:
+      - "Status & validation (under testing)": guide/status.md
+      - v2 forecasting: guide/v2_forecasting.md
+      - Tuning & optimisation trials: guide/tuning.md
+      - Climate scenario outlook: guide/scenarios.md
+      - Reading the reports: guide/reports.md
+      - Benchmarks & synthetic data: guide/benchmarks.md
+      - Changelog: changelog.md
+
+  - Core API:
+      - DiseaseModel (v1): api/model.md
+      - ClimAID v2: api/v2.md
+      - ClimateData: api/climate.md
+
+  - Projections:
+      - DataManager: api/datasets.md
+      - DiseaseProjection: api/projections.md
+      - Visualization: api/plots.md
+
+  - Intelligence:
+      - LLM Client: api/llmclient.md
+      - Reporting: api/reporting.md
+
+  - Utilities:
+      - Utils: api/utils.md
+
+  - Resources:
+      - Manuscript & Sample Datasets: api/resources.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+
+repo_url: https://github.com/sam-as/ClimAID
+repo_name: ClimAID
+
+extra_css:
+  - stylesheets/extra.css
+
+copyright: >
+  © 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria

@@ -20,7 +20,7 @@
 
 <div class="nav-right">
     <a href="https://sam-as.github.io/ClimAID/api/llmclient/">AI Guide</a>
-    <a href="https://sam-as.github.io/ClimAID/">Documentation</a>
+    <a href="/documentation/">Documentation</a>
     <a href="https://github.com/sam-as" target="_blank">GitHub</a>
     <a href="https://sam-as.github.io/ClimAID/api/resources/">Sample Datasets</a>
     </div>
@@ -39,13 +39,19 @@
     </p>
 </div>
 
-<img src="ClimAID logo.png" class="logo">
+<div class="header-logos">
+    <img src="ClimAID logo.png" class="logo" alt="ClimAID">
+    <span class="logo-divider" aria-hidden="true"></span>
+    <img src="ndmc_logo.png" class="logo partner-logo" alt="National Disease Modelling Consortium (NDMC)"
+         title="National Disease Modelling Consortium">
+</div>
 </header>
 
 
 <!-- MODE TOGGLE -->
 
 <div class="mode-toggle">
+<span class="mode-label">Climate data <span class="info" tabindex="0" role="note" aria-label="South Asia uses ClimAID&#x27;s built-in climate data for supported districts. Global lets you upload your own historical and projected climate files." data-tip="South Asia uses ClimAID&#x27;s built-in climate data for supported districts. Global lets you upload your own historical and projected climate files.">i</span></span>
 
 <button id="saModeBtn" class="mode-btn active" onclick="setMode('southasia')">
 South Asia
@@ -63,12 +69,12 @@ Global
 <div class="input-grid">
 
 <div class="input-group">
-    <label>Country</label>
+    <label>Country <span class="info" tabindex="0" role="note" aria-label="Country of the district. In South Asia mode ClimAID loads built-in climate data for the listed districts." data-tip="Country of the district. In South Asia mode ClimAID loads built-in climate data for the listed districts.">i</span></label>
     <select id="country"></select>
 </div>
 
 <div class="input-group">
-    <label>State</label>
+    <label>State <span class="info" tabindex="0" role="note" aria-label="State or province. In Global mode you can type it if it is not listed." data-tip="State or province. In Global mode you can type it if it is not listed.">i</span></label>
 
     <select id="state"></select>
 
@@ -79,7 +85,7 @@ Global
 </div>
 
 <div class="input-group">
-    <label>District</label>
+    <label>District <span class="info" tabindex="0" role="note" aria-label="The district your disease data come from. In South Asia mode its historical climate (and CMIP6 projections, where available) load automatically." data-tip="The district your disease data come from. In South Asia mode its historical climate (and CMIP6 projections, where available) load automatically.">i</span></label>
 
     <select id="district"></select>
 
@@ -101,7 +107,7 @@ Global
 
 <div id="externalClimateSection" style="display:none">
 
-<label>Weather Dataset</label>
+<label>Weather Dataset <span class="info" tabindex="0" role="note" aria-label="Global mode only. Monthly historical climate for your location: temperature, rainfall, humidity and, optionally, an ENSO index. CSV, Excel or Parquet." data-tip="Global mode only. Monthly historical climate for your location: temperature, rainfall, humidity and, optionally, an ENSO index. CSV, Excel or Parquet.">i</span></label>
 
 <div id="weatherDropzone" class="dropzone">
     <p>Drop CSV, Excel or Parquet file here</p>
@@ -109,10 +115,10 @@ Global
 </div>
 
 <input type="file" id="weather_file" hidden>
-<p id="weather_filename"></p>
+<p id="weather_filename" class="upload-status" aria-live="polite"></p>
 
 
-<label>Projection Dataset</label>
+<label>Projection Dataset <span class="info" tabindex="0" role="note" aria-label="Global mode only. Future climate, for example CMIP6 scenarios. Used for v1 projections, and for v2 when the future climate source is Projection." data-tip="Global mode only. Future climate, for example CMIP6 scenarios. Used for v1 projections, and for v2 when the future climate source is Projection.">i</span></label>
 
 <div id="projectionDropzone" class="dropzone">
     <p>Drop CSV, Excel or Parquet file here</p>
@@ -120,19 +126,17 @@ Global
 </div>
 
 <input type="file" id="projection_file" hidden>
-<p id="projection_filename"></p>
+<p id="projection_filename" class="upload-status" aria-live="polite"></p>
 
 </div>
 
 
-<label>Disease Name</label>
+<label>Disease Name <span class="info" tabindex="0" role="note" aria-label="Used in report titles and file names only. It does not change the models." data-tip="Used in report titles and file names only. It does not change the models.">i</span></label>
 <input id="disease" placeholder="e.g., Dengue, Malaria">
 
-<label>Test Year (optional)</label>
-<input id="test_year" type="number" placeholder="e.g., 2021">
 
 
-<label>Disease Dataset</label>
+<label>Disease Dataset <span class="info" tabindex="0" role="note" aria-label="Monthly case counts with a date column and a cases column. Unreadable dates, non-numeric counts and duplicate rows are removed and reported; weekly or daily data are summed to monthly totals for v1." data-tip="Monthly case counts with a date column and a cases column. Unreadable dates, non-numeric counts and duplicate rows are removed and reported; weekly or daily data are summed to monthly totals for v1.">i</span></label>
 
 <div id="dropzone" class="dropzone">
 <p>Drop CSV or Excel file here</p>
@@ -140,88 +144,291 @@ Global
 </div>
 
 <input type="file" id="fileInput" hidden>
-<p id="filename"></p>
+<p id="filename" class="upload-status" aria-live="polite"></p>
 
-
-<label>Optimization Preset</label>
-
-<select id="preset">
-<option value="fast" selected>Fast (50 trials)</option>
-<option value="balanced">Balanced (200 trials)</option>
-<option value="deep">Deep (500 trials)</option>
-<option value="custom">Custom</option>
-</select>
-
-
-
-<!-- MODEL SELECTION -->
-
-<div id="model-selection" style="display:none">
-
-<h2 class="section-title">Model Configuration</h2>
-
-<div class="model-category-card">
-
-<div class="card-header">
-<h3>Base Models</h3>
-
-<div class="model-actions">
-<button onclick="selectAllModels('base_models_container')">Select All</button>
-<button onclick="clearModels('base_models_container')">Clear</button>
+<div class="input-grid shared-options">
+<div class="input-group">
+    <label>COVID-19 disruption period <span class="info" tabindex="0" role="note" aria-label="COVID-19 distorted case counts (less testing, reporting and care-seeking). The chosen months are left out of v1 training; in v2 they are replaced with each month&#x27;s typical value from other years and never used to score the models. Months after the forecast start are never changed. 2020 is recommended for South Asia; choose a custom period only if local records show a different disruption." data-tip="COVID-19 distorted case counts (less testing, reporting and care-seeking). The chosen months are left out of v1 training; in v2 they are replaced with each month&#x27;s typical value from other years and never used to score the models. Months after the forecast start are never changed. 2020 is recommended for South Asia; choose a custom period only if local records show a different disruption.">i</span></label>
+    <select id="exclude_period_mode" onchange="toggleCustomPeriod()">
+        <option value="2020" selected>2020 (recommended)</option>
+        <option value="custom">Custom period</option>
+        <option value="none">None, use recorded counts</option>
+    </select>
+</div>
+<div class="input-group custom-period" hidden>
+    <label>Excluded from <span class="info" tabindex="0" role="note" aria-label="First month of the disrupted period (inclusive)." data-tip="First month of the disrupted period (inclusive).">i</span></label>
+    <input id="exclude_start" type="month" value="2020-03" min="2000-01">
+</div>
+<div class="input-group custom-period" hidden>
+    <label>Excluded to <span class="info" tabindex="0" role="note" aria-label="Last month of the disrupted period (inclusive)." data-tip="Last month of the disrupted period (inclusive).">i</span></label>
+    <input id="exclude_end" type="month" value="2020-12" min="2000-01">
+</div>
 </div>
 
-</div>
-
-<div id="base_models_container" class="model-grid"></div>
-
-</div>
-
-
-<div class="model-category-card">
-
-<div class="card-header">
-<h3>Residual Models</h3>
-
-<div class="model-actions">
-<button onclick="selectAllModels('residual_models_container')">Select All</button>
-<button onclick="clearModels('residual_models_container')">Clear</button>
-</div>
-
-</div>
-
-<div id="residual_models_container" class="model-grid"></div>
-
-</div>
-
-
-<div class="model-category-card">
-
-<div class="card-header">
-<h3>Correction Models</h3>
-
-<div class="model-actions">
-<button onclick="selectAllModels('correction_models_container')">Select All</button>
-<button onclick="clearModels('correction_models_container')">Clear</button>
-</div>
-
-</div>
-
-<div id="correction_models_container" class="model-grid"></div>
-
-</div>
-
-
-<label>Optimization Trials</label>
-<input id="trials" placeholder="200">
-
-</div>
-
-
-<button class="run-btn" onclick="runClimAID()">
-Run ClimAID Analysis
-</button>
+<p class="pipeline-hint">
+    Location, data files and the COVID-19 period are shared. Choose a pipeline
+    below; each page has its own settings and Run button.
+</p>
 
 <pre id="status"></pre>
+
+
+
+<nav class="page-tabs" role="tablist" aria-label="ClimAID pipeline">
+    <button id="tab-v2" class="page-tab active" role="tab" aria-selected="true" aria-controls="climaid-v2" onclick="showPage('v2')">ClimAID v2 <small>probabilistic · recommended</small></button>
+    <button id="tab-v1" class="page-tab" role="tab" aria-selected="false" aria-controls="legacy-v1-controls" onclick="showPage('v1')">ClimAID v1 <small>legacy · deterministic</small></button>
+</nav>
+<!-- ======================================================
+     PAGE: CLIMAID v2 — PROBABILISTIC FORECASTING
+     Climate-mandatory probabilistic forecaster, renewal
+     model, hindcasts and the v2 report. All v2-specific
+     configuration lives in this section only.
+====================================================== -->
+<section id="climaid-v2" class="v2-panel pipeline-page" data-page="v2" role="tabpanel" aria-labelledby="tab-v2">
+    <h2 class="section-title">ClimAID v2 — Probabilistic Forecasting</h2>
+    <p class="v2-intro">
+        Recommended. Climate-informed probabilistic forecasts with leakage-safe
+        validation, a climate renewal model, rolling hindcasts and the C-DSI v2
+        report. Settings on this page do not affect v1.
+    </p>
+
+    <div class="v2-grid">
+        <div class="input-group">
+            <label>First forecast year <span class="info" tabindex="0" role="note" aria-label="The forecast starts in January of this year. Models only use data up to 31 December of the year before; any later data are used only to score the forecast." data-tip="The forecast starts in January of this year. Models only use data up to 31 December of the year before; any later data are used only to score the forecast.">i</span></label>
+            <input id="forecast_origin_year" type="number" value="2021" min="1900" max="2200">
+            <small>Uses data through the preceding period; future climate comes only from the declared forecast source.</small>
+        </div>
+        <div class="input-group">
+            <label>Model tuning <span class="info" tabindex="0" role="note" aria-label="Every machine-learning model is tuned before use; choose how much effort to spend. Settings are tested on earlier parts of the training data only, and kept at their defaults if tuning does not help. In our benchmark, going from 5 to 10 trials sometimes helped, but 30 and 80 trials were no more accurate and 80 was sometimes worse (over-tuning), while runtime grew about 5-fold from 10 to 80. Fast (10) or Balanced (30, default) are usually enough; Deep (80) mainly costs time." data-tip="Every machine-learning model is tuned before use; choose how much effort to spend. Settings are tested on earlier parts of the training data only, and kept at their defaults if tuning does not help. In our benchmark, going from 5 to 10 trials sometimes helped, but 30 and 80 trials were no more accurate and 80 was sometimes worse (over-tuning), while runtime grew about 5-fold from 10 to 80. Fast (10) or Balanced (30, default) are usually enough; Deep (80) mainly costs time.">i</span></label>
+            <select id="v2_tuning"><option value="fast">Fast</option><option value="balanced" selected>Balanced (recommended)</option><option value="deep">Deep</option></select>
+            <a class="doc-link" href="/documentation/guide/tuning/" target="_blank" rel="noopener">How many trials do I need? ↗</a>
+        </div>
+        <div class="input-group">
+            <label>Forecast horizon <span class="info" tabindex="0" role="note" aria-label="Number of months to forecast ahead." data-tip="Number of months to forecast ahead.">i</span></label>
+            <input id="forecast_horizon" type="number" value="12" min="1" max="240">
+        </div>
+        <div class="input-group">
+            <label>Simulations <span class="info" tabindex="0" role="note" aria-label="Number of simulated paths used to build the forecast intervals. More gives smoother intervals but is slower; 2,000 is usually enough." data-tip="Number of simulated paths used to build the forecast intervals. More gives smoother intervals but is slower; 2,000 is usually enough.">i</span></label>
+            <input id="simulations" type="number" value="2000" min="100" max="100000">
+        </div>
+        <div class="input-group">
+            <label>Population at risk (optional) <span class="info" tabindex="0" role="note" aria-label="Total population exposed. Lets the renewal model account for immunity building up during an outbreak. Leave blank if unknown; renewal then models relative changes only." data-tip="Total population exposed. Lets the renewal model account for immunity building up during an outbreak. Leave blank if unknown; renewal then models relative changes only.">i</span></label>
+            <input id="population_at_risk" type="number" min="1" step="1" placeholder="Optional — leave blank if unknown">
+        </div>
+        <div class="input-group">
+            <label>Population column <span class="info" tabindex="0" role="note" aria-label="Name of a population column in your disease file, if it has one. It takes priority over the single value above." data-tip="Name of a population column in your disease file, if it has one. It takes priority over the single value above.">i</span></label>
+            <input id="population_column" value="population" placeholder="population">
+        </div>
+        <div class="input-group">
+            <label>Future climate source <span class="info" tabindex="0" role="note" aria-label="Climate used for the forecast months. Auto uses observed climate if it covers the whole horizon (a retrospective test with known weather), otherwise projections. Choose Projection for a genuine forward-looking forecast." data-tip="Climate used for the forecast months. Auto uses observed climate if it covers the whole horizon (a retrospective test with known weather), otherwise projections. Choose Projection for a genuine forward-looking forecast.">i</span></label>
+            <select id="forecast_climate_source">
+                <option value="auto" selected>Auto (safe for hindcast / projection)</option>
+                <option value="observed">Observed historical climate</option>
+                <option value="projection">Projection / scenario climate</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Run historical hindcasts <span class="info" tabindex="0" role="note" aria-label="Re-runs the forecast from several earlier start dates, using only data available at each one, to check accuracy and whether the intervals are well calibrated. Feeds the calibration and model-comparison sections of the report." data-tip="Re-runs the forecast from several earlier start dates, using only data available at each one, to check accuracy and whether the intervals are well calibrated. Feeds the calibration and model-comparison sections of the report.">i</span></label>
+            <select id="run_hindcasts">
+                <option value="yes" selected>Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Hindcast origins <span class="info" tabindex="0" role="note" aria-label="How many earlier start dates to test. More gives a more reliable calibration check but takes longer." data-tip="How many earlier start dates to test. More gives a more reliable calibration check but takes longer.">i</span></label>
+            <input id="hindcast_origins" type="number" value="4" min="1" max="20">
+        </div>
+        <div class="input-group">
+            <label>Hindcast horizon <span class="info" tabindex="0" role="note" aria-label="Months ahead forecast in each hindcast. Usually the same as the forecast horizon." data-tip="Months ahead forecast in each hindcast. Usually the same as the forecast horizon.">i</span></label>
+            <input id="hindcast_horizon" type="number" value="12" min="1" max="120">
+        </div>
+        <div class="input-group">
+            <label>Save v2 HTML report <span class="info" tabindex="0" role="note" aria-label="Saves the full report (forecast chart, C-DSI v2 interpretation and all scores) as an HTML file you can open or share." data-tip="Saves the full report (forecast chart, C-DSI v2 interpretation and all scores) as an HTML file you can open or share.">i</span></label>
+            <select id="save_html">
+                <option value="yes" selected>Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="model-category-card v2-model-card">
+        <div class="card-header">
+            <h3>v2 Forecasting Models <span class="info" tabindex="0" role="note" aria-label="Models to fit. The report also combines them into an ensemble by taking the median of each forecast quantile month by month." data-tip="Models to fit. The report also combines them into an ensemble by taking the median of each forecast quantile month by month.">i</span></h3>
+            <div class="model-actions">
+                <button type="button" onclick="selectAllModels('v2_models_container')">Select All</button>
+                <button type="button" onclick="clearModels('v2_models_container')">Clear</button>
+            </div>
+        </div>
+        <div class="v2-model-note">Choose any combination; more models make the ensemble median more robust. Seasonal naïve is the benchmark to beat, renewal is the mechanistic model, and the rest are statistical and machine-learning models.</div>
+        <div id="v2_models_container" class="model-grid"></div>
+    </div>
+
+
+    <div class="model-category-card v2-model-card">
+        <div class="card-header"><h3>Climate scenario outlook (CMIP6) <span class="info" tabindex="0" role="note" aria-label="Extends the forecast to future climate scenarios. The first 12 months come from the v2 forecast, then hand over to projections driven by bias-corrected CMIP6 climate models, with ranges pooled across climate models. Produces a separate scenario report." data-tip="Extends the forecast to future climate scenarios. The first 12 months come from the v2 forecast, then hand over to projections driven by bias-corrected CMIP6 climate models, with ranges pooled across climate models. Produces a separate scenario report.">i</span></h3></div>
+        <div class="v2-grid">
+            <div class="input-group">
+                <label>Run scenario outlook <span class="info" tabindex="0" role="note" aria-label="Needs CMIP6 projections for the district (downloaded automatically in South Asia mode, or the Projection Dataset in Global mode)." data-tip="Needs CMIP6 projections for the district (downloaded automatically in South Asia mode, or the Projection Dataset in Global mode).">i</span></label>
+                <select id="run_scenarios"><option value="yes" selected>Yes</option><option value="no">No</option></select>
+            </div>
+            <div class="input-group">
+                <label>End year <span class="info" tabindex="0" role="note" aria-label="Last year of the outlook. Changes are summarised by decade against the historical baseline." data-tip="Last year of the outlook. Changes are summarised by decade against the historical baseline.">i</span></label>
+                <input id="scenario_end_year" type="number" value="2050" min="2025" max="2100">
+            </div>
+            <div class="input-group">
+                <label>Scenarios (SSPs) <span class="info" tabindex="0" role="note" aria-label="Comma-separated, e.g. ssp126, ssp245, ssp585. Leave blank to use every scenario in the projection data." data-tip="Comma-separated, e.g. ssp126, ssp245, ssp585. Leave blank to use every scenario in the projection data.">i</span></label>
+                <input id="scenario_ssps" placeholder="ssp245, ssp585">
+            </div>
+            <div class="input-group">
+                <label>Climate effects learned from <span class="info" tabindex="0" role="note" aria-label="Seasonal cycle: learns how climate affects cases from the seasonal pattern (stronger signal, assumes seasonality is mostly climate-driven). Year-to-year deviations only: more conservative but weakly determined. The report always shows the other option as a sensitivity check." data-tip="Seasonal cycle: learns how climate affects cases from the seasonal pattern (stronger signal, assumes seasonality is mostly climate-driven). Year-to-year deviations only: more conservative but weakly determined. The report always shows the other option as a sensitivity check.">i</span></label>
+                <select id="scenario_response"><option value="seasonal" selected>Seasonal cycle</option><option value="anomaly">Deviations only</option></select>
+            </div>
+            <div class="input-group">
+                <label>Climate lag structure <span class="info" tabindex="0" role="note" aria-label="Which lagged climate variables the long-term model uses. Averaged: all structures that fit about equally well, so uncertainty about which variable matters is included (recommended). v1 lags: reuse lags found by ClimAID v1. Single best: one structure only. All lags: every lag 0-3, which can credit effects to the wrong variable. Distributed lag: each variable&#x27;s effect is spread smoothly over lags 0–6 months (ENSO 0–12), which estimates the total effect of a sustained change directly; ranges are wider. v1 lags runs ClimAID v1&#x27;s lag search on data before the forecast start." data-tip="Which lagged climate variables the long-term model uses. Averaged: all structures that fit about equally well, so uncertainty about which variable matters is included (recommended). v1 lags: reuse lags found by ClimAID v1. Single best: one structure only. All lags: every lag 0-3, which can credit effects to the wrong variable. Distributed lag: each variable&#x27;s effect is spread smoothly over lags 0–6 months (ENSO 0–12), which estimates the total effect of a sustained change directly; ranges are wider. v1 lags runs ClimAID v1&#x27;s lag search on data before the forecast start.">i</span></label>
+                <select id="scenario_lag_selection"><option value="ensemble" selected>Averaged (recommended)</option><option value="v1">Use v1 lags</option><option value="auto">Single best</option><option value="distributed">Distributed lag (smooth curves)</option><option value="all">All lags 0–3</option></select>
+            </div>
+            <div class="input-group">
+                <label>Temperature response <span class="info" tabindex="0" role="note" aria-label="Learned from data: the model estimates the shape of the temperature effect. Aedes aegypti curve: the shape is fixed to a thermal-suitability curve with limits 17.8 and 34.6 °C and an optimum at 29.1 °C (from Mordecai et al. 2017; verify before publication), and the data only estimate its strength. Use the curve for dengue, chikungunya or Zika spread by Aedes aegypti." data-tip="Learned from data: the model estimates the shape of the temperature effect. Aedes aegypti curve: the shape is fixed to a thermal-suitability curve with limits 17.8 and 34.6 °C and an optimum at 29.1 °C (from Mordecai et al. 2017; verify before publication), and the data only estimate its strength. Use the curve for dengue, chikungunya or Zika spread by Aedes aegypti.">i</span></label>
+                <select id="scenario_temperature_curve"><option value="" selected>Learned from data</option><option value="aedes_aegypti_mordecai2017">Aedes aegypti curve</option></select>
+            </div>
+            <div class="input-group">
+                <label>Compare with tree models <span class="info" tabindex="0" role="note" aria-label="Also runs random forest and gradient boosting through the same climate futures, as a check. Tree models cannot extend trends beyond the climate they were trained on, so the report shows how often future climate goes outside that range. Shown for comparison only." data-tip="Also runs random forest and gradient boosting through the same climate futures, as a check. Tree models cannot extend trends beyond the climate they were trained on, so the report shows how often future climate goes outside that range. Shown for comparison only.">i</span></label>
+                <select id="scenario_compare_trees"><option value="yes" selected>Yes</option><option value="no">No</option></select>
+            </div>
+        </div>
+    </div>
+    <div class="v2-validation-note">
+        <strong>Leakage controls</strong>
+        <span>Chronological forecast origins · training-only preprocessing · temporal OOF residual learning · forecast-origin climate statistics · no future disease predictors.</span>
+    </div>
+
+    <div class="v2-action-row">
+        <button class="run-btn" onclick="runClimAIDV2Only()">Run ClimAID v2</button>
+    </div>
+</section>
+
+<!-- ======================================================
+     PAGE: CLIMAID v1 — LEGACY DETERMINISTIC PIPELINE
+     Deterministic ML models, lag optimisation, CMIP6/SSP
+     projection and the C-DSI report. All v1-specific
+     configuration lives in this section only.
+====================================================== -->
+<section id="legacy-v1-controls" class="v2-panel legacy-panel pipeline-page" data-page="v1" role="tabpanel" aria-labelledby="tab-v1" hidden>
+    <h2 class="section-title">ClimAID v1 — Legacy Deterministic Pipeline</h2>
+    <p class="v2-intro">
+        Lag-optimised ML models with residual correction, CMIP6/SSP scenario
+        projection and the deterministic C-DSI report. Point forecasts only.
+        Settings on this page do not affect v2.
+    </p>
+
+    <div class="v2-grid">
+        <div class="input-group">
+            <label>Test year (optional) <span class="info" tabindex="0" role="note" aria-label="v1 trains on the years before this and is scored on this year onwards. Leave blank for the default: train up to 2020, test from 2021." data-tip="v1 trains on the years before this and is scored on this year onwards. Leave blank for the default: train up to 2020, test from 2021.">i</span></label>
+            <input id="test_year" type="number" placeholder="e.g., 2021">
+        </div>
+        <div class="input-group">
+            <label>Legacy report <span class="info" tabindex="0" role="note" aria-label="Report style. Only C-DSI deterministic is fully available here; the other styles need an LLM client, which this dashboard does not connect to, so they fall back to C-DSI." data-tip="Report style. Only C-DSI deterministic is fully available here; the other styles need an LLM client, which this dashboard does not connect to, so they fall back to C-DSI.">i</span></label>
+            <select id="legacy_report_mode">
+                <option value="deterministic" selected>C-DSI deterministic</option>
+                <option value="detailed">Detailed (needs LLM client — not available here, falls back to C-DSI)</option>
+                <option value="summary">Summary (needs LLM client — not available here, falls back to C-DSI)</option>
+                <option value="policy">Policy (needs LLM client — not available here, falls back to C-DSI)</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label>Run CMIP6/SSP projection <span class="info" tabindex="0" role="note" aria-label="Projects future cases under CMIP6 climate scenarios (SSPs) using the trained v1 model." data-tip="Projects future cases under CMIP6 climate scenarios (SSPs) using the trained v1 model.">i</span></label>
+            <select id="run_cmip6">
+                <option value="yes" selected>Yes</option>
+                <option value="no">No</option>
+            </select>
+        </div>
+    </div>
+
+    <label>Optimization Preset <span class="info" tabindex="0" role="note" aria-label="How many tuning trials v1 runs per model: Fast = 50, Balanced = 200, Deep = 500. In our benchmark, going from 5 to 20 trials clearly helped, but 50 trials were no better than 20, while runtime grew in proportion to the number of trials; on one CPU core Balanced can take hours and Deep many hours. See the linked page for the evidence." data-tip="How many tuning trials v1 runs per model: Fast = 50, Balanced = 200, Deep = 500. In our benchmark, going from 5 to 20 trials clearly helped, but 50 trials were no better than 20, while runtime grew in proportion to the number of trials; on one CPU core Balanced can take hours and Deep many hours. See the linked page for the evidence.">i</span></label>
+
+    <select id="preset">
+    <option value="fast">Fast (50 trials)</option>
+    <option value="balanced" selected>Balanced (200 trials)</option>
+    <option value="deep">Deep (500 trials)</option>
+    <option value="custom">Custom</option>
+    </select>
+    <a class="doc-link" href="/documentation/guide/tuning/" target="_blank" rel="noopener">How many trials do I need? ↗</a>
+
+
+
+    <!-- MODEL SELECTION -->
+
+    <div id="model-selection" style="display:none">
+
+    <h2 class="section-title">v1 Model Configuration</h2>
+
+    <div class="model-category-card">
+
+    <div class="card-header">
+    <h3>Base Models <span class="info" tabindex="0" role="note" aria-label="The main model, predicting cases from lagged climate variables." data-tip="The main model, predicting cases from lagged climate variables.">i</span></h3>
+
+    <div class="model-actions">
+    <button onclick="selectAllModels('base_models_container')">Select All</button>
+    <button onclick="clearModels('base_models_container')">Clear</button>
+    </div>
+
+    </div>
+
+    <div id="base_models_container" class="model-grid"></div>
+
+    </div>
+
+
+    <div class="model-category-card">
+
+    <div class="card-header">
+    <h3>Residual Models <span class="info" tabindex="0" role="note" aria-label="A second model trained on what the base model got wrong." data-tip="A second model trained on what the base model got wrong.">i</span></h3>
+
+    <div class="model-actions">
+    <button onclick="selectAllModels('residual_models_container')">Select All</button>
+    <button onclick="clearModels('residual_models_container')">Clear</button>
+    </div>
+
+    </div>
+
+    <div id="residual_models_container" class="model-grid"></div>
+
+    </div>
+
+
+    <div class="model-category-card">
+
+    <div class="card-header">
+    <h3>Correction Models <span class="info" tabindex="0" role="note" aria-label="An optional final calibration step. It is kept only if it improves accuracy on the validation years." data-tip="An optional final calibration step. It is kept only if it improves accuracy on the validation years.">i</span></h3>
+
+    <div class="model-actions">
+    <button onclick="selectAllModels('correction_models_container')">Select All</button>
+    <button onclick="clearModels('correction_models_container')">Clear</button>
+    </div>
+
+    </div>
+
+    <div id="correction_models_container" class="model-grid"></div>
+
+    </div>
+
+
+    <label>Optimization Trials <span class="info" tabindex="0" role="note" aria-label="Tuning trials per model (Custom preset only)." data-tip="Tuning trials per model (Custom preset only).">i</span></label>
+    <input id="trials" placeholder="200">
+    <a class="doc-link" href="/documentation/guide/tuning/" target="_blank" rel="noopener">How many trials do I need? ↗</a>
+
+    </div>
+
+    <div class="v2-action-row">
+        <button class="run-btn" onclick="runClimAIDV1Only()">Run ClimAID v1</button>
+    </div>
+</section>
+
+
+
+
+<div id="report-links" class="report-links"></div>
+
 
 </div>
 

@@ -278,3 +278,30 @@ SEARCH_SPACES = {
     }
 }
 
+
+# ClimAID v1 optimisation modes (dashboard "Optimization Preset", wizard presets, v1_stack in v2).
+# Lag ranges are v1's defaults in all modes: temperature, rainfall and humidity 0-3, ENSO 0-12,
+# plus ENSO interaction terms. "quick" is a light mode used only for tests and quick checks.
+V1_MODES = {
+    "fast":     {"base_models": ("xgb",), "residual_models": ("rf",), "correction_models": ("isotonic",), "n_trials": 50},
+    "balanced": {"base_models": ("xgb",), "residual_models": ("rf",), "correction_models": ("isotonic",), "n_trials": 200},
+    "deep":     {"base_models": ("rf", "xgb"), "residual_models": ("xgb", "rf", "extra_trees"),
+                 "correction_models": ("isotonic", "poisson", "elasticnet"), "n_trials": 500},
+    "quick":    {"base_models": ("rf",), "residual_models": ("rf",), "correction_models": ("isotonic",), "n_trials": 3,
+                 "temp_range": range(0, 3), "rain_range": range(0, 3), "sh_range": range(0, 2),
+                 "elnino_range": range(0, 4), "top_k": 10},
+}
+
+
+def v1_mode_config(mode):
+    """Return optimize_lags() keyword arguments for a v1 mode, substituting gradient boosting for
+    XGBoost when XGBoost is not installed."""
+    from .model_registry import is_model_available
+    if mode not in V1_MODES:
+        raise ValueError(f"Unknown v1 mode '{mode}'; choose from {list(V1_MODES)}")
+    cfg = dict(V1_MODES[mode])
+    if not is_model_available("xgb"):
+        for k in ("base_models", "residual_models"):
+            cfg[k] = tuple("gbr" if m == "xgb" else m for m in cfg[k])
+    return cfg
+

@@ -1,0 +1,7 @@
+trials,dataset,origin,RMSE,v1_validation_rmse,selected_lags,seconds
+5,seasonal,2019,11.626021555108206,19.592247804355438,"{'mean_SH': [1], 'mean_temperature': [1], 'mean_Rain': [2], 'Nino_anomaly': [1]}",57.842724323272705
+5,realistic,2019,34.94037228467547,18.801132417427883,"{'mean_SH': [1], 'mean_temperature': [0], 'mean_Rain': [2], 'Nino_anomaly': [1]}",51.870437145233154
+20,seasonal,2019,10.219095386898939,19.77257328565638,"{'mean_SH': [1], 'mean_temperature': [1], 'mean_Rain': [2], 'Nino_anomaly': [1]}",159.25297570228577
+20,realistic,2019,25.273348354382975,18.764252947372093,"{'mean_SH': [0], 'mean_temperature': [2], 'mean_Rain': [2], 'Nino_anomaly': [2]}",148.5634846687317
+50,seasonal,2019,10.961642467322452,19.903336755600073,"{'mean_SH': [1], 'mean_temperature': [1], 'mean_Rain': [2], 'Nino_anomaly': [1]}",338.5610511302948
+50,realistic,2019,27.464851924494695,19.27478704867565,"{'mean_SH': [0], 'mean_temperature': [2], 'mean_Rain': [2], 'Nino_anomaly': [2]}",359.3475396633148

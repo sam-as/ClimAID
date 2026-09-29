@@ -27,8 +27,10 @@ def load_cmip6(region="india", columns=None):
     Parameters
     ----------
 
-    dataset_name : str 
-        Key identifying the dataset (must exist in registry).
+    region : str, default "india"
+        Which CMIP6 dataset to load (a key in the dataset registry, e.g. "india").
+    columns : list of str, optional
+        Columns to read; all columns if omitted.
 
     Returns
     -------
@@ -40,7 +42,7 @@ def load_cmip6(region="india", columns=None):
     ------
 
     ValueError :
-        If dataset_name is not defined in the registry.
+        If `region` is not defined in the registry.
 
     Notes
     -----

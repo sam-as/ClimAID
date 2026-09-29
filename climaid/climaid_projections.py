@@ -147,51 +147,15 @@ class DiseaseProjection:
         df["Year"] = df["time"].dt.year
         df["Month"] = df["time"].dt.month
 
-        # -------------------------------------------------
-        # Monthly averages
-        # -------------------------------------------------
-
-        climate_vars = ["mean_temperature", "mean_Rain", "mean_SH"]
-
-        for var in climate_vars:
-
-            if var in df.columns:
-
-                df[f"MA_{var}"] = (
-                    df.groupby("Month")[var]
-                    .transform(
-                        lambda x: x.rolling(window=10, min_periods=1).mean()
-                    )
-                )
-
-        # -------------------------------------------------
-        # Yearly averages
-        # -------------------------------------------------
-
-        for var in climate_vars:
-
-            if var in df.columns:
-
-                df[f"YA_{var}"] = (
-                    df.groupby("Year")[var]
-                    .transform("mean")
-                )
-
         # ----------------------------------
-        # Create ENSO base interaction features
+        # Sorting/grouping for lag & rolling-average generation
         # ----------------------------------
-        climate_vars = ["mean_temperature", "mean_Rain", "mean_SH"]
-
-        for var in climate_vars:
-            enso_col = f"ENSO_{var}"
-
-            if enso_col not in df.columns:
-                if var in df.columns and "Nino_anomaly" in df.columns:
-                    df[enso_col] = df[var] * df["Nino_anomaly"]
-
-        # ----------------------------------
-        # Sorting for lag generation
-        # ----------------------------------
+        # Determined up front (rather than after the MA_/YA_ block below,
+        # as this used to be ordered) because the rolling averages below
+        # must respect the same chronological order and per-scenario
+        # grouping as the lag features further down -- otherwise a
+        # multi-GCM/SSP frame would blend different climate scenarios'
+        # values together into a single "average".
         if "time" in df.columns:
             sort_cols = ["time"]
         elif {"Year", "Month"}.issubset(df.columns):
@@ -201,15 +165,59 @@ class DiseaseProjection:
                 "Input dataframe must contain 'time' or ['Year','Month']."
             )
 
-        # Determine grouping (for climate projections)
         group_cols = [c for c in ["model", "ssp", "member"] if c in df.columns]
 
         if group_cols:
-            df = df.sort_values(group_cols + sort_cols)
+            df = df.sort_values(group_cols + sort_cols).reset_index(drop=True)
             grouped = df.groupby(group_cols)
         else:
-            df = df.sort_values(sort_cols)
+            df = df.sort_values(sort_cols).reset_index(drop=True)
             grouped = None
+
+        # -------------------------------------------------
+        # Monthly (10-year trailing) and yearly (12-month trailing)
+        # averages
+        # -------------------------------------------------
+        # CONSISTENCY FIX: this used to compute these two features
+        # completely differently from how DiseaseModel._merge_data()
+        # computes the identically-named features the model was actually
+        # trained on:
+        #   - YA_* here was a whole-calendar-year pooled mean
+        #     (df.groupby("Year")[var].transform("mean")), vs. a strictly
+        #     backward-looking trailing 12-month rolling mean at train time.
+        #   - MA_* here was a same-calendar-month rolling mean across the
+        #     last 10 occurrences of that month (e.g. the last 10
+        #     Januaries), vs. a trailing 120-*row* (10 calendar year, all
+        #     months) rolling mean at train time.
+        # Same feature name, two different formulas -- so every CMIP6
+        # projection fed a value the trained model had never actually seen
+        # associated with that feature during training, silently degrading
+        # projection quality. Fixed to use the exact same trailing-window
+        # definitions as _merge_data(), computed per model/ssp/member group
+        # when the input spans more than one scenario.
+        climate_vars = ["mean_temperature", "mean_Rain", "mean_SH"]
+
+        def _trailing(var, window, min_periods):
+            if grouped is not None:
+                return grouped[var].transform(
+                    lambda s: s.rolling(window=window, min_periods=min_periods).mean()
+                )
+            return df[var].rolling(window=window, min_periods=min_periods).mean()
+
+        for var in climate_vars:
+            if var in df.columns:
+                df[f"MA_{var}"] = _trailing(var, window=120, min_periods=12)
+                df[f"YA_{var}"] = _trailing(var, window=12, min_periods=12)
+
+        # ----------------------------------
+        # Create ENSO base interaction features
+        # ----------------------------------
+        for var in climate_vars:
+            enso_col = f"ENSO_{var}"
+
+            if enso_col not in df.columns:
+                if var in df.columns and "Nino_anomaly" in df.columns:
+                    df[enso_col] = df[var] * df["Nino_anomaly"]
 
         # ----------------------------------
         # Generate lag features
@@ -255,10 +263,21 @@ class DiseaseProjection:
                 pass
 
         # ----------------------------------
-        # Remove incomplete lag rows
+        # Remove incomplete lag/rolling-average rows
         # ----------------------------------
-        if lag_cols:
-            df = df.dropna(subset=lag_cols).reset_index(drop=True)
+        # Matching training's min_periods (12 and 120 respectively) means
+        # MA_*/YA_* are now correctly NaN for the first 11/119 rows of each
+        # series (previously they were never NaN, because the old formulas
+        # didn't require a full trailing window -- part of the same
+        # inconsistency fixed above). Drop those here rather than let NaN
+        # features silently reach self.model.predict(): the trained model
+        # never saw a partial-window value for these features either, since
+        # DiseaseModel.optimize_lags() drops all-NaN rows the same way
+        # before training (see climaid_model.py).
+        ma_ya_cols = [c for c in df.columns if c.startswith(("MA_", "YA_")) and c.split("_", 1)[1] in climate_vars]
+        dropna_cols = lag_cols + ma_ya_cols
+        if dropna_cols:
+            df = df.dropna(subset=dropna_cols).reset_index(drop=True)
 
         # ----------------------------------
         # Select final feature space
@@ -542,7 +561,10 @@ class DiseaseProjection:
 
         # Final check 
         master_df['disease_projection'] = master_df['disease_projection'].clip(lower = 0)
-        master_df['lower_bound'] = master_df['lower_bound'].clip(lower = 0)
+        # lower_bound only exists when project() had an RMSE to build the
+        # interval from; clipping it unconditionally raised KeyError otherwise.
+        if 'lower_bound' in master_df.columns:
+            master_df['lower_bound'] = master_df['lower_bound'].clip(lower = 0)
 
         # Sort for consistency
         if {"GCM","SSP","Year","Month"}.issubset(master_df.columns):

@@ -1,0 +1,6 @@
+# Build the ClimAID documentation:  pip install -r requirements-docs.txt && mkdocs build
+# MkDocs 2.0 will break plugins and theme overrides (including the "under testing" banner),
+# so stay on 1.x until the site has been migrated.
+mkdocs>=1.6,<2
+mkdocs-material>=9.5
+mkdocstrings[python]>=0.24

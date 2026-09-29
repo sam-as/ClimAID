@@ -29,5 +29,29 @@ def wizard():
 
     run_interactive_pipeline()
 
+@app.command()
+def docs(port: int = typer.Option(0, help="Port to serve on (0 = any free port)"),
+         page: str = typer.Option("", help="Page to open, e.g. guide/tuning/")):
+    """Open the ClimAID documentation shipped with this installation (works offline)."""
+    import functools, http.server, threading, webbrowser
+    from pathlib import Path
+
+    site = Path(__file__).resolve().parent / "documentation"
+    if not (site / "index.html").exists():
+        typer.echo("The documentation is not bundled with this installation. "
+                   "Online version: https://sam-as.github.io/ClimAID/")
+        raise typer.Exit(1)
+    handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(site))
+    server = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
+    url = f"http://127.0.0.1:{server.server_address[1]}/{page.lstrip('/')}"
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    typer.echo(f"ClimAID documentation: {url}   (press Ctrl+C to stop)")
+    webbrowser.open(url)
+    try:
+        threading.Event().wait()
+    except KeyboardInterrupt:
+        server.shutdown()
+
+
 if __name__ == "__main__":
     app()

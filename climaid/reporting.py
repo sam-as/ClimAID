@@ -131,11 +131,24 @@ class DiseaseReporter:
         try:
             return self.llm.generate(prompt)
         except Exception as e:
+            # NOTE: this fallback previously returned a tuple instead of a
+            # str, even though every caller (generate/policy_brief/chat) and
+            # every downstream consumer (open_report_in_browser, markdown
+            # rendering) expects a plain string. That meant the one scenario
+            # this fallback exists for -- the LLM being unavailable -- was
+            # exactly the scenario that crashed report rendering.
+            #
+            # `_deterministic_engine` expects a `ReportArtifacts` instance,
+            # not the free-text `prompt` string, so it cannot be substituted
+            # here; there is no artifacts object to fall back to from inside
+            # this string-only prompt-generation path. Return a clear,
+            # single string explaining what happened instead.
             return (
                 "Switching to ClimAID Deterministic Scientific Interpreter (C-DSI): "
-                f"Reason: {str(e)}\n\n"
-                "Local LLM Client unavailable:\n",
-                self._deterministic_engine(prompt)
+                f"Reason: {e}\n\n"
+                "The local/remote LLM client was unavailable for this request. "
+                "Call DiseaseReporter.generate(artifacts) with llm_client=None "
+                "(or omit llm_client) to obtain the fully deterministic C-DSI report."
             )
 
     # =====================================================
@@ -477,7 +490,10 @@ class DiseaseReporter:
         """
 
         import textwrap
-        import markdown
+        try:
+            import markdown
+        except ImportError:
+            markdown = None
         import calendar
 
         # -------------------------------------------------
@@ -1036,10 +1052,16 @@ class DiseaseReporter:
         # -------------------------------------------------
         # MARKDOWN → HTML
         # -------------------------------------------------
-        report_html = markdown.markdown(
-            report,
-            extensions=["extra", "tables", "sane_lists"]
-        )
+        if markdown is not None:
+            report_html = markdown.markdown(
+                report,
+                extensions=["extra", "tables", "sane_lists"]
+            )
+        else:
+            # Offline-safe fallback: keep the deterministic report available
+            # even when the optional Markdown renderer is unavailable.
+            from html import escape
+            report_html = "<div style=\"white-space:pre-wrap;line-height:1.6\">" + escape(report) + "</div>"
 
         # -------------------------------------------------
         # HTML DASHBOARD TEMPLATE

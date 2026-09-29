@@ -18,12 +18,133 @@ from .model_parameters import DEFAULT_PARAMS, SEARCH_SPACES
 # ======================================================
 # Bayesian optimisation objective
 # ======================================================
+
+def _accepts_random_state(model_cls) -> bool:
+    """Return True if `model_cls` can be constructed with a `random_state`.
+
+    BUG FIX (reproducibility): every call site in this module used to test
+    `"random_state" in str(model_cls)`. str() of a class is just its repr,
+    e.g. "<class 'sklearn.ensemble._forest.RandomForestRegressor'>", which
+    never contains the text "random_state" -- so the check was always
+    False and the user's `random_state` was silently dropped for every
+    model (RF, GBR, ExtraTrees, MLP, LightGBM, CatBoost, XGBoost, ...).
+    Runs were therefore not reproducible, especially under joblib
+    Parallel, where worker processes do not inherit a global numpy seed.
+
+    Checks the constructor signature first, then falls back to
+    get_params() for wrappers that accept **kwargs (e.g. XGBRegressor).
+    """
+    import inspect
+    try:
+        if "random_state" in inspect.signature(model_cls).parameters:
+            return True
+    except (TypeError, ValueError):
+        pass
+    try:
+        return "random_state" in model_cls().get_params()
+    except Exception:
+        return False
+
+
+def _validate_disease_frame(df: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
+    """Clean and sanity-check a disease table with columns `time` and `Count`.
+
+    ROBUSTNESS FIX: _load_disease_data() used to coerce dates with
+    errors="coerce" but keep the resulting NaT rows, never convert Count to
+    a number, accept negative counts, and pass sub-monthly (weekly/daily) or
+    duplicated rows straight into a merge with *monthly* climate on
+    Year/Month -- which silently repeated each month's climate across rows
+    and trained the model on duplicated months. Every change made here is
+    reported, so nothing is altered silently.
+
+    Rules
+    -----
+    - Unparseable dates are dropped (count reported).
+    - Count is coerced to numeric; non-numeric values are dropped (count
+      and a few examples reported).
+    - Negative counts raise ValueError: case counts cannot be negative, and
+      guessing a correction would hide a data problem.
+    - Exact duplicate (time, Count) rows are dropped (repeated exports).
+    - If more than one distinct date remains in any calendar month, the
+      series is sub-monthly; counts are summed to one row per month, since
+      the v1 pipeline and its climate inputs are monthly.
+    """
+    notes = []
+    out = df.copy()
+    n0 = len(out)
+
+    out["time"] = pd.to_datetime(out["time"], errors="coerce")
+    bad_time = out["time"].isna()
+    if bad_time.any():
+        notes.append(f"dropped {int(bad_time.sum())} row(s) with unparseable dates")
+        out = out[~bad_time]
+
+    raw_count = out["Count"]
+    out["Count"] = pd.to_numeric(raw_count, errors="coerce")
+    bad_count = out["Count"].isna()
+    if bad_count.any():
+        examples = raw_count[bad_count & raw_count.notna()].astype(str).unique()[:3].tolist()
+        detail = f" (e.g. {examples})" if examples else ""
+        notes.append(f"dropped {int(bad_count.sum())} row(s) with missing or non-numeric counts{detail}")
+        out = out[~bad_count]
+
+    if (out["Count"] < 0).any():
+        bad = out.loc[out["Count"] < 0, ["time", "Count"]].head(3).to_dict("records")
+        raise ValueError(
+            f"Disease data contains {int((out['Count'] < 0).sum())} negative case count(s), "
+            f"e.g. {bad}. Case counts cannot be negative; please correct the source file."
+        )
+
+    dup = out.duplicated(subset=["time", "Count"], keep="first")
+    if dup.any():
+        notes.append(f"dropped {int(dup.sum())} exact duplicate row(s)")
+        out = out[~dup]
+
+    out = out.sort_values("time")
+    per_month = out.groupby([out["time"].dt.year, out["time"].dt.month])["time"].nunique()
+    if (per_month > 1).any():
+        n_rows = len(out)
+        extra = [c for c in out.columns if c not in ("time", "Count")]
+        keep_first = {c: "first" for c in extra}
+        out = (
+            out.assign(time=out["time"].dt.to_period("M").dt.to_timestamp())
+            .groupby("time", as_index=False)
+            .agg({"Count": "sum", **keep_first})
+        )
+        notes.append(
+            f"detected sub-monthly data ({n_rows} rows over {len(out)} months); "
+            f"summed counts to monthly totals to match the monthly climate inputs"
+        )
+
+    out["Year"] = out["time"].dt.year
+    out["Month"] = out["time"].dt.month
+    out = out.reset_index(drop=True)
+
+    if out.empty:
+        raise ValueError(
+            "The disease data is empty after validation"
+            + (f" ({'; '.join(notes)})" if notes else "")
+            + ". The file may be corrupted or in an unexpected format."
+        )
+
+    if verbose:
+        print("\n--- DISEASE DATA VALIDATION ---")
+        if notes:
+            for n in notes:
+                print(f"- {n}")
+            print(f"{n0} rows in, {len(out)} rows out.")
+        else:
+            print(f"No issues found ({len(out)} rows).")
+    return out
+
 def _optuna_objective(
     trial,
     model_name,
     X_train,
     y_train,
-    random_state=None
+    random_state=None,
+    X_val=None,
+    y_val=None,
 ):
     model_cls = MODEL_REGISTRY[model_name]
     search_space = SEARCH_SPACES.get(model_name, {})
@@ -41,15 +162,27 @@ def _optuna_objective(
         else:
             params[k] = trial.suggest_categorical(k, v_clean)
 
-    if random_state is not None and "random_state" in str(model_cls):
+    if random_state is not None and _accepts_random_state(model_cls):
         params["random_state"] = random_state
 
     model = model_cls(**params)
     model.fit(X_train, y_train)
 
-    preds = model.predict(X_train)
+    # Evaluate on a held-out chronological validation split when one is
+    # supplied (the normal case -- see _evaluate_configuration, which always
+    # passes X_val/y_val for the base model, matching how the residual and
+    # correction stages already worked). Scoring on the *training* set here
+    # would let Optuna pick whichever hyperparameters memorize the training
+    # data best (e.g. unlimited tree depth, n_estimators as high as the
+    # search space allows) rather than whichever actually generalise -- that
+    # was the previous behaviour for the base model specifically, and it was
+    # inconsistent with the residual/correction stages in this same function,
+    # which already scored on a validation split.
+    if X_val is not None and y_val is not None and len(X_val) > 0:
+        preds = model.predict(X_val)
+        return root_mean_squared_error(y_val, preds)
 
-    # training error (not test!)
+    preds = model.predict(X_train)
     return root_mean_squared_error(y_train, preds)
 
 # ======================================================
@@ -228,14 +361,14 @@ def _evaluate_configuration(
             sampler=optuna.samplers.TPESampler(seed=random_state) if random_state else None
         )
         study.optimize(
-            lambda t: _optuna_objective(t, base_model, X_train, y_train, random_state),
+            lambda t: _optuna_objective(t, base_model, X_tr, y_tr, random_state, X_val=X_val, y_val=y_val),
             n_trials=n_trials,
             show_progress_bar=False,
         )
         best_base_params = merge_params(base_defaults, study.best_params)
 
     base_params = best_base_params.copy()
-    if random_state is not None and "random_state" in str(MODEL_REGISTRY[base_model]):
+    if random_state is not None and _accepts_random_state(MODEL_REGISTRY[base_model]):
         base_params["random_state"] = random_state
 
     base = MODEL_REGISTRY[base_model](**base_params)
@@ -270,7 +403,7 @@ def _evaluate_configuration(
                 else:
                     params[k] = t.suggest_categorical(k, v_clean)
 
-            if random_state is not None and "random_state" in str(model_cls):
+            if random_state is not None and _accepts_random_state(model_cls):
                 params["random_state"] = random_state
 
             model = model_cls(**params)
@@ -288,7 +421,7 @@ def _evaluate_configuration(
         best_res_params = merge_params(res_defaults, res_study.best_params)
 
     res_params = best_res_params.copy()
-    if random_state is not None and "random_state" in str(MODEL_REGISTRY[residual_model]):
+    if random_state is not None and _accepts_random_state(MODEL_REGISTRY[residual_model]):
         res_params["random_state"] = random_state
 
     res = MODEL_REGISTRY[residual_model](**res_params)
@@ -342,7 +475,7 @@ def _evaluate_configuration(
                     else:
                         params[k] = t.suggest_categorical(k, v_clean)
 
-                if random_state is not None and "random_state" in str(model_cls):
+                if random_state is not None and _accepts_random_state(model_cls):
                     params["random_state"] = random_state
 
                 model = model_cls(**params)
@@ -362,7 +495,7 @@ def _evaluate_configuration(
             best_corr_params = merge_params(corr_defaults, corr_study.best_params)
 
         corr_params = best_corr_params.copy()
-        if random_state is not None and "random_state" in str(MODEL_REGISTRY[correction_model]):
+        if random_state is not None and _accepts_random_state(MODEL_REGISTRY[correction_model]):
             corr_params["random_state"] = random_state
 
         corr_model = MODEL_REGISTRY[correction_model](**corr_params)
@@ -695,19 +828,7 @@ class DiseaseModel:
             else:
                 print(f"{col}: OK")
 
-        df["time"] = pd.to_datetime(df["time"], errors="coerce")
-        df["Year"] = df["time"].dt.year
-        df["Month"] = df["time"].dt.month
-
-        # dropping nan values based on cases
-        df = df.dropna(subset=['Count']).reset_index(drop = True)
-
-        if df.empty:
-            raise ValueError(
-                "The disease data loaded is empty. "
-                "The file may be corrupted"
-            )
-
+        df = _validate_disease_frame(df)
         return df
 
     # --------------------------------------------------
@@ -835,24 +956,42 @@ class DiseaseModel:
         #     print(f"{col}: missing {missing_pct:.2f}%")
 
         # =====================================================
-        # get the annual averages
+        # TIME-SORT (REQUIRED before any rolling/trailing feature)
         # =====================================================
+        # Every "average climate" feature below must only look backward in
+        # time. That guarantee only holds if the frame is sorted by time
+        # first -- an uploaded climate file is not guaranteed to already be
+        # in chronological order (multiple stations concatenated, a reversed
+        # export, etc.), and pandas' `.rolling()` operates on row order, not
+        # on the `time` column's values.
+        climate = climate.sort_values("time").reset_index(drop=True)
+
+        # =====================================================
+        # get the annual and rolling-monthly averages
+        # =====================================================
+        # -------------------------------------------------------------
+        # LEAKAGE FIX: the previous implementation computed a *whole
+        # calendar-year* mean (climate.groupby("Year")[vars].mean()) and
+        # merged that single value onto every row sharing that Year --
+        # including months earlier in the year than the value it was
+        # merged into. E.g. a January row's "YA_mean_temperature" feature
+        # was the average of January THROUGH December of that same year,
+        # so the model was trained on (and would be asked to predict with)
+        # a feature that includes eleven months of future climate it could
+        # never actually have at forecast time. This is a genuine,
+        # reviewer-relevant "climate leakage" bug, and it fed directly into
+        # the default feature set used by both optimize_lags() and
+        # train_final_model().
+        #
+        # Fixed by using a strictly backward-looking (trailing) 12-month
+        # rolling average ending at the current row, exactly analogous to
+        # the existing MA_* (10-year trailing) feature below -- both are
+        # now trailing windows over the time-sorted frame, so neither can
+        # see a value dated after the row it's attached to.
         vars = ["mean_Rain", "mean_temperature", "mean_SH"]
-        annual = (
-            climate.groupby("Year")[vars]
-            .mean()
-            .reset_index()
-        )
-
         for col in vars:
-            annual[f"YA_{col}"] = annual[col]
-            annual.drop(columns=col, inplace=True)
+            climate[f"YA_{col}"] = climate[col].rolling(window=12, min_periods=12).mean()
 
-        climate = climate.merge(annual, on="Year", how="left")
-
-        # =====================================================
-        # get the rolling monthly averages
-        # =====================================================
         for col in vars:
             climate[f"MA_{col}"] = climate[col].rolling(window=120, min_periods=12).mean()
 
@@ -970,14 +1109,23 @@ class DiseaseModel:
         else:
             df = self.df_merged.copy()
 
-        if drop_2020:
-            df = df[df["Year"] != 2020]
+        # Disrupted-period exclusion (default 2020). `self.exclude_period` (set by the
+        # dashboard/wizard, or directly) takes precedence over the legacy drop_2020 flag.
+        from climaid.exclusion import resolve_exclusion, in_period
+        _period = resolve_exclusion(getattr(self, "exclude_period", None), drop_2020)
+        if _period is not None and "time" in df.columns:
+            df = df[~in_period(df["time"], _period)]
+        elif _period is not None:
+            df = df[~in_period(pd.to_datetime(dict(year=df["Year"], month=df["Month"], day=1)), _period)]
 
         # -------------------------------
         # SPLIT LOGIC
         # -------------------------------
         if train_year is None and test_year is None:
-            train_df = df[df["Year"] < 2020].copy()
+            # "<= 2020" (was "< 2020"): identical when drop_2020=True since
+            # 2020 rows are already removed above, but lets drop_2020=False
+            # actually keep 2020 in training instead of silently discarding it.
+            train_df = df[df["Year"] <= 2020].copy()
             test_df  = df[df["Year"] > 2020].copy()
 
         elif train_year is None:
@@ -1019,6 +1167,63 @@ class DiseaseModel:
         # print("Test years :", sorted(test_df["Year"].unique()))
 
         return train_df, test_df
+
+    # --------------------------------------------------
+    # Chronological selection-validation split
+    # --------------------------------------------------
+    def _chronological_holdout(self, df, val_fraction=0.2, min_val_size=6, min_train_size=24):
+        """Carve a chronological (time-ordered) validation slice off the END
+        of `df`, strictly for *selecting* among candidate lag/feature/model
+        configurations during optimize_lags() -- never for the final
+        reported generalisation metric.
+
+        Why this exists
+        ----------------
+        Before this method existed, optimize_lags() screened and ranked
+        every candidate (lag combination x base model x residual model x
+        correction model -- potentially hundreds to thousands of
+        configurations) directly against `self.test_df`, and then
+        train_final_model() reported that same test set's RMSE/R2 as the
+        model's "held-out" performance. Reusing a test set to choose among
+        many candidates biases its resulting score optimistically (the more
+        candidates compared, the larger the bias) -- this is true even when
+        none of the candidate features carry real signal. See
+        REVIEW_FINDINGS for a numeric demonstration.
+
+        This method carves a genuine validation slice out of `self.train_df`
+        alone (never touching `self.test_df`), which optimize_lags() then
+        uses for all screening/ranking/accept-reject decisions. `test_df`
+        is reserved for a single, final, honest evaluation of the one
+        configuration that decision process settles on.
+
+        Returns
+        -------
+        (train_part, val_part) : both sorted by time, disjoint, and both
+        drawn only from `df` (which should be `self.train_df`, never test).
+        """
+        d = df.sort_values("time").reset_index(drop=True)
+        n = len(d)
+        n_val = max(min_val_size, int(round(n * val_fraction)))
+
+        if n - n_val < min_train_size:
+            n_val = max(0, n - min_train_size)
+
+        if n_val <= 0 or n - n_val <= 0:
+            # Dataset too small for a clean non-overlapping split (e.g. a
+            # short synthetic/test dataset). Fall back to a smaller tail
+            # rather than raising, but say so -- selection quality will be
+            # weaker with very little data regardless of how it's split.
+            print(
+                "WARNING: not enough historical observations to carve a clean "
+                "selection-validation split out of the training data; falling "
+                "back to a minimal tail slice. Lag/model selection results "
+                "may be less reliable for very small datasets."
+            )
+            n_val = max(1, min(n - 1, int(round(n * val_fraction)) or 1))
+
+        train_part = d.iloc[: n - n_val].copy()
+        val_part = d.iloc[n - n_val:].copy()
+        return train_part, val_part
         
     # --------------------------------------------------
     # Detect outbreaks
@@ -1164,11 +1369,13 @@ class DiseaseModel:
             Strategy for pruning poor-performing configurations during search.
 
             - Options:
-                - "percentile" : keeps top-performing configurations
-                - "threshold" : uses fixed cutoff
+                - "percentile" : keeps the best (100 - percentile)% of
+                  configurations by Stage 1 RMSE, capped at top_k
+                - "top_k" : keeps the top_k configurations by Stage 1 RMSE
 
         top_k : int, default=50
-            Number of top configurations retained after pruning.
+            Maximum number of configurations retained after pruning (applies
+            to both strategies).
 
         sh_range : iterable, default=range(0, 4)
             Lag range for specific humidity (months).
@@ -1301,33 +1508,51 @@ class DiseaseModel:
         # --------------------------------------------------
         self._train_test_split(
             train_year=getattr(self, "train_year", None),
-            test_year=getattr(self, "test_year", None)
+            test_year=getattr(self, "test_year", None),
+            drop_2020=getattr(self, "drop_2020", True),
         )
 
         print('Initial Train Test Split completed...')
+
+        # --------------------------------------------------
+        # Selection-validation split (LEAKAGE FIX)
+        # --------------------------------------------------
+        # `self.test_df` must never be used to choose among candidate lag/
+        # feature/model configurations -- only to report the final, single,
+        # honest generalisation metric once a configuration has already been
+        # chosen. Everything below that screens or ranks candidates uses
+        # this validation slice (carved from train_df alone) instead.
+        self.sel_train_df, self.sel_val_df = self._chronological_holdout(self.train_df)
+        print(
+            f"Selection-validation split: {len(self.sel_train_df)} train / "
+            f"{len(self.sel_val_df)} validation rows (test set of "
+            f"{len(self.test_df)} rows reserved for a single final report)."
+        )
         print('Now performing lag optimisation....')
         
         # --------------------------------------------------
         # Fit scaler
         # --------------------------------------------------
+        # LEAKAGE FIX: previously fit on the full self.train_df, which
+        # included the rows that become self.sel_val_df above -- so the
+        # scaler's own statistics (mean/std etc.) were influenced by the
+        # validation rows used to select among configurations. Fit only on
+        # sel_train_df (the genuinely-training-only rows) and apply that
+        # same fitted transform everywhere else (sel_val_df, the full
+        # train_df used later by train_final_model(), and test_df).
         if scaler_obj is not None:
 
             numeric_cols = [
-                c for c in self.train_df.select_dtypes(include=[np.number]).columns
+                c for c in self.sel_train_df.select_dtypes(include=[np.number]).columns
                 if c != "Year"
             ]
 
             if len(numeric_cols) > 0:
 
-                scaler_obj.fit(self.train_df[numeric_cols])
+                scaler_obj.fit(self.sel_train_df[numeric_cols])
 
-                self.train_df.loc[:, numeric_cols] = scaler_obj.transform(
-                    self.train_df[numeric_cols]
-                )
-
-                self.test_df.loc[:, numeric_cols] = scaler_obj.transform(
-                    self.test_df[numeric_cols]
-                )
+                for frame in (self.sel_train_df, self.sel_val_df, self.train_df, self.test_df):
+                    frame.loc[:, numeric_cols] = scaler_obj.transform(frame[numeric_cols])
 
         # --------------------------------------------------
         # Feature grid
@@ -1383,13 +1608,19 @@ class DiseaseModel:
         # --------------------------------------------------
         # Precompute feature matrices
         # --------------------------------------------------
+        # LEAKAGE FIX: Stage 1 screening below ranks and prunes every
+        # candidate (lag combination x base model) using these matrices. It
+        # must never see self.test_df -- only the selection-validation split
+        # carved from train_df above. self.test_df is used exactly once,
+        # later, in train_final_model(), to report the final chosen
+        # configuration's generalisation performance.
         feature_pool = sorted({f for feats,_,_,_ in configs for f in feats})
 
-        X_train_full = self.train_df[feature_pool].to_numpy()
-        X_test_full = self.test_df[feature_pool].to_numpy()
+        X_train_full = self.sel_train_df[feature_pool].to_numpy()
+        X_test_full = self.sel_val_df[feature_pool].to_numpy()
 
-        y_train = self.train_df[self.target_col].to_numpy()
-        y_test = self.test_df[self.target_col].to_numpy()
+        y_train = self.sel_train_df[self.target_col].to_numpy()
+        y_test = self.sel_val_df[self.target_col].to_numpy()
 
         feature_index = {f: i for i, f in enumerate(feature_pool)}
 
@@ -1415,7 +1646,7 @@ class DiseaseModel:
 
                 base_defaults = DEFAULT_PARAMS.get(base_model, {}).copy()
 
-                if seed is not None and "random_state" in str(MODEL_REGISTRY[base_model]):
+                if seed is not None and _accepts_random_state(MODEL_REGISTRY[base_model]):
                     base_defaults["random_state"] = seed
 
                 if "n_jobs" in str(MODEL_REGISTRY[base_model]):
@@ -1460,11 +1691,20 @@ class DiseaseModel:
             if len(valid_scores)==0:
                 selected_indices = base_df["idx"].tolist()
             else:
-                threshold = np.percentile(valid_scores, percentile)
+                # BUG FIX: this used to keep every config with RMSE <=
+                # np.percentile(scores, percentile), i.e. with the default
+                # percentile=90 it kept ~90% of all configurations -- only
+                # the worst were pruned -- and it ignored top_k entirely. The
+                # docstring (and the name "pruning") promise the opposite:
+                # keep the top performers, at most top_k of them. On a
+                # 336-lag-combination grid the old behaviour sent ~1,200
+                # configurations to the expensive Optuna stage.
+                # Lower RMSE is better, so the best (100 - percentile)% are
+                # those at or below the (100 - percentile)th percentile.
+                threshold = np.percentile(valid_scores, 100 - percentile)
 
-                selected_indices = base_df[
-                    base_df["base_rmse"] <= threshold
-                ]["idx"].tolist()
+                kept = base_df[base_df["base_rmse"] <= threshold]
+                selected_indices = kept.nsmallest(top_k, "base_rmse")["idx"].tolist()
         else:
             raise ValueError("pruning_strategy must be {'top_k','percentile',None}")
 
@@ -1476,14 +1716,19 @@ class DiseaseModel:
         # --------------------------------------------------
         # Stage 2: Full stacked optimization
         # --------------------------------------------------
+        # LEAKAGE FIX: pass the selection-validation split (never test_df)
+        # here. _evaluate_configuration's returned "rmse"/"r2" become the
+        # ranking criterion for self.best_config below, so they must be
+        # computed against data that was never used to fit anything and is
+        # disjoint from the final test-set report in train_final_model().
         results = Parallel(n_jobs=n_jobs)(
             delayed(_evaluate_configuration)(
                 feats,
                 base,
                 res,
                 corr,
-                self.train_df,
-                self.test_df,
+                self.sel_train_df,
+                self.sel_val_df,
                 self.target_col,
                 n_trials,
                 (
@@ -1495,9 +1740,15 @@ class DiseaseModel:
         )
 
         self.lag_search_results = pd.DataFrame(results)
+        # Renamed for clarity: these are selection-validation metrics (from
+        # self.sel_val_df), not the final test-set generalisation metrics --
+        # see train_final_model()'s self.rmse/self.r2 for that.
+        self.lag_search_results = self.lag_search_results.rename(
+            columns={"rmse": "val_rmse", "r2": "val_r2"}
+        )
 
         self.best_config = (
-            self.lag_search_results.sort_values("rmse", ascending=True).iloc[0]
+            self.lag_search_results.sort_values("val_rmse", ascending=True).iloc[0]
         )
 
         self.scaler = scaler_obj
@@ -1557,12 +1808,7 @@ class DiseaseModel:
         stacked learning framework or tuned estimator).
 
         The trained model is stored internally and used for subsequent prediction
-        and projection tasks.
-
-        Parameters
-        ----------
-
-        None
+        and projection tasks. It takes no arguments.
 
         Returns
         -------
@@ -1598,7 +1844,7 @@ class DiseaseModel:
         base_model_name = self.best_config["base_model"]
         base_params = self.best_config["base_params"].copy()
 
-        if self.random_state is not None and "random_state" in str(MODEL_REGISTRY[base_model_name]):
+        if self.random_state is not None and _accepts_random_state(MODEL_REGISTRY[base_model_name]):
             base_params["random_state"] = self.random_state
 
         self.base = MODEL_REGISTRY[base_model_name](**base_params)
@@ -1619,7 +1865,7 @@ class DiseaseModel:
         else:
             res_params = self.best_config["residual_params"].copy()
 
-            if self.random_state is not None and "random_state" in str(MODEL_REGISTRY[res_model_name]):
+            if self.random_state is not None and _accepts_random_state(MODEL_REGISTRY[res_model_name]):
                 res_params["random_state"] = self.random_state
 
             self.res = MODEL_REGISTRY[res_model_name](**res_params)
@@ -1636,9 +1882,24 @@ class DiseaseModel:
         raw_train_preds = y_base_train + y_res_train
         raw_test_preds = y_base_test + y_res_test
 
-        # RMSE baseline (instead of R2)
-        baseline_rmse = root_mean_squared_error(y_test, raw_test_preds)
+        # Uncorrected RMSE kept only as a diagnostic for comparison in
+        # reports -- it no longer gates whether the correction stage is
+        # applied (see note below).
+        self.uncorrected_test_rmse = root_mean_squared_error(y_test, raw_test_preds)
 
+        # LEAKAGE FIX: this stage previously re-decided whether to keep the
+        # correction model by comparing corrected vs. uncorrected RMSE
+        # against self.test_df ("RMSE-based safety check"/"guard"). That
+        # made a second, independent accept/reject decision using the same
+        # test set this method reports as the model's held-out performance
+        # a few lines below -- i.e. test_df influenced which model got
+        # reported on it. That decision was already made properly, during
+        # optimize_lags(), using the selection-validation split
+        # (self.sel_val_df) -- see _evaluate_configuration(), where the
+        # equivalent guard already exists but compares against sel_val_df.
+        # best_config["correction_model"] reflects that decision (it is
+        # "none" if correction was rejected there), so it is trusted here
+        # unconditionally instead of being re-checked against test_df.
         if corr_model_name in [None, "none", "base_only"]:
             self.corr = None
             final_test = raw_test_preds
@@ -1646,24 +1907,14 @@ class DiseaseModel:
         elif corr_model_name == "isotonic":
             from sklearn.isotonic import IsotonicRegression
 
-            iso = IsotonicRegression(out_of_bounds="clip")
-            iso.fit(raw_train_preds, y_train)
-            iso_test = iso.predict(raw_test_preds)
-
-            iso_rmse = root_mean_squared_error(y_test, iso_test)
-
-            # RMSE-based guard
-            if iso_rmse < baseline_rmse:
-                self.corr = iso
-                final_test = iso_test
-            else:
-                self.corr = None
-                final_test = raw_test_preds
+            self.corr = IsotonicRegression(out_of_bounds="clip")
+            self.corr.fit(raw_train_preds, y_train)
+            final_test = self.corr.predict(raw_test_preds)
 
         else:
             corr_params = self.best_config["correction_params"].copy()
 
-            if self.random_state is not None and "random_state" in str(MODEL_REGISTRY[corr_model_name]):
+            if self.random_state is not None and _accepts_random_state(MODEL_REGISTRY[corr_model_name]):
                 corr_params["random_state"] = self.random_state
 
             self.corr = MODEL_REGISTRY[corr_model_name](**corr_params)
@@ -1672,16 +1923,7 @@ class DiseaseModel:
             X_corr_test = np.asarray(raw_test_preds).reshape(-1, 1)
 
             self.corr.fit(X_corr_train, y_train)
-            corr_test = self.corr.predict(X_corr_test)
-
-            corr_rmse = root_mean_squared_error(y_test, corr_test)
-
-            # RMSE-based safety check
-            if corr_rmse < baseline_rmse:
-                final_test = corr_test
-            else:
-                self.corr = None
-                final_test = raw_test_preds
+            final_test = self.corr.predict(X_corr_test)
 
         # ======================================================
         # METRICS (FINAL)
@@ -1965,8 +2207,26 @@ class DiseaseModel:
         # -----------------------
         # Calibration correction
         # -----------------------
-        if hasattr(self, "cor") and self.corr is not None:
-            final_pred = self.corr.predict(combined_pred)
+        # BUG FIX: this previously checked hasattr(self, "cor") -- a typo
+        # for the actual attribute name "corr" (set in train_final_model()).
+        # hasattr(self, "cor") is always False, so the correction/
+        # calibration stage was silently never applied here, even when
+        # train_final_model() had fitted one and its reported test_rmse/
+        # test_r2 reflected the *corrected* model. Every real call to
+        # predict() was therefore using an uncorrected (base+residual only)
+        # model whose accuracy did not match the metrics reported to users.
+        if getattr(self, "corr", None) is not None:
+            # IsotonicRegression was fit on a 1D array of combined
+            # base+residual predictions; any other correction model was fit
+            # on that same array reshaped to (-1, 1) (see train_final_model).
+            # Match whichever shape this specific fitted model expects --
+            # this branch was previously unreachable (see bug note above),
+            # so the shape mismatch for non-isotonic correction models had
+            # never actually been exercised.
+            if isinstance(self.corr, IsotonicRegression):
+                final_pred = self.corr.predict(combined_pred)
+            else:
+                final_pred = self.corr.predict(np.asarray(combined_pred).reshape(-1, 1))
             # upperbound = final_pred + 1.96 * self.rmse
             # lowerbound = final_pred - 1.96 * self.rmse
         else:
@@ -2237,3 +2497,425 @@ class DiseaseModel:
             print("------------------------------")
             print(f"Total Computation Time: {total:.2f} seconds")
             print("==============================\n")
+
+# ======================================================
+# ClimAID v2 INTEGRATION (ADDITIVE; LEGACY API PRESERVED)
+# ======================================================
+def _climaid_v2_forecast(self, forecast_origin=None, horizon=12, n_simulations=2000,
+                         models=None, population_at_risk=None,
+                         population_col="population", forecast_climate=None,
+                         forecast_climate_source="auto",
+                         run_hindcasts=True, hindcast_origins=4, hindcast_horizon=None,
+                         legacy_report_text=None, save_report=False, output_dir=None,
+                         drop_2020=True, calibrate_intervals=True, tuning=None, exclude_period=None):
+    """Run the new leakage-safe probabilistic ClimAID v2 engine.
+
+    calibrate_intervals : bool, default True
+        Widen (or narrow) each model's forecast intervals, per lead-time band,
+        so they would have reached their stated coverage in the rolling
+        hindcasts (split-conformal; see forecasting_v2/calibration.py).
+        Requires run_hindcasts=True.
+    tuning : {"fast", "balanced", "deep"} or int, default None (= "balanced")
+        Hyperparameter tuning for every ML model is compulsory; this sets how
+        much effort to spend (10 / 30 / 80 Optuna trials per model, or a custom
+        number). Tuning uses time-ordered cross-validation inside the training
+        period only, and hindcasts re-tune at each origin.
+
+    drop_2020 : bool, default True
+        Treat 2020 disease counts in the training history as unreliable
+        (COVID-19 disruption to reporting and care-seeking) and replace each
+        2020 month with the median of that calendar month across the other
+        training years. Rows are replaced rather than deleted because the
+        seasonal-naive, renewal and lagged ML models all need an unbroken
+        monthly series. Only history at or before the forecast origin is
+        changed; observed 2020 values after the origin are left intact for
+        evaluation. The substitution is recorded in the report warnings.
+    exclude_period : "2020", "none", "YYYY-MM:YYYY-MM" or (start, end), optional
+        Disrupted period to exclude (e.g. COVID-19). Default: 2020 (via ``drop_2020``). A custom
+        period covers whole months, inclusive. Takes precedence over ``drop_2020``.
+
+    This method is intentionally additive: none of the original ClimAID v1
+    methods, supported model registry entries, CMIP6 projection methods,
+    DiseaseProjection API, or deterministic C-DSI reporting are removed.
+    """
+    import numpy as _np
+    import pandas as _pd
+    from climaid.forecasting_v2 import ClimaidV2Forecaster, HindcastEvaluator, DEFAULT_V2_MODELS
+
+    origin = _pd.Timestamp(forecast_origin) if forecast_origin is not None else _pd.to_datetime(self.df_disease["time"]).max()
+    disease_src = self.df_disease.copy()
+    if "time" not in disease_src.columns:
+        if "Date" in disease_src.columns:
+            disease_src["time"] = _pd.to_datetime(disease_src["Date"], errors="coerce")
+        elif "date" in disease_src.columns:
+            disease_src["time"] = _pd.to_datetime(disease_src["date"], errors="coerce")
+        else:
+            raise ValueError("DiseaseModel v2 requires a Date/time column.")
+    disease = disease_src[["time", self.target_col]].rename(columns={self.target_col: "cases"}).copy()
+    # Preserve a genuine population field when the user's disease table already has one.
+    if population_col in disease_src.columns:
+        disease[population_col] = disease_src[population_col]
+
+    disease["time"] = _pd.to_datetime(disease["time"])
+    v2_notes = []
+    from climaid.exclusion import resolve_exclusion, replace_with_monthly_median, describe
+    period = resolve_exclusion(exclude_period, drop_2020)
+    disease, replaced_times = replace_with_monthly_median(disease, origin, period)
+    if replaced_times:
+        v2_notes.append(
+            f"Disrupted period excluded ({describe(period)}): {len(replaced_times)} month(s) of training data "
+            "were replaced with the same-calendar-month median of the other training months and are never "
+            "used to score hindcasts. Set exclude_period='none' to use the recorded counts."
+        )
+
+    climate_hist = self.df_climate_hist.copy()
+    if "time" not in climate_hist.columns:
+        climate_hist["time"] = _pd.to_datetime(
+            dict(year=climate_hist["Year"], month=climate_hist["Month"], day=1)
+        )
+
+    # Resolve future climate using an explicit source contract. This prevents a
+    # genuine future forecast from silently consuming observed post-origin climate.
+    source = str(forecast_climate_source or "auto").lower()
+    candidate_hist = climate_hist[_pd.to_datetime(climate_hist["time"]) > origin].sort_values("time")
+    selected_future = forecast_climate
+    forecast_source = "user_supplied" if selected_future is not None else None
+
+    if selected_future is None:
+        if source == "observed":
+            if len(candidate_hist) < int(horizon):
+                raise ValueError("Observed climate does not cover the requested forecast horizon")
+            selected_future = candidate_hist.head(int(horizon)).copy()
+            forecast_source = "observed_climate"
+        elif source == "projection":
+            candidate_proj = self.df_climate_proj.copy()
+            if "time" not in candidate_proj.columns and {"Year", "Month"}.issubset(candidate_proj.columns):
+                candidate_proj["time"] = _pd.to_datetime(dict(year=candidate_proj["Year"], month=candidate_proj["Month"], day=1))
+            candidate_proj["time"] = _pd.to_datetime(candidate_proj["time"])
+            candidate_proj = candidate_proj[candidate_proj["time"] > origin].sort_values("time")
+            if len(candidate_proj) < int(horizon):
+                raise ValueError("Projection climate does not cover the requested forecast horizon")
+            selected_future = candidate_proj.head(int(horizon)).copy()
+            forecast_source = "CMIP6_projection"
+        elif source == "auto":
+            # Auto is designed for reproducible hindcasts: observed climate is used
+            # when a complete post-origin period is available; otherwise projections.
+            if len(candidate_hist) >= int(horizon):
+                selected_future = candidate_hist.head(int(horizon)).copy()
+                forecast_source = "observed_climate_for_hindcast"
+            else:
+                candidate_proj = self.df_climate_proj.copy()
+                if "time" not in candidate_proj.columns and {"Year", "Month"}.issubset(candidate_proj.columns):
+                    candidate_proj["time"] = _pd.to_datetime(dict(year=candidate_proj["Year"], month=candidate_proj["Month"], day=1))
+                candidate_proj["time"] = _pd.to_datetime(candidate_proj["time"])
+                candidate_proj = candidate_proj[candidate_proj["time"] > origin].sort_values("time")
+                if len(candidate_proj) < int(horizon):
+                    raise ValueError("No future climate data are available for the requested forecast horizon")
+                selected_future = candidate_proj.head(int(horizon)).copy()
+                forecast_source = "CMIP6_projection"
+    elif source in {"observed", "projection"}:
+        # A caller-supplied climate frame is authoritative, but record the declared
+        # semantic source in metadata for reproducibility.
+        forecast_source = "user_supplied_observed_climate" if source == "observed" else "user_supplied_projection_climate"
+
+    if selected_future is None or len(selected_future) == 0:
+        raise ValueError("No future climate data are available for the requested forecast horizon")
+
+    selected_models = tuple(models or DEFAULT_V2_MODELS)
+    engine = ClimaidV2Forecaster(
+        date_col="time",
+        case_col="cases",
+        population_col="population",
+        models=selected_models,
+        population_at_risk=population_at_risk,
+        random_state=getattr(self, "random_state", 42),
+        tuning=tuning,
+    )
+    engine.exclude_period_ = period          # so v1_stack excludes the same months
+    engine.fit(disease, climate_hist, cutoff=origin)
+    bundle = engine.predict(selected_future, horizon=int(horizon), n_simulations=int(n_simulations))
+    bundle.metadata["forecast_climate_source"] = forecast_source
+    bundle.metadata["drop_2020"] = bool(period is not None and describe(period) == "2020")
+    bundle.metadata["excluded_period"] = None if period is None else describe(period)
+    bundle.metadata["excluded_months"] = len(replaced_times)
+    if v2_notes:
+        bundle.metadata.setdefault("warnings", [])
+        bundle.metadata["warnings"] = list(bundle.metadata["warnings"]) + v2_notes
+    bundle.metadata["district"] = getattr(self, "district", None)
+    bundle.metadata["disease_name"] = getattr(self, "disease_name", None)
+
+    # Hold-out evaluation against observed disease data after the forecast origin.
+    observed_after = disease[_pd.to_datetime(disease["time"]) > origin].copy()
+    eval_horizon = min(int(horizon), len(observed_after))
+    metrics = _pd.DataFrame()
+    eval_bundle = observed_eval = None
+    if eval_horizon > 0:
+        observed_eval = observed_after.head(eval_horizon).copy()
+        forecast_eval = selected_future.sort_values("time").head(eval_horizon).copy()
+        try:
+            eval_bundle = engine.predict(forecast_eval, horizon=eval_horizon, n_simulations=int(n_simulations))
+            metrics = engine.evaluate(observed_eval, eval_bundle)
+        except Exception:
+            metrics = _pd.DataFrame()
+
+    hindcast_metrics = _pd.DataFrame()
+    hindcast_forecasts = _pd.DataFrame()
+    if run_hindcasts:
+        try:
+            evaluator = HindcastEvaluator(
+                date_col="time", case_col="cases", population_col="population",
+                horizon=int(hindcast_horizon or horizon), n_origins=int(hindcast_origins), min_train_size=36
+            )
+            # LEAKAGE FIX: hindcasts must only use information available at
+            # the forecast origin. Previously the full disease series was
+            # passed, so hindcast folds could extend past the origin (e.g. a
+            # Dec-2022 hindcast for a Dec-2020 forecast), and the report's
+            # calibration and model-comparison sections were partly based on
+            # post-origin data.
+            hc_disease = disease[disease["time"] <= origin]
+            hc_climate = climate_hist[_pd.to_datetime(climate_hist["time"]) <= origin]
+            hindcast_forecasts, hindcast_metrics = evaluator.evaluate(
+                hc_disease, hc_climate, models=selected_models,
+                score_exclude_times=replaced_times, tuning=tuning,
+                population_at_risk=population_at_risk,
+                n_simulations=max(500, min(int(n_simulations), 2000)),
+            )
+        except Exception as exc:
+            hindcast_metrics = _pd.DataFrame([{
+                "origin": "N/A", "model": "hindcast_error", "n": 0,
+                "RMSE": _np.nan, "MAE": _np.nan, "WIS": _np.nan,
+                "coverage_50": _np.nan, "coverage_80": _np.nan,
+                "coverage_95": _np.nan, "error": str(exc)
+            }])
+
+    # Interval calibration from hindcasts (split-conformal, per lead band).
+    metrics_uncalibrated = metrics
+    calibration = {}
+    if calibrate_intervals and not hindcast_forecasts.empty:
+        from climaid.forecasting_v2.calibration import (fit_interval_calibration, apply_interval_calibration,
+                                                        calibration_summary)
+        calibration = fit_interval_calibration(hindcast_forecasts, disease[disease["time"] <= origin],
+                                               exclude_times=replaced_times)
+        for name, frame in list(bundle.forecasts.items()):
+            if name in calibration:
+                bundle.forecasts[name] = apply_interval_calibration(frame, calibration[name], origin)
+        if eval_bundle is not None:
+            for name, frame in list(eval_bundle.forecasts.items()):
+                if name in calibration:
+                    eval_bundle.forecasts[name] = apply_interval_calibration(frame, calibration[name], origin)
+            try:
+                metrics = engine.evaluate(observed_eval, eval_bundle)
+            except Exception:
+                pass
+        max_lead = min((c["max_lead"] for c in calibration.values()), default=0)
+        bundle.metadata["interval_calibration"] = {
+            "method": "split-conformal on rolling hindcasts, per lead-time band",
+            "factors": calibration_summary(calibration).to_dict("records"),
+            "max_hindcast_lead": int(max_lead),
+        }
+        if int(horizon) > max_lead:
+            bundle.metadata["warnings"] = list(bundle.metadata.get("warnings", [])) + [
+                f"Intervals beyond {max_lead} months ahead use the calibration factor of the longest hindcast "
+                f"lead band; uncertainty there is extrapolated and likely still understated."]
+
+    report_html = None
+    report_path = None
+    if save_report:
+        from climaid.reporting_v2 import generate_forecast_report, save_forecast_report
+        report_html = generate_forecast_report(
+            disease_name=getattr(self, "disease_name", None) or "Disease",
+            district=getattr(self, "district", None) or "Unknown",
+            bundle=bundle,
+            metrics=metrics,
+            hindcast_metrics=hindcast_metrics,
+            legacy_report_text=legacy_report_text,
+            history=disease[disease["time"] <= origin][["time", "cases"]],
+            observed=observed_after[["time", "cases"]] if len(observed_after) else None,
+            exclude_times=replaced_times,
+            metadata={"forecast_climate_source": forecast_source},
+        )
+        report_path = save_forecast_report(
+            report_html,
+            output_dir=output_dir or "climaid_outputs/reports",
+            filename="climaid_v2_forecast.html",
+        )
+
+    self.v2_forecaster = engine
+    self.v2_forecast_bundle = bundle
+    self.v2_metrics = metrics
+    self.v2_hindcast_metrics = hindcast_metrics
+    self.v2_report_html = report_html
+    self.v2_report_path = report_path
+    return {
+        "bundle": bundle,
+        "forecasts": bundle.forecasts,
+        "metadata": bundle.metadata,
+        "metrics": metrics,
+        "metrics_uncalibrated": metrics_uncalibrated,
+        "hindcast_metrics": hindcast_metrics,
+        "interval_calibration": calibration,
+        "report_html": report_html,
+        "report_path": report_path,
+    }
+
+
+# Expose as a normal DiseaseModel method while keeping all legacy methods intact.
+DiseaseModel.forecast_v2 = _climaid_v2_forecast
+
+
+def _climaid_v2_project(self, forecast_origin=None, end_year=2050, ssps=None, gcms=None,
+                        projection=None, near_term_months=12, blend_months=12,
+                        near_term_models=None, response="seasonal", sensitivity=True,
+                        n_bootstrap=60, drop_2020=True, population_at_risk=None,
+                        lag_selection="ensemble", extra_districts=None, temperature_curve=None,
+                        population_projection=None, baseline_population=None, run_backtest=True,
+                        backtest_years=5, tuning=None, comparison_models=("random_forest", "gradient_boosting"),
+                        exclude_period=None, v1_mode=None,
+                        save_report=True, output_dir=None):
+    """Hybrid ClimAID v2 climate-scenario outlook.
+
+    Near-term v2 probabilistic forecast (recent cases + each climate model's
+    bias-corrected climate), handed over to CMIP6-driven scenario projections
+    for every climate model x SSP, with ranges pooled across climate models.
+
+    Parameters
+    ----------
+    forecast_origin : date, default last disease observation
+    end_year : int, default 2050
+    ssps, gcms : optional lists to restrict scenarios / climate models
+    projection : DataFrame, optional
+        CMIP6-style table (time, model, ssp, climate variables). Defaults to the
+        projections DiseaseModel loaded for this district (``df_climate_proj``).
+    near_term_months, blend_months : int
+        Months taken from the near-term forecast, then months of linear hand-over.
+    response : {"seasonal", "anomaly"}
+        How the long-term model identifies climate effects. "seasonal" learns
+        them from the seasonal cycle (assumes seasonality is largely climate
+        driven); "anomaly" only from year-to-year deviations (conservative).
+    sensitivity : bool
+        Also run the other response mode (long-term only) and report the
+        difference, so readers can see how much conclusions depend on it.
+    drop_2020 : bool, default True
+        Replace 2020 in the near-term history with monthly medians and exclude
+        it from the long-term model fit (COVID-19 reporting disruption).
+    exclude_period : "2020", "none", "YYYY-MM:YYYY-MM" or (start, end), optional
+        Disrupted period to exclude (e.g. COVID-19). Default: 2020 (via ``drop_2020``). A custom
+        period covers whole months, inclusive. Takes precedence over ``drop_2020``.
+    lag_selection : {"ensemble", "auto", "v1", "all"} or dict
+        Climate lags for the long-term model. "ensemble" (default) averages all
+        lag structures that cross-validate within 2% of the best, because
+        climate variables sharing a seasonal cycle usually cannot be told apart
+        and imply different warming responses. "v1" reuses the lags selected by
+        optimize_lags() in the chosen ``v1_mode`` (Fast/Balanced/Deep, default from ``tuning``),
+        run on data up to the forecast origin; "auto" keeps only the single best structure; "all"
+        uses lags 0-3 for every variable.
+    extra_districts : list of DiseaseModel or (disease, climate) pairs, optional
+        Learn the climate response jointly with other districts (shared climate
+        coefficients, own intercepts). Separates climate variables whose
+        seasonal cycles coincide in this district but not elsewhere.
+    temperature_curve : str or (T_min, T_opt, T_max), optional
+        Constrain the temperature response to a thermal-suitability curve
+        (e.g. "aedes_aegypti_mordecai2017"; verify the values before use).
+    population_projection : DataFrame(year, population[, ssp]), optional
+        Also report results scaled by projected population (constant incidence
+        per person). Climate-only results are always reported.
+    run_backtest : bool, default True
+        Refit on data up to `backtest_years` before the end of the record and
+        check the long-term model against the held-out years' observed cases.
+    """
+    import pandas as _pd
+    from climaid.forecasting_v2 import HybridScenarioProjector
+    from climaid.forecasting_v2.forecaster import DEFAULT_V2_MODELS
+
+    proj = projection if projection is not None else getattr(self, "df_climate_proj", None)
+    if proj is None or len(proj) == 0:
+        raise ValueError("No CMIP6 projection data available: DiseaseModel.df_climate_proj is empty. "
+                         "Supply `projection=` or load projections for this district.")
+    disease = self.df_disease[["time", self.target_col]].rename(columns={self.target_col: "cases"}).copy()
+    disease["time"] = _pd.to_datetime(disease["time"]).dt.to_period("M").dt.to_timestamp()
+    origin = _pd.Timestamp(forecast_origin) if forecast_origin is not None else disease["time"].max()
+    climate_hist = self.df_climate_hist.copy()
+    if "time" not in climate_hist.columns:
+        climate_hist["time"] = _pd.to_datetime(dict(year=climate_hist["Year"], month=climate_hist["Month"], day=1))
+
+    from climaid.exclusion import resolve_exclusion, replace_with_monthly_median, describe
+    period = resolve_exclusion(exclude_period, drop_2020)
+    disease, replaced = replace_with_monthly_median(disease, origin, period)
+
+    nt_models = tuple(near_term_models or [m for m in DEFAULT_V2_MODELS if m != "renewal"])
+    extra = []
+    for item in (extra_districts or []):
+        if hasattr(item, "df_disease"):
+            e_d = item.df_disease[["time", item.target_col]].rename(columns={item.target_col: "cases"})
+            e_c = item.df_climate_hist
+        else:
+            e_d, e_c = item
+            e_d = e_d.rename(columns={c: "cases" for c in ("Count", "count") if c in e_d.columns})
+        extra.append((e_d, e_c))
+    lag_note = None
+    if lag_selection == "v1":
+        # Run ClimAID v1's own lag search (in the chosen v1 mode) on data up to the forecast
+        # origin, so the lags never depend on later data and this works without a prior v1 run
+        # (the dashboard starts a fresh model for every run).
+        from climaid.forecasting_v2.v1_stack import V1StackForecaster
+        name_map = {"mean_temperature": "temperature", "mean_Rain": "rainfall", "mean_SH": "humidity",
+                    "Nino_anomaly": "enso"}
+        try:
+            v1 = V1StackForecaster(tuning=tuning, v1_mode=v1_mode, exclude_period=period if period else "none",
+                                   random_state=getattr(self, "random_state", 42)).fit(disease, climate_hist, origin)
+            lags = v1.tuning_info_["selected_lags"]
+            lag_selection = {name_map.get(k, k): list(v) for k, v in lags.items()}
+            lag_note = (f"Long-term model uses the lags selected by ClimAID v1 ({v1.tuning_info_['preset']}) on data "
+                        f"up to {origin:%B %Y}: " + ", ".join(f"{k} lag {v[0]}" for k, v in lag_selection.items()) + ".")
+        except Exception as exc:
+            lag_selection = "ensemble"
+            lag_note = f"v1 lag search failed ({exc}); used averaged lag structures instead."
+    main = HybridScenarioProjector(near_term_models=nt_models, near_term_months=near_term_months,
+                                   blend_months=blend_months, n_bootstrap=n_bootstrap, response=response,
+                                   population_at_risk=population_at_risk, lag_selection=lag_selection,
+                                   temperature_curve=temperature_curve, tuning=tuning,
+                                   comparison_models=comparison_models,
+                                   random_state=getattr(self, "random_state", 42))
+    outlook = main.project(disease, climate_hist, proj, origin, end_year=end_year, ssps=ssps, gcms=gcms,
+                           exclude_times=replaced, extra_districts=extra or None,
+                           population_projection=population_projection, baseline_population=baseline_population)
+    backtest = None
+    if run_backtest:
+        try:
+            bt_tab, bt_sum = main.backtest(disease[disease["time"] <= origin], climate_hist, test_years=backtest_years,
+                                           exclude_times=replaced, extra_districts=extra or None)
+            backtest = {"table": bt_tab, "summary": bt_sum}
+        except Exception as exc:
+            outlook.metadata["notes"].append(f"Long-term backtest could not be run: {exc}")
+    if lag_note:
+        outlook.metadata["notes"].append(lag_note)
+    if replaced:
+        outlook.metadata["notes"].append(
+            f"Disrupted period excluded ({describe(period)}): {len(replaced)} month(s) were replaced with "
+            "monthly medians for the near-term forecast and excluded from the long-term model fit.")
+    outlook.metadata["excluded_period"] = None if period is None else describe(period)
+    sens = None
+    if sensitivity:
+        other = "anomaly" if response == "seasonal" else "seasonal"
+        sens = HybridScenarioProjector(near_term_months=0, blend_months=0, n_bootstrap=max(20, n_bootstrap // 2),
+                                       comparison_models=(),
+                                       response=other, random_state=getattr(self, "random_state", 42)
+                                       ).project(disease, climate_hist, proj, origin, end_year=end_year,
+                                                 ssps=ssps, gcms=gcms, exclude_times=replaced)
+
+    report_path = None
+    if save_report:
+        from climaid.reporting_scenario import generate_scenario_report, save_scenario_report
+        html_ = generate_scenario_report(outlook, disease_name=getattr(self, "disease_name", None) or "Disease",
+                                         district=getattr(self, "district", None) or "Unknown", sensitivity=sens,
+                                         backtest=backtest)
+        report_path = save_scenario_report(html_, output_dir=output_dir or "climaid_outputs/reports",
+                                           filename=f"climaid_v2_scenarios_{getattr(self, 'disease_name', 'disease')}.html")
+    self.v2_scenario_outlook = outlook
+    return {"outlook": outlook, "sensitivity": sens, "backtest": backtest, "decades": outlook.decades,
+            "tree_comparison": getattr(outlook, "tree_comparison", None),
+            "decades_with_population": getattr(outlook, "decades_with_population", None),
+            "annual": outlook.annual, "metadata": outlook.metadata, "report_path": report_path}
+
+
+DiseaseModel.project_v2 = _climaid_v2_project

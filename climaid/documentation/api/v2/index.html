@@ -1,0 +1,2748 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../model/">
+      
+      
+        <link rel="next" href="../climate/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/ClimAID_logo_AS.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>ClimAID v2 - ClimAID</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#climaid-v2-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+            
+  <strong>ClimAID 0.3.0 is under active testing.</strong>
+  Methods are checked on synthetic data only; results on real data are not yet validated.
+  
+    <a href="../../guide/status/">What has been tested</a>
+  
+
+          </div>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ClimAID" class="md-header__button md-logo" aria-label="ClimAID" data-md-component="logo">
+      
+  <img src="../../assets/ClimAID_logo_AS.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ClimAID
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ClimAID v2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sam-as/ClimAID" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ClimAID
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guide/status/" class="md-tabs__link">
+          
+  
+  
+  User guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../model/" class="md-tabs__link">
+          
+  
+  
+  Core API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../datasets/" class="md-tabs__link">
+          
+  
+  
+  Projections
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../llmclient/" class="md-tabs__link">
+          
+  
+  
+  Intelligence
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../utils/" class="md-tabs__link">
+          
+  
+  
+  Utilities
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../resources/" class="md-tabs__link">
+          
+  
+  
+  Resources
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ClimAID" class="md-nav__button md-logo" aria-label="ClimAID" data-md-component="logo">
+      
+  <img src="../../assets/ClimAID_logo_AS.png" alt="logo">
+
+    </a>
+    ClimAID
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sam-as/ClimAID" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ClimAID
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User guide
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    User guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & validation (under testing)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/v2_forecasting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v2 forecasting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/tuning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tuning & optimisation trials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/scenarios/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Climate scenario outlook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reading the reports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/benchmarks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Benchmarks & synthetic data
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DiseaseModel (v1)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimAID v2
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimAID v2
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#diseasemodelforecast_v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DiseaseModel.forecast_v2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.climaid_model._climaid_v2_forecast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _climaid_v2_forecast
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#diseasemodelproject_v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DiseaseModel.project_v2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.climaid_model._climaid_v2_project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _climaid_v2_project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#forecasting-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Forecasting engine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClimaidV2Forecaster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.predict" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predict
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.available_models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        available_models
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.hindcast.HindcastEvaluator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HindcastEvaluator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.hindcast.HindcastEvaluator.evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        evaluate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-outlook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario outlook
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.scenario.HybridScenarioProjector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HybridScenarioProjector
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.scenario.HybridScenarioProjector.project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        project
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.scenario.HybridScenarioProjector.backtest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        backtest
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.scenario.thermal_suitability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        thermal_suitability
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interval-calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interval calibration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        calibration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.calibration.fit_interval_calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fit_interval_calibration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.calibration.apply_interval_calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        apply_interval_calibration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tuning-and-model-catalogue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tuning and model catalogue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.tuning.TUNING_PRESETS" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TUNING_PRESETS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.tuning.resolve_tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_tuning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.tuning.tune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tune
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.tuning.build_estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        build_estimator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#v1-inside-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        v1 inside v2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.forecasting_v2.v1_stack.V1StackForecaster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V1StackForecaster
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.reporting_v2.generate_forecast_report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_forecast_report
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#climaid.reporting_scenario.generate_scenario_report" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_scenario_report
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../climate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimateData
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projections
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projections
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datasets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DataManager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DiseaseProjection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../plots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Visualization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intelligence
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Intelligence
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llmclient/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Client
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reporting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reporting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Utilities
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utils
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Resources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuscript & Sample Datasets
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/sam-as/ClimAID/edit/master/docs/api/v2.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="climaid-v2-api">ClimAID v2 API<a class="headerlink" href="#climaid-v2-api" title="Permanent link">&para;</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Under testing</p>
+<p>The v2 API is under active testing and may still change before a stable release.</p>
+</div>
+<h2 id="diseasemodelforecast_v2">DiseaseModel.forecast_v2<a class="headerlink" href="#diseasemodelforecast_v2" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="climaid.climaid_model._climaid_v2_forecast"></a>
+    <div class="doc doc-contents first">
+
+        <p>Run the new leakage-safe probabilistic ClimAID v2 engine.</p>
+<p>calibrate_intervals : bool, default True
+    Widen (or narrow) each model's forecast intervals, per lead-time band,
+    so they would have reached their stated coverage in the rolling
+    hindcasts (split-conformal; see forecasting_v2/calibration.py).
+    Requires run_hindcasts=True.
+tuning : {"fast", "balanced", "deep"} or int, default None (= "balanced")
+    Hyperparameter tuning for every ML model is compulsory; this sets how
+    much effort to spend (10 / 30 / 80 Optuna trials per model, or a custom
+    number). Tuning uses time-ordered cross-validation inside the training
+    period only, and hindcasts re-tune at each origin.</p>
+<p>drop_2020 : bool, default True
+    Treat 2020 disease counts in the training history as unreliable
+    (COVID-19 disruption to reporting and care-seeking) and replace each
+    2020 month with the median of that calendar month across the other
+    training years. Rows are replaced rather than deleted because the
+    seasonal-naive, renewal and lagged ML models all need an unbroken
+    monthly series. Only history at or before the forecast origin is
+    changed; observed 2020 values after the origin are left intact for
+    evaluation. The substitution is recorded in the report warnings.
+exclude_period : "2020", "none", "YYYY-MM:YYYY-MM" or (start, end), optional
+    Disrupted period to exclude (e.g. COVID-19). Default: 2020 (via <code>drop_2020</code>). A custom
+    period covers whole months, inclusive. Takes precedence over <code>drop_2020</code>.</p>
+<p>This method is intentionally additive: none of the original ClimAID v1
+methods, supported model registry entries, CMIP6 projection methods,
+DiseaseProjection API, or deterministic C-DSI reporting are removed.</p>
+
+
+    </div>
+
+</div><h2 id="diseasemodelproject_v2">DiseaseModel.project_v2<a class="headerlink" href="#diseasemodelproject_v2" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="climaid.climaid_model._climaid_v2_project"></a>
+    <div class="doc doc-contents first">
+
+        <p>Hybrid ClimAID v2 climate-scenario outlook.</p>
+<p>Near-term v2 probabilistic forecast (recent cases + each climate model's
+bias-corrected climate), handed over to CMIP6-driven scenario projections
+for every climate model x SSP, with ranges pooled across climate models.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>forecast_origin</code>
+            </td>
+            <td>
+                  <code><span title="date">date</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+            <td>
+                  <code>last disease observation</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>end_year</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+            <td>
+                  <code>2050</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>ssps</code>
+            </td>
+            <td>
+                  <code>optional lists to restrict scenarios / climate models</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>gcms</code>
+            </td>
+            <td>
+                  <code>optional lists to restrict scenarios / climate models</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>projection</code>
+            </td>
+            <td>
+                  <code><span title="DataFrame">DataFrame</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>CMIP6-style table (time, model, ssp, climate variables). Defaults to the
+projections DiseaseModel loaded for this district (<code>df_climate_proj</code>).</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>near_term_months</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Months taken from the near-term forecast, then months of linear hand-over.</p>
+              </div>
+            </td>
+            <td>
+                  <code>12</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>blend_months</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Months taken from the near-term forecast, then months of linear hand-over.</p>
+              </div>
+            </td>
+            <td>
+                  <code>12</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>response</code>
+            </td>
+            <td>
+                  <code>(<span title="seasonal">seasonal</span>, <span title="anomaly">anomaly</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>How the long-term model identifies climate effects. "seasonal" learns
+them from the seasonal cycle (assumes seasonality is largely climate
+driven); "anomaly" only from year-to-year deviations (conservative).</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#34;seasonal&#34;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>sensitivity</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Also run the other response mode (long-term only) and report the
+difference, so readers can see how much conclusions depend on it.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>drop_2020</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Replace 2020 in the near-term history with monthly medians and exclude
+it from the long-term model fit (COVID-19 reporting disruption).</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>exclude_period</code>
+            </td>
+            <td>
+                  <code>(2020, <span title="none">none</span>, &#39;YYYY-MM:YYYY-MM&#39; or (<span title="start">start</span>, <span title="end">end</span>))</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Disrupted period to exclude (e.g. COVID-19). Default: 2020 (via <code>drop_2020</code>). A custom
+period covers whole months, inclusive. Takes precedence over <code>drop_2020</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>lag_selection</code>
+            </td>
+            <td>
+                  <code>(<span title="ensemble">ensemble</span>, <span title="auto">auto</span>, <span title="v1">v1</span>, <span title="all">all</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Climate lags for the long-term model. "ensemble" (default) averages all
+lag structures that cross-validate within 2% of the best, because
+climate variables sharing a seasonal cycle usually cannot be told apart
+and imply different warming responses. "v1" reuses the lags selected by
+optimize_lags() in the chosen <code>v1_mode</code> (Fast/Balanced/Deep, default from <code>tuning</code>),
+run on data up to the forecast origin; "auto" keeps only the single best structure; "all"
+uses lags 0-3 for every variable.</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#34;ensemble&#34;</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>extra_districts</code>
+            </td>
+            <td>
+                  <code>list of DiseaseModel or (disease, climate) pairs</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Learn the climate response jointly with other districts (shared climate
+coefficients, own intercepts). Separates climate variables whose
+seasonal cycles coincide in this district but not elsewhere.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>temperature_curve</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span> or (<span title="T_min">T_min</span>, <span title="T_opt">T_opt</span>, <span title="T_max">T_max</span>)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Constrain the temperature response to a thermal-suitability curve
+(e.g. "aedes_aegypti_mordecai2017"; verify the values before use).</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>population_projection</code>
+            </td>
+            <td>
+                  <code>DataFrame(year, population[, ssp])</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Also report results scaled by projected population (constant incidence
+per person). Climate-only results are always reported.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>run_backtest</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Refit on data up to <code>backtest_years</code> before the end of the record and
+check the long-term model against the held-out years' observed cases.</p>
+              </div>
+            </td>
+            <td>
+                  <code>True</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div><h2 id="forecasting-engine">Forecasting engine<a class="headerlink" href="#forecasting-engine" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="climaid.forecasting_v2.forecaster.ClimaidV2Forecaster"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Climate-mandatory probabilistic disease forecaster.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>models</code>
+            </td>
+            <td>
+                  <code><span title="iterable">iterable</span>[<span title="str">str</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Any combination of <code>seasonal_naive</code>, <code>renewal</code> and all model names
+available in the original ClimAID registry.</p>
+              </div>
+            </td>
+            <td>
+                  <code>(&#39;seasonal_naive&#39;, &#39;renewal&#39;, &#39;random_forest&#39;)</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>population_at_risk</code>
+            </td>
+            <td>
+                  <code><span title="float">float</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Used by the renewal component only when the disease data do not contain
+a population column. If omitted, renewal falls back to relative-incidence
+mode and records that susceptible depletion was unavailable.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.fit" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">disease</span><span class="p">,</span> <span class="n">climate</span><span class="p">,</span> <span class="n">cutoff</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.fit" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.predict" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">future_climate</span><span class="p">,</span> <span class="n">horizon</span><span class="p">,</span> <span class="n">n_simulations</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.predict" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.evaluate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">observed</span><span class="p">,</span> <span class="n">bundle</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.evaluate" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.available_models" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">available_models</span><span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#climaid.forecasting_v2.forecaster.ClimaidV2Forecaster.available_models" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="climaid.forecasting_v2.hindcast.HindcastEvaluator"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.hindcast.HindcastEvaluator.evaluate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">evaluate</span><span class="p">(</span><span class="n">disease</span><span class="p">,</span> <span class="n">climate</span><span class="p">,</span> <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;seasonal_naive&#39;</span><span class="p">,</span> <span class="s1">&#39;renewal&#39;</span><span class="p">,</span> <span class="s1">&#39;random_forest&#39;</span><span class="p">),</span> <span class="n">population_at_risk</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">renewal_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_simulations</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">score_exclude_times</span><span class="o">=</span><span class="p">(),</span> <span class="n">tuning</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.hindcast.HindcastEvaluator.evaluate" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Run rolling-origin hindcasts and score them.</p>
+<p>ROBUSTNESS FIX: this used to wrap each fold in a bare
+<code>except Exception: continue</code> and silently skip folds whose
+post-origin climate was shorter than the horizon. If every fold
+failed (bad climate columns, a model error, too-short climate), the
+caller got an empty table and the report said "no hindcast scores
+were available", hiding the actual cause. Now every skipped fold is
+recorded in <code>self.skipped_origins_</code> (origin + reason), partial
+failures raise a <code>RuntimeWarning</code>, and if <em>no</em> fold succeeds a
+<code>RuntimeError</code> listing the reasons is raised, so callers (e.g.
+<code>DiseaseModel.forecast_v2</code>) can surface it.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="scenario-outlook">Scenario outlook<a class="headerlink" href="#scenario-outlook" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="climaid.forecasting_v2.scenario.HybridScenarioProjector"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.scenario.HybridScenarioProjector.project" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">project</span><span class="p">(</span><span class="n">disease</span><span class="p">,</span> <span class="n">climate_hist</span><span class="p">,</span> <span class="n">projection</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">end_year</span><span class="o">=</span><span class="mi">2050</span><span class="p">,</span> <span class="n">ssps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gcms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude_times</span><span class="o">=</span><span class="p">(),</span> <span class="n">peak_months</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">extra_districts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">population_projection</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">baseline_population</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.scenario.HybridScenarioProjector.project" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>extra_districts : optional list/dict of (disease, climate) for other
+districts. When given, the long-term climate response is learned
+jointly across districts (shared coefficients, own intercepts), which
+separates climate variables whose seasonal cycles coincide in one
+place but not in others.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.scenario.HybridScenarioProjector.backtest" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">backtest</span><span class="p">(</span><span class="n">disease</span><span class="p">,</span> <span class="n">climate_hist</span><span class="p">,</span> <span class="n">test_years</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">exclude_times</span><span class="o">=</span><span class="p">(),</span> <span class="n">extra_districts</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.scenario.HybridScenarioProjector.backtest" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Check the long-term climate response on years it has not seen.</p>
+<p>Refits everything (lag selection, bootstrap) on data up to
+<code>test_years</code> before the end of the record, then "projects" the
+held-out years using their observed climate, exactly as future
+scenarios are projected. Returns a per-year table (observed vs
+projected annual cases with 80% range) and a summary including a
+comparison with simply repeating the training-period mean.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="climaid.forecasting_v2.scenario.thermal_suitability"></a>
+    <div class="doc doc-contents first">
+
+        <p>Unimodal suitability in [0, 1]: 0 at/below T_min and at/above T_max,
+1 at T_opt, asymmetric parabola on each side.</p>
+<p>This constrains the <em>shape</em> of the temperature response (an optimum and a
+decline beyond it); the model still estimates how strongly suitability
+affects cases. It is not a re-implementation of any published R0(T)
+model, and monthly mean temperatures smooth out daily extremes.</p>
+
+
+    </div>
+
+</div><h2 id="interval-calibration">Interval calibration<a class="headerlink" href="#interval-calibration" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="climaid.forecasting_v2.calibration"></a>
+    <div class="doc doc-contents first">
+
+        <p>Recalibrate forecast intervals from rolling hindcasts.</p>
+
+
+<details class="problem" open>
+  <summary>Problem</summary>
+  <p>v2 intervals were too narrow: in a Pune dengue run the ensemble's 95%
+intervals contained only 58% of hindcast months. Intervals built from
+in-sample residuals or simulation noise miss model error and grow too
+slowly with lead time.</p>
+</details>
+
+<details class="method-(split-conformal,-per-lead-time-band)" open>
+  <summary>Method (split-conformal, per lead-time band)</summary>
+  <p>For each model and each central interval (50/80/90/95%), every hindcast month
+gets a normalised miss score</p>
+<div class="highlight"><pre><span></span><code>r = (y - median) / (q_upper - median)    if y &gt;= median
+r = (median - y) / (median - q_lower)    otherwise
+</code></pre></div>
+<p>so r &lt;= 1 means the observation fell inside the original interval. The
+calibration factor k is the conformal quantile of r at the nominal level,
+i.e. the smallest multiple of each half-width that would have contained that
+share of hindcast outcomes. Quantiles are then rescaled about the median:
+q' = median + k (q - median). k &gt; 1 widens, k &lt; 1 narrows.</p>
+<p>Factors are estimated separately for lead-time bands because errors grow
+with lead time. A band with fewer than <code>min_points</code> hindcast months uses the
+factor pooled across all bands; lead times beyond any hindcast use the
+longest available band, which is reported as a warning because uncertainty
+there is extrapolated.</p>
+</details>
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.calibration.fit_interval_calibration" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">fit_interval_calibration</span><span class="p">(</span><span class="n">hindcast_forecasts</span><span class="p">,</span> <span class="n">observed</span><span class="p">,</span> <span class="n">exclude_times</span><span class="o">=</span><span class="p">(),</span> <span class="n">min_points</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.calibration.fit_interval_calibration" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return {model: {"bands": {band: {level: k}}, "pooled": {level: k},
+"n": {band: n}, "max_lead": int}} estimated from hindcast forecasts
+(columns time, origin, model, q025..q975) and observed cases.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.calibration.apply_interval_calibration" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">apply_interval_calibration</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cal</span><span class="p">,</span> <span class="n">origin</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.calibration.apply_interval_calibration" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Rescale a forecast frame's quantiles about the median using <code>cal</code>
+(one model's entry from fit_interval_calibration).</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="tuning-and-model-catalogue">Tuning and model catalogue<a class="headerlink" href="#tuning-and-model-catalogue" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="climaid.forecasting_v2.tuning"></a>
+    <div class="doc doc-contents first">
+
+        <p>Model catalogue and compulsory, leakage-safe hyperparameter tuning for
+ClimAID v2 machine-learning forecasters.</p>
+
+
+<details class="tuning" open>
+  <summary>Tuning</summary>
+  <p>Every v2 ML model is tuned with Optuna before it is fitted; users choose how
+much effort to spend (<code>TUNING_PRESETS</code>) but cannot switch tuning off.</p>
+<p>Leakage safety: candidate settings are scored by expanding-window,
+time-ordered cross-validation <em>inside the training period only</em> (the last
+<code>n_folds</code> blocks of training months are predicted from the months before
+them). Hindcasts re-tune at every origin, so settings are never chosen with
+data from after the point being forecast.</p>
+<p>Guard: the default settings are always scored on the same folds, and if no
+tuned candidate beats them the defaults are kept, so tuning cannot make a
+model worse on this criterion.</p>
+<p>Score: mean absolute error of one-month-ahead predictions (actual recent
+cases as inputs). It is robust to outbreak spikes and valid for every model.</p>
+</details>
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="climaid.forecasting_v2.tuning.TUNING_PRESETS" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">TUNING_PRESETS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fast&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;n_trials&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;n_folds&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Fast (10 trials per model)&#39;</span><span class="p">},</span> <span class="s1">&#39;balanced&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;n_trials&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;n_folds&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Balanced (30 trials per model)&#39;</span><span class="p">},</span> <span class="s1">&#39;deep&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;n_trials&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;n_folds&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Deep (80 trials per model)&#39;</span><span class="p">}}</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-module-attribute"><code>module-attribute</code></small>
+  </span>
+
+<a href="#climaid.forecasting_v2.tuning.TUNING_PRESETS" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.tuning.resolve_tuning" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve_tuning</span><span class="p">(</span><span class="n">tuning</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.tuning.resolve_tuning" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Map a preset name or an integer trial count to (n_trials, n_folds, label).
+Tuning is compulsory: None means the default preset, never 'off'.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.tuning.tune" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">tune</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">tuning</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.tuning.tune" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Tune <code>name</code> on (X, y) (time-ordered training data). Returns (params, info).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="climaid.forecasting_v2.tuning.build_estimator" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">build_estimator</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span></code>
+
+<a href="#climaid.forecasting_v2.tuning.build_estimator" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Construct a v2 model: ClimAID defaults (v1 table) overridden by <code>params</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="v1-inside-v2">v1 inside v2<a class="headerlink" href="#v1-inside-v2" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="climaid.forecasting_v2.v1_stack.V1StackForecaster"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="reports">Reports<a class="headerlink" href="#reports" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="climaid.reporting_v2.generate_forecast_report"></a>
+    <div class="doc doc-contents first">
+
+        <p>Generate a self-contained HTML report for a v2 forecast.</p>
+<p>The report opens with a plain-language layer for non-specialists (short
+version, month-by-month table, trust rating, caveats, glossary; see
+reporting_plain.py). All technical content follows in a collapsible
+"Technical details" section. <code>history</code> (cases up to the forecast start)
+enables "compared with a typical year"; <code>observed</code> (cases after the start,
+if known) enables "what actually happened".</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="climaid.reporting_scenario.generate_scenario_report"></a>
+    <div class="doc doc-contents first">
+
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  <div class="md-copyright__partner">
+    <img src="../../assets/NDMC_logo.png" alt="National Disease Modelling Consortium (NDMC)"
+         title="National Disease Modelling Consortium">
+  </div>
+  
+    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria</div>
+  
+  
+    Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -21,8 +21,6 @@ from .registry import DATASETS
 
 CACHE_DIR = Path.home() / ".climaid" / "datasets"
 
-print("LOADED REGISTRY FROM...", __file__)
-print("DATASETS CONTENT...", DATASETS)
 
 class DatasetManager:
     """

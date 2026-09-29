@@ -1,28 +1,29 @@
 """
 server.py
 ------------
+Provides the FastAPI application for the ClimAID browser wizard.
 
-Provides helper functions to call the flask api
-
-Author: Avik Kumar Sam
-Created: March 2026
-Updated: 2026
+The original browser endpoints and static interface are retained, with additive
+v2 probabilistic forecasting and report-serving routes.
 """
-
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
-from .api import router
+from .api import router, REPORT_DIR
 
-app = FastAPI(title="ClimAID Wizard")
-
+app = FastAPI(title="ClimAID Wizard", version="0.3.0")
 app.include_router(router)
 
 STATIC_DIR = Path(__file__).parent / "static"
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
-app.mount(
-    "/",
-    StaticFiles(directory=STATIC_DIR, html=True),
-    name="static",
-)
+# Explicit report route is mounted before the catch-all static directory.
+app.mount("/reports", StaticFiles(directory=REPORT_DIR), name="reports")
+
+# Bundled documentation (built MkDocs site shipped in climaid/documentation), served at
+# /documentation (FastAPI already uses /docs for its API page).
+DOCS_DIR = Path(__file__).resolve().parents[1] / "documentation"
+if (DOCS_DIR / "index.html").exists():
+    app.mount("/documentation", StaticFiles(directory=DOCS_DIR, html=True), name="documentation")
+app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
