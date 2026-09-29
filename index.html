@@ -6,7 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Climate-informed disease modelling, forecasting and CMIP6 scenario analysis">
       
+      
+      
+        <link rel="canonical" href="https://sam-as.github.io/ClimAID/">
       
       
       
@@ -98,6 +102,10 @@
         </aside>
       
     </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
     
     
       
@@ -483,6 +491,17 @@
     <span class="md-ellipsis">
       
         What you can do
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
       
     </span>
   </a>
@@ -1523,6 +1542,13 @@ dengue and malaria, using machine learning, a climate-informed transmission mode
 <li>Generate reports written for non-specialists, with full technical details for specialists</li>
 </ul>
 <hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>climaid<span class="w">              </span><span class="c1"># core</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;climaid[ml]&quot;</span><span class="w">        </span><span class="c1"># + XGBoost, LightGBM, CatBoost</span>
+pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>climaid<span class="w">    </span><span class="c1"># upgrading from 0.1.x: read the Changelog first</span>
+</code></pre></div>
+<p>Python 3.10 or newer. Package on PyPI: <a href="https://pypi.org/project/climaid/">pypi.org/project/climaid</a>.</p>
+<hr />
 <h2 id="quick-examples">Quick examples<a class="headerlink" href="#quick-examples" title="Permanent link">&para;</a></h2>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">v2 forecast</label><label for="__tabbed_1_2">v2 climate scenarios</label><label for="__tabbed_1_3">v1 (legacy)</label></div>
 <div class="tabbed-content">
@@ -1573,6 +1599,13 @@ The dashboard has separate <strong>v2</strong> (default) and <strong>v1</strong>
 The wizard asks which pipeline to run (v1, v2 or both) and only asks that pipeline's questions.</p>
 <p><img alt="ClimAID wizard interface" src="assets/ClimAID_Wizard_interface.png" /></p>
 <p>Figure 2: Guide to the ClimAID Wizard Interface.</p>
+</li>
+<li>
+<p><strong>This documentation, offline</strong></p>
+<p><div class="highlight"><pre><span></span><code>climaid docs
+</code></pre></div>
+Opens the copy of this site that ships with your installation (also linked from the dashboard at
+<code>/documentation/</code>).</p>
 </li>
 </ul>
 <hr />
@@ -1680,7 +1713,8 @@ no extra Python package is needed. Without it, ClimAID uses its built-in determi
          title="National Disease Modelling Consortium">
   </div>
   
-    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria</div>
+    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria
+</div>
   
   
     Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
@@ -1700,7 +1734,7 @@ no extra Python package is needed. Without it, ClimAID uses its built-in determi
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

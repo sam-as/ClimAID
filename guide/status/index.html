@@ -6,7 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Climate-informed disease modelling, forecasting and CMIP6 scenario analysis">
       
+      
+      
+        <link rel="canonical" href="https://sam-as.github.io/ClimAID/guide/status/">
       
       
         <link rel="prev" href="../..">
@@ -100,6 +104,10 @@
         </aside>
       
     </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
     
     
       
@@ -1421,7 +1429,7 @@ validated on real surveillance data or on real CMIP6 projections</strong>. Until
 research estimates: check them against local knowledge and surveillance experience, and do not use them as
 the sole basis for public-health decisions.</p>
 </div>
-<p>This page is updated as testing progresses. Last update: version 0.3.0.</p>
+<p>This page is updated as testing progresses. Last update: version 0.4.0.</p>
 <hr />
 <h2 id="what-has-been-tested">What has been tested<a class="headerlink" href="#what-has-been-tested" title="Permanent link">&para;</a></h2>
 <table>
@@ -1441,7 +1449,7 @@ the sole basis for public-health decisions.</p>
 <tr>
 <td>Leakage</td>
 <td>Tests that models never see data after the forecast start (v1 selection, v2 hindcasts, climate features, CMIP6 features)</td>
-<td>Fixed and tested in 0.3.0</td>
+<td>Fixed and tested in 0.4.0</td>
 </tr>
 <tr>
 <td>v2 forecast accuracy</td>
@@ -1460,12 +1468,12 @@ the sole basis for public-health decisions.</p>
 </tr>
 <tr>
 <td>Real surveillance data</td>
-<td>â€”</td>
+<td>—</td>
 <td><strong>Not yet done</strong></td>
 </tr>
 <tr>
 <td>Real CMIP6 projections</td>
-<td>â€”</td>
+<td>—</td>
 <td><strong>Not yet done</strong> (could not be accessed in development)</td>
 </tr>
 </tbody>
@@ -1494,7 +1502,7 @@ See <a href="../benchmarks/">Benchmarks &amp; synthetic data</a> for how the dat
 <td><strong>0.63</strong></td>
 <td>0.74</td>
 <td>0.94</td>
-<td>85â€“90% of months</td>
+<td>85–90% of months</td>
 </tr>
 <tr>
 <td>Non-seasonal (clean)</td>
@@ -1502,7 +1510,7 @@ See <a href="../benchmarks/">Benchmarks &amp; synthetic data</a> for how the dat
 <td>1.23</td>
 <td>1.09</td>
 <td><strong>0.85</strong></td>
-<td>58â€“100% of months</td>
+<td>58–100% of months</td>
 </tr>
 <tr>
 <td>Realistic (hard)</td>
@@ -1510,7 +1518,7 @@ See <a href="../benchmarks/">Benchmarks &amp; synthetic data</a> for how the dat
 <td>0.64</td>
 <td>0.75</td>
 <td>0.65</td>
-<td>79â€“87% of months</td>
+<td>79–87% of months</td>
 </tr>
 </tbody>
 </table>
@@ -1518,7 +1526,7 @@ See <a href="../benchmarks/">Benchmarks &amp; synthetic data</a> for how the dat
 <ul>
 <li>On seasonal, climate-driven data the ensemble was about <strong>35% better</strong> than the baseline.</li>
 <li>Without a seasonal cycle, the tree models were <strong>worse</strong> than the baseline and their ranges were too
-  narrow (58â€“69% instead of 80%); Poisson regression and the ensemble were modestly better. The
+  narrow (58–69% instead of 80%); Poisson regression and the ensemble were modestly better. The
   report's trust rating and model comparison are there to catch this.</li>
 <li>
 <p>On the realistic dataset the models were again about a third better than the baseline, but absolute errors
@@ -1567,7 +1575,7 @@ See <a href="../benchmarks/">Benchmarks &amp; synthetic data</a> for how the dat
 </ul>
 <hr />
 <h2 id="number-of-optimisation-trials-synthetic">Number of optimisation trials (synthetic)<a class="headerlink" href="#number-of-optimisation-trials-synthetic" title="Permanent link">&para;</a></h2>
-<p>More trials were <strong>not</strong> reliably more accurate: v2 accuracy stopped improving at about 10â€“30 trials per model
+<p>More trials were <strong>not</strong> reliably more accurate: v2 accuracy stopped improving at about 10–30 trials per model
 and was sometimes worse at 80; v1 improved from 5 to 20 trials but not from 20 to 50. Runtime grew in
 proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; optimisation trials</a>.</p>
 <hr />
@@ -1591,7 +1599,7 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
 <li>Climate cannot predict serotype shifts, reporting changes, testing campaigns or control interventions.</li>
 <li>Single-district climate projections can understate warming effects (see <a href="../scenarios/#known-limitations-read-before-using">scenario limitations</a>).</li>
 <li>The <em>Aedes aegypti</em> thermal-curve preset values must be verified against the source before publication.</li>
-<li>v1 results produced with versions before 0.3.0 were optimistic because of leakage bugs; rerun them.</li>
+<li>v1 results produced with versions before 0.4.0 (0.1.x) were optimistic because of leakage bugs; rerun them.</li>
 </ul>
 <hr />
 <h2 id="help-us-test">Help us test<a class="headerlink" href="#help-us-test" title="Permanent link">&para;</a></h2>
@@ -1630,7 +1638,8 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
          title="National Disease Modelling Consortium">
   </div>
   
-    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria</div>
+    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria
+</div>
   
   
     Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
@@ -1650,7 +1659,7 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
