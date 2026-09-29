@@ -1,12 +1,18 @@
-<div class="md-copyright">
-  <div class="md-copyright__partner">
-    <img src="{{ 'assets/NDMC_logo.png' | url }}" alt="National Disease Modelling Consortium (NDMC)"
-         title="National Disease Modelling Consortium">
+{#- Footer: text on the left, NDMC logo on the right (every page except the home page,
+    which already shows the logo in its License section). Styling: site_docs/stylesheets/extra.css -#}
+<div class="md-copyright climaid-footer">
+  <div class="climaid-footer__text">
+    {% if config.copyright %}
+      <div class="md-copyright__highlight">{{ config.copyright }}</div>
+    {% endif %}
+    {% if not config.extra.generator == false %}
+      Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
+    {% endif %}
   </div>
-  {% if config.copyright %}
-    <div class="md-copyright__highlight">{{ config.copyright }}</div>
-  {% endif %}
-  {% if not config.extra.generator == false %}
-    Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
+  {% if not (page and page.is_homepage) %}
+    <div class="md-copyright__partner">
+      <img src="{{ 'assets/NDMC_logo.png' | url }}" alt="National Disease Modelling Consortium (NDMC)"
+           title="National Disease Modelling Consortium">
+    </div>
   {% endif %}
 </div>

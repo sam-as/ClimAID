@@ -106,7 +106,6 @@ climaid --version
 | [CHANGELOG.md](https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md) | All changes, by version |
 | [MIGRATION_v2.md](https://github.com/sam-as/ClimAID/blob/main/MIGRATION_v2.md) | Moving from v1 to v2 |
 | [V2_FEEDBACK_RESPONSE.md](https://github.com/sam-as/ClimAID/blob/main/V2_FEEDBACK_RESPONSE.md) | Reviewer concerns and how v2 addresses them |
-| [Claude-Testing_FINDINGS_2026-09.md](https://github.com/sam-as/ClimAID/blob/main/Claude-Testing_FINDINGS_2026-09.md) | Testing log: the evidence behind each fix |
 | [benchmarks/](https://github.com/sam-as/ClimAID/tree/main/benchmarks) | Synthetic datasets, benchmark runner and saved results |
 | [README_DOCS.md](https://github.com/sam-as/ClimAID/blob/main/README_DOCS.md) | Building and releasing the documentation |
 

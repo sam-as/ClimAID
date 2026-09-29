@@ -91,5 +91,8 @@ repo_name: ClimAID
 extra_css:
   - stylesheets/extra.css
 
-copyright: >
-  © 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria
+copyright: >-
+  © 2025–2026 ClimAID · Open-access software for climate-driven disease modelling ·
+  Developed by <a href="https://www.avikkumarsam.in/home" target="_blank" rel="noopener">Avik Kumar Sam</a>
+  &amp; <a href="https://sites.google.com/view/anerglab" target="_blank" rel="noopener">Harish C. Phuleria</a>
+  <br>Supported by the <a href="https://www.ndmconsortium.com/" target="_blank" rel="noopener">National Disease Modelling Consortium (NDMC)</a>
