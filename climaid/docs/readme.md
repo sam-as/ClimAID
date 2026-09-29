@@ -254,7 +254,7 @@ If the LLM is unavailable, ClimAID automatically generates deterministic scienti
 
 If you use ClimAID in academic work, please cite:
 
-> Sam, A.K., Pathak, M., Phuleria, H.C. (2026). ClimAID: A Climate-Driven Disease Modelling Framework using CMIP6 Projections.
+> Sam, A.K., Phuleria, H.C. (2026). ClimAID: An AI-integrated Global Hybrid Climate-Disease Modelling Framework. Preprint: [https://doi.org/10.21203/rs.3.rs-9394047/v1](https://doi.org/10.21203/rs.3.rs-9394047/v1)
 
 ---
 
