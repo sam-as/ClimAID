@@ -118,11 +118,14 @@ Epidemiologists, climate scientists, public-health analysts and data scientists.
 
 ## Citation
 
-> Sam, A.K., Pathak, M., Phuleria, H.C. (2026). ClimAID: A Climate-Driven Disease Modelling Framework using CMIP6
-> Projections. Preprint: [https://doi.org/10.21203/rs.3.rs-9394047/v1](https://doi.org/10.21203/rs.3.rs-9394047/v1)
+> Sam, A.K., Phuleria, H.C. (2026). ClimAID: An AI-integrated Global Hybrid Climate-Disease Modelling Framework. Preprint: [https://doi.org/10.21203/rs.3.rs-9394047/v1](https://doi.org/10.21203/rs.3.rs-9394047/v1)
 
 ## License
 
-MIT. Designed by **Avik Kumar Sam** & **Harish C. Phuleria** as open-access software. Full text:
-[LICENSE](https://github.com/sam-as/ClimAID/blob/main/LICENSE). For technical feedback:
+MIT. Designed by **Avik Kumar Sam** & **Harish C. Phuleria** as open-access software through the [National Disease Modelling Consortium](www.ndmcconsortium.com). 
+
+- Full text:
+[LICENSE](https://github.com/sam-as/ClimAID/blob/main/LICENSE). 
+
+- For technical feedback:
 [avik.sam@iitb.ac.in](mailto:avik.sam@iitb.ac.in) | [avik.sam@nus.edu.sg](mailto:avik.sam@nus.edu.sg).

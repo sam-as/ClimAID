@@ -187,13 +187,14 @@ ClimAID has two interfaces.
 
 Designed by **Avik Kumar Sam** & **Harish C. Phuleria** as open-access software.
 
-![National Disease Modelling Consortium (NDMC)](assets/NDMC_logo.png){ .partner-logo-home }
-
 * MIT License summary
     - Free to use, modify and distribute
     - Suitable for research and commercial use
     - No warranty is provided
     - Attribution is required
+
 * Full licence text: [https://github.com/sam-as/ClimAID/blob/main/LICENSE](https://github.com/sam-as/ClimAID/blob/main/LICENSE)
 
+We thank the [National Disease Modelling Consortium](https://www.ndmconsortium.com/) for their support. 
+![National Disease Modelling Consortium (NDMC)](assets/NDMC_logo.png){ .partner-logo-home }
 ---
