@@ -1,6 +1,6 @@
-# ClimAID 0.3.0 — v2
+﻿# ClimAID 0.4.0 â€” v2
 
-ClimAID v2 is an additive upgrade to the original ClimAID climate–disease modelling toolkit. **Climate remains mandatory for every v2 forecasting run**, while disease history and epidemic dynamics become first-class components.
+ClimAID v2 is an additive upgrade to the original ClimAID climateâ€“disease modelling toolkit. **Climate remains mandatory for every v2 forecasting run**, while disease history and epidemic dynamics become first-class components.
 
 ## What remains from ClimAID v1
 
@@ -55,7 +55,7 @@ forecast = model.predict(future_climate, horizon=12, n_simulations=2000)
 
 See `MIGRATION_v2.md` and `V2_REVIEW_RESPONSE.md` for implementation and reviewer-issue mapping.
 
-## What's new in 0.3.0
+## What's new in 0.4.0
 - Leakage fixes in the v1 pipeline (annual-average climate feature, test-set reuse during lag
   optimisation, projection features that did not match training) and in v2 hindcasts.
   **Reported v1 metrics from earlier versions were optimistic; rerun before citing them.**
@@ -66,4 +66,7 @@ See `MIGRATION_v2.md` and `V2_REVIEW_RESPONSE.md` for implementation and reviewe
 - Dashboard: separate v2 (default) and v1 pages, info tips on every control, `drop_2020`.
 
 See `CHANGELOG.md` for details and `REVIEW_FINDINGS_2026-09.md` for the evidence behind each change.
+
+
+
 
