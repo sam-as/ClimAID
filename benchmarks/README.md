@@ -1,6 +1,6 @@
 # ClimAID benchmarks (synthetic data)
 
-ClimAID 0.3.0 is under active testing. These benchmarks check the methods against synthetic data with a
+ClimAID 0.4.0 is under active testing. These benchmarks check the methods against synthetic data with a
 **known truth**. Good results here are necessary but not sufficient: validation on real surveillance data
 and real CMIP6 projections is still to come.
 
