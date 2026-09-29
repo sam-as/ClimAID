@@ -178,3 +178,14 @@ body {
 .md-typeset .doc-method {
     margin-bottom: 25px;
 }
+/* ================= "UNDER TESTING" BANNER ================= */
+.md-banner { font-size: 0.72rem; }
+.md-banner a { color: #ffffff; text-decoration: underline; font-weight: 600; }
+
+/* ================= NDMC LOGO (footer, every page) ================= */
+.md-copyright__partner { margin-bottom: 0.6rem; }
+.md-copyright__partner img {
+    height: 44px; background: #ffffff; padding: 6px 10px; border-radius: 8px; display: inline-block;
+}
+/* NDMC logo on the home page */
+.md-typeset img.partner-logo-home { height: 70px; width: auto; margin-top: 0.4rem; }

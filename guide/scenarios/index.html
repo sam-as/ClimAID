@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../v2/">
+        <link rel="prev" href="../tuning/">
       
       
-        <link rel="next" href="../datasets/">
+        <link rel="next" href="../reports/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>ClimateData - ClimAID</title>
+        <title>Climate scenario outlook - ClimAID</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#climatedata" class="md-skip">
+        <a href="#climate-scenario-outlook" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +92,7 @@
   <strong>ClimAID 0.3.0 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
-    <a href="../../guide/status/">What has been tested</a>
+    <a href="../status/">What has been tested</a>
   
 
           </div>
@@ -125,7 +125,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ClimateData
+              Climate scenario outlook
             
           </span>
         </div>
@@ -239,11 +239,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../guide/status/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../status/" class="md-tabs__link">
           
   
   
@@ -259,13 +261,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="../model/" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../api/model/" class="md-tabs__link">
           
   
   
@@ -285,7 +285,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../datasets/" class="md-tabs__link">
+        <a href="../../api/datasets/" class="md-tabs__link">
           
   
   
@@ -305,7 +305,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../llmclient/" class="md-tabs__link">
+        <a href="../../api/llmclient/" class="md-tabs__link">
           
   
   
@@ -325,7 +325,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../utils/" class="md-tabs__link">
+        <a href="../../api/utils/" class="md-tabs__link">
           
   
   
@@ -345,7 +345,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../resources/" class="md-tabs__link">
+        <a href="../../api/resources/" class="md-tabs__link">
           
   
   
@@ -434,28 +434,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -473,7 +476,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -491,7 +494,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -519,7 +522,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/v2_forecasting/" class="md-nav__link">
+      <a href="../v2_forecasting/" class="md-nav__link">
         
   
   
@@ -547,7 +550,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/tuning/" class="md-nav__link">
+      <a href="../tuning/" class="md-nav__link">
         
   
   
@@ -572,10 +575,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../guide/scenarios/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Climate scenario outlook
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -591,6 +621,70 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-outlook-is-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the outlook is built
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Main options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-the-lag-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing the lag structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-limitations-read-before-using" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known limitations (read before using)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -603,7 +697,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/reports/" class="md-nav__link">
+      <a href="../reports/" class="md-nav__link">
         
   
   
@@ -631,7 +725,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/benchmarks/" class="md-nav__link">
+      <a href="../benchmarks/" class="md-nav__link">
         
   
   
@@ -691,31 +785,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
             
   
   
@@ -733,7 +824,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -751,7 +842,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../model/" class="md-nav__link">
+      <a href="../../api/model/" class="md-nav__link">
         
   
   
@@ -779,7 +870,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../v2/" class="md-nav__link">
+      <a href="../../api/v2/" class="md-nav__link">
         
   
   
@@ -804,37 +895,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    ClimateData
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../api/climate/" class="md-nav__link">
         
   
   
@@ -850,70 +914,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#climaid.climate_data.ClimateData" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ClimateData
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#climaid.climate_data.ClimateData.get_historical" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_historical
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#climaid.climate_data.ClimateData.get_projection" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        get_projection
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#climaid.climate_data.ClimateData.load_sample_dataset" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        load_sample_dataset
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -987,7 +987,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../datasets/" class="md-nav__link">
+      <a href="../../api/datasets/" class="md-nav__link">
         
   
   
@@ -1015,7 +1015,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projections/" class="md-nav__link">
+      <a href="../../api/projections/" class="md-nav__link">
         
   
   
@@ -1043,7 +1043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../plots/" class="md-nav__link">
+      <a href="../../api/plots/" class="md-nav__link">
         
   
   
@@ -1132,7 +1132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../llmclient/" class="md-nav__link">
+      <a href="../../api/llmclient/" class="md-nav__link">
         
   
   
@@ -1160,7 +1160,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reporting/" class="md-nav__link">
+      <a href="../../api/reporting/" class="md-nav__link">
         
   
   
@@ -1249,7 +1249,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/" class="md-nav__link">
+      <a href="../../api/utils/" class="md-nav__link">
         
   
   
@@ -1338,7 +1338,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../api/resources/" class="md-nav__link">
         
   
   
@@ -1383,7 +1383,7 @@
 
 
   
-    <a href="https://github.com/sam-as/ClimAID/edit/master/docs/api/climate.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/sam-as/ClimAID/edit/master/docs/guide/scenarios.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1391,437 +1391,151 @@
   
 
 
-<h1 id="climatedata">ClimateData<a class="headerlink" href="#climatedata" title="Permanent link">&para;</a></h1>
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<a id="climaid.climate_data.ClimateData"></a>
-    <div class="doc doc-contents first">
-
-
-
-        <p>Climate data loader for ClimAID.</p>
-<p>Built-in climate data is available for South Asia.
-Other countries require user-supplied weather and projection data.</p>
-
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="climaid.climate_data.ClimateData.get_historical" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_historical</span><span class="p">(</span><span class="n">district</span><span class="p">)</span></code>
-
-<a href="#climaid.climate_data.ClimateData.get_historical" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Retrieve historical climate data for a given district.</p>
-<p>This method loads historical weather data either from:
-    - Built-in ClimAID datasets (for supported countries), or
-    - A user-provided dataset (CSV, Excel, or Parquet)</p>
-<p>It then filters the data for the specified district.</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>district</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Name of the district (must match 'Dist_States' column in dataset).</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>df</code></td>            <td>
-                  <code>pandas.DataFrame :</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Historical climate data for the specified district.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError :</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <ul>
-<li>If the country is not supported and no custom weather file is provided.</li>
-<li>If no data is found for the given district.</li>
-<li>If file format is unsupported.</li>
-</ul>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<details class="note" open>
-  <summary>Notes</summary>
-  <ul>
-<li>Built-in data currently includes South Asia weather datasets.</li>
-<li>User datasets must contain:<ul>
-<li>'Dist_States' column (district name)</li>
-<li>'time' column (date/time)</li>
-</ul>
-</li>
-<li>Time column is automatically parsed for supported formats.</li>
-</ul>
-</details>
-
-    </div>
-
+<h1 id="climate-scenario-outlook">Climate scenario outlook<a class="headerlink" href="#climate-scenario-outlook" title="Permanent link">&para;</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Under testing</p>
+<p>The scenario outlook is under active testing. It has been checked only on <strong>synthetic</strong> climate-model
+data with a known answer. It could not yet be run on the real CMIP6 files in development. Projections are
+"what if" estimates, not predictions of actual future cases.</p>
 </div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="climaid.climate_data.ClimateData.get_projection" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_projection</span><span class="p">(</span><span class="n">district</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ssp</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-<a href="#climaid.climate_data.ClimateData.get_projection" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Retrieve climate projection data for a specific district.</p>
-<p>This method:
-    - Automatically selects the appropriate dataset (India or South Asia)
-    - Downloads and caches data if not already available
-    - Filters projections based on district, model, and scenario</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>district</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>District name (must match 'Dist_States' column in dataset).</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>model</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Climate model name (e.g., "MIROC6").
-If provided, filters dataset to that model.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                <code>ssp</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Emission scenario (e.g., "ssp245", "ssp585").
-Filters dataset based on scenario column.</p>
-              </div>
-            </td>
-            <td>
-                  <code>None</code>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>df</code></td>            <td>
-                  <code>pandas.DataFrame :</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Filtered projection data for the specified district.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError:</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If no matching data is found for the given filters.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<details class="note" open>
-  <summary>Notes</summary>
-  <ul>
-<li>Uses DatasetManager to fetch datasets lazily.</li>
-<li>Data is cached in memory after first load for performance.</li>
-<li>Supports both built-in datasets and user-provided files.</li>
-</ul>
-</details>
-
-    </div>
-
+<p><code>DiseaseModel.project_v2()</code> estimates how cases could change under future climate, for each CMIP6 climate
+model and emissions pathway (SSP), from next season out to 2050 (or 2100).</p>
+<hr />
+<h2 id="how-the-outlook-is-built">How the outlook is built<a class="headerlink" href="#how-the-outlook-is-built" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Bias correction.</strong> Each climate model is shifted so its baseline-period monthly averages match observed
+   climate (rainfall scaled, other variables shifted). Its projected <em>change</em> is kept.</li>
+<li><strong>Next 12 months:</strong> the v2 forecast, driven by each climate model's corrected climate.</li>
+<li><strong>Hand-over (months 13–24):</strong> a gradual switch as recent cases stop being informative.</li>
+<li><strong>Long term:</strong> a model that links cases to climate alone, refitted many times on resampled years so the
+   ranges include statistical uncertainty.</li>
+<li><strong>Pooling:</strong> results from all climate models are combined, so ranges also include climate-model spread.</li>
+<li><strong>Checks reported alongside:</strong> a sensitivity run using a different way of learning climate effects, a
+   backtest on held-out past years, and a comparison with tree-based models.</li>
+</ol>
+<hr />
+<h2 id="main-options">Main options<a class="headerlink" href="#main-options" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>end_year</code></td>
+<td>2050</td>
+<td>Last year of the outlook</td>
+</tr>
+<tr>
+<td><code>ssps</code></td>
+<td>all available</td>
+<td>e.g. <code>["ssp126", "ssp245", "ssp585"]</code></td>
+</tr>
+<tr>
+<td><code>response</code></td>
+<td><code>"seasonal"</code></td>
+<td>Learn climate effects from the seasonal cycle (<code>"anomaly"</code>: only from year-to-year deviations)</td>
+</tr>
+<tr>
+<td><code>lag_selection</code></td>
+<td><code>"ensemble"</code></td>
+<td><code>"ensemble"</code>: average all near-equally-good climate-lag structures. <code>"v1"</code>: run ClimAID v1's lag search (in <code>v1_mode</code>) on data before the forecast start. <code>"distributed"</code>: smooth lag curves over 0–6 months (ENSO 0–12)</td>
+</tr>
+<tr>
+<td><code>v1_mode</code></td>
+<td>from <code>tuning</code></td>
+<td>v1 mode for <code>lag_selection="v1"</code>: <code>"fast"</code>, <code>"balanced"</code>, <code>"deep"</code></td>
+</tr>
+<tr>
+<td><code>extra_districts</code></td>
+<td>None</td>
+<td>Other districts' data: learn one shared climate response (recommended if available)</td>
+</tr>
+<tr>
+<td><code>temperature_curve</code></td>
+<td>None</td>
+<td>e.g. <code>"aedes_aegypti_mordecai2017"</code>: constrain the temperature response to a thermal-suitability curve</td>
+</tr>
+<tr>
+<td><code>population_projection</code></td>
+<td>None</td>
+<td>Table of projected population; adds population-scaled results</td>
+</tr>
+<tr>
+<td><code>comparison_models</code></td>
+<td>random forest, gradient boosting</td>
+<td>Tree models shown as a comparison</td>
+</tr>
+<tr>
+<td><code>tuning</code></td>
+<td><code>"balanced"</code></td>
+<td>Tuning of the near-term and comparison models</td>
+</tr>
+<tr>
+<td><code>exclude_period</code></td>
+<td><code>"2020"</code></td>
+<td>COVID-19 period left out of the long-term fit and replaced for the near-term forecast</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="choosing-the-lag-structure">Choosing the lag structure<a class="headerlink" href="#choosing-the-lag-structure" title="Permanent link">&para;</a></h2>
+<p>Tested on synthetic cases with a known warming effect (change by the 2050s):</p>
+<table>
+<thead>
+<tr>
+<th>Case (truth)</th>
+<th>Averaged (default)</th>
+<th>v1 lags</th>
+<th>Distributed lags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seasonal benchmark, SSP5-8.5 (+60%)</td>
+<td>+27%</td>
+<td>+48%</td>
+<td><strong>+58%</strong>, but range up to +200%</td>
+</tr>
+<tr>
+<td>Six-district world, single district (+27%, 3 seeds)</td>
+<td>+13 / +16 / +30%</td>
+<td>—</td>
+<td>+14 / +41 / +54%, wide ranges</td>
+</tr>
+<tr>
+<td>Six-district world, pooled (+27%, 3 seeds)</td>
+<td><strong>+25 / +24 / +30%</strong></td>
+<td>—</td>
+<td>+41 / +33 / +34% (overestimates)</td>
+</tr>
+</tbody>
+</table>
+<p>No single choice was best everywhere. The averaged default was the most reliable when districts are pooled;
+distributed lags estimated the total effect of warming well in one case but were unstable in others. The
+fitted distributed-lag curves recover the <strong>total</strong> effect better than the <strong>timing</strong>, so do not read the
+curve shape as "when the effect happens".</p>
+<h2 id="known-limitations-read-before-using">Known limitations (read before using)<a class="headerlink" href="#known-limitations-read-before-using" title="Permanent link">&para;</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Single-district projections can understate warming effects</p>
+<p>Temperature, rainfall and humidity often share one seasonal cycle, so a single district's data cannot fully
+separate their effects. On synthetic data where warming truly raised cases by 60% by the 2050s, the default
+single-district projection gave <strong>+27%</strong> (the truth was inside its stated range). Pooling six districts
+with <code>extra_districts</code> recovered the truth within 3 percentage points. Use <code>extra_districts</code>,
+<code>lag_selection="v1"</code> or a justified <code>temperature_curve</code> where you can.</p>
 </div>
-
-<div class="doc doc-object doc-function">
-
-
-<h2 id="climaid.climate_data.ClimateData.load_sample_dataset" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">load_sample_dataset</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
-
-<a href="#climaid.climate_data.ClimateData.load_sample_dataset" class="headerlink" title="Permanent link">&para;</a></h2>
-
-
-    <div class="doc doc-contents ">
-
-        <p>Load bundled sample datasets included with climaid.</p>
-<p>These datasets are intended for demonstration and testing purposes,
-particularly for users exploring the Global Mode via the browser interface.</p>
-<p>The datasets do not represent real-world observations; they are synthetic
-or simplified samples designed to illustrate expected data structure,
-variable formats, and workflows within climaid. </p>
-<p>Warning: 
-    - The data is incomplete, so may not work with ClimAID. 
-    - Users must use the dataset structure as a reference and then prepare their own. 
-    - After verifying the content, they may upload the data through the ClimAID Browser Interface. </p>
-<p>The datsets can also be viewed here: https://github.com/sam-as//climaid/docs/dataset_samples</p>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>name</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>Name of the dataset to load. </p>
 <ul>
-<li>Available options:<ul>
-<li>"climate"     : Sample historical climate data</li>
-<li>"projection"  : Sample climate projection data</li>
-<li>"disease"     : Sample disease/incidence data</li>
+<li>The climate–disease relationship is assumed to stay the same in future.</li>
+<li>Population (unless scaled), immunity, vector control, testing and reporting are held at historical levels.</li>
+<li>Climate models represent El Niño poorly; its effects mainly add noise far ahead.</li>
+<li>Where future climate goes beyond the range seen in training, the response is extrapolated (the report
+  says how often this happens).</li>
+<li><strong>The thermal-curve preset values (17.8 / 29.1 / 34.6 °C) were entered from the literature without
+  independent verification; check them against Mordecai et al. (2017) before publication.</strong></li>
 </ul>
-</li>
-</ul>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-    <p><span class="doc-section-title">Returns:</span></p>
-    <table>
-      <thead>
-        <tr>
-<th>Name</th>          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-<td><code>df</code></td>            <td>
-                  <code>pandas.DataFrame :</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>A DataFrame containing the requested sample dataset.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<p><span class="doc-section-title">Raises:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Type</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                  <code>ValueError :</code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>If an invalid dataset name is provided.</p>
-              </div>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-
-
-<details class="note" open>
-  <summary>Notes</summary>
-  <p>These datasets are packaged with the library and accessed using
-<code>importlib.resources</code>, ensuring compatibility after installation.</p>
-</details>
-
-<details class="----examples" open>
-  <summary><div class="highlight"><pre><span></span><code>Examples
-</code></pre></div></summary>
-  <div class="highlight"><pre><span></span><code>&gt;&gt;&gt; from climaid.climate_data import ClimateData
-&gt;&gt;&gt; cl = ClimateData()
-&gt;&gt;&gt; df = cl.load_sample_dataset(&quot;climate&quot;)
-&gt;&gt;&gt; df.head()
-</code></pre></div>
-</details>
-
-    </div>
-
-</div>
-
-
-
-  </div>
-
-    </div>
-
-</div>
 
 
 
