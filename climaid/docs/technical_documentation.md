@@ -63,8 +63,8 @@ climate series:
 * `YA_*`: trailing 12-month mean (up to and including the current month)
 * `MA_*`: trailing 120-month (10-year) mean
 
-(Before v0.3.0, `YA_*` was the whole-calendar-year mean, so a January value included that
-year's February–December climate. See CHANGELOG.) The CMIP6 projection pipeline computes these
+(Before v0.4.0, `YA_*` was the whole-calendar-year mean, so a January value included that
+year's February–December climate. See `CHANGELOG.md`.) The CMIP6 projection pipeline computes these
 features with exactly the same definitions as training.
 
 ---
@@ -99,7 +99,7 @@ Lag optimization is executed using joblib parallelization with configuration-awa
 * Unique seed per configuration
 * Seeded Optuna sampler
 * `random_state` passed to every estimator that accepts it (detected from the constructor
-  signature or `get_params()`; before v0.3.0 this check never matched and seeds were dropped)
+  signature or `get_params()`; before v0.4.0 this check never matched and seeds were dropped)
 
 This ensures reproducible model selection across runs.
 
@@ -186,7 +186,7 @@ Three disjoint chronological partitions are used:
 * **Test** (after the training period): used exactly once, to report the final configuration's
   performance.
 
-Before v0.3.0 the test set was used to rank all candidate configurations and then reported as
+Before v0.4.0 the test set was used to rank all candidate configurations and then reported as
 held-out performance, which biases reported R²/RMSE optimistically. By default 2020 is excluded
 from training (`drop_2020=True`, COVID-19 reporting disruption).
 
@@ -367,7 +367,8 @@ The LLM layer does not replace epidemiological modelling but functions as an int
 8. Ranges pool count noise, parameter uncertainty (bootstrap), structural uncertainty and
    climate-model spread.
 
-Validation on synthetic data with known truth (see `REVIEW_FINDINGS_2026-09.md`):
+Validation on synthetic data with known truth (see `Claude-Testing_FINDINGS_2026-09.md` in the repository and the
+[Status & validation](https://sam-as.github.io/ClimAID/guide/status/) page):
 single-district projections of a temperature-driven series were biased low (e.g. +27% vs a true
 +60% change) with the truth inside the 10–90% range; pooling across six districts recovered the
 true change within 3 percentage points across three seeds.

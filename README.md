@@ -1,72 +1,128 @@
-﻿# ClimAID 0.4.0 â€” v2
+# ClimAID — Climate change impact using AI on Diseases
 
-ClimAID v2 is an additive upgrade to the original ClimAID climateâ€“disease modelling toolkit. **Climate remains mandatory for every v2 forecasting run**, while disease history and epidemic dynamics become first-class components.
+**Version 0.4.0 (beta, under active testing)** · [Documentation](https://sam-as.github.io/ClimAID/) ·
+[PyPI](https://pypi.org/project/climaid/) · [Changelog](https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md) ·
+[Paper](https://doi.org/10.21203/rs.3.rs-9394047/v1)
 
-## What remains from ClimAID v1
+ClimAID is an integrated toolkit for modelling, forecasting and projecting climate-sensitive diseases such as
+dengue and malaria, using machine learning, a climate-informed transmission model and CMIP6 climate-model
+ensembles.
 
-The complete v1 package is retained: all registered ML models, lag optimisation, residual/correction workflow, CMIP6/SSP scenario projection, dual-baseline risk functions, interactive scientific visualisation, deterministic C-DSI reporting, optional local LLM reporting, terminal wizard, and browser/FastAPI interface.
+* Built-in climate data for South Asia: India, Nepal, Bhutan, Sri Lanka, Myanmar, Afghanistan, Pakistan and
+  Bangladesh.
+* Data from other countries are supported through the global mode of the browser interface.
 
-## What v2 adds
+> **Under active testing.** ClimAID 0.4.0 has been checked on synthetic data with a known answer, but **not yet
+> validated on real surveillance data or real CMIP6 projections**. Treat outputs as research estimates and do not
+> use them as the sole basis for public-health decisions. See
+> [Status & validation](https://sam-as.github.io/ClimAID/guide/status/).
 
-- Climate-informed stochastic renewal forecasting.
-- Gamma generation-interval formulation.
-- Susceptible depletion when population-at-risk information is available.
-- Relative-incidence renewal mode when population is unavailable.
-- Seasonal-naive benchmark.
-- All installed legacy ML model families as v2 forecasting engines.
-- Temporal out-of-fold residual learning.
-- Probabilistic quantile prediction.
-- WIS, RMSE, MAE and interval-coverage metrics.
-- Rolling hindcasts using explicit forecast origins.
-- Forecast-origin climate-source contract.
-- Additive v2 browser and terminal controls.
-- v2 probabilistic HTML reporting alongside the existing C-DSI report.
-
-## Install
-
-```bash
-pip install -e .
-```
-
-## Browser
-
-```bash
-climaid browse
-```
-
-## Terminal
-
-```bash
-climaid wizard
-```
-
-## Programmatic v2 forecasting
-
-```python
-from climaid.forecasting_v2 import ClimaidV2Forecaster
-
-model = ClimaidV2Forecaster(
-    models=["seasonal_naive", "renewal", "random_forest", "xgboost"],
-    population_at_risk=None,
-)
-model.fit(disease_data, climate_data, cutoff="2023-12-31")
-forecast = model.predict(future_climate, horizon=12, n_simulations=2000)
-```
-
-See `MIGRATION_v2.md` and `V2_REVIEW_RESPONSE.md` for implementation and reviewer-issue mapping.
+---
 
 ## What's new in 0.4.0
-- Leakage fixes in the v1 pipeline (annual-average climate feature, test-set reuse during lag
-  optimisation, projection features that did not match training) and in v2 hindcasts.
-  **Reported v1 metrics from earlier versions were optimistic; rerun before citing them.**
-- Calibrated v2 forecast intervals (split-conformal, per lead time, from hindcasts).
-- `DiseaseModel.project_v2()`: hybrid near-term forecast + CMIP6 scenario outlook with
-  bias correction, structural-uncertainty averaging, optional multi-district pooling,
-  thermal-suitability curve, population scaling and a long-term backtest.
-- Dashboard: separate v2 (default) and v1 pages, info tips on every control, `drop_2020`.
 
-See `CHANGELOG.md` for details and `REVIEW_FINDINGS_2026-09.md` for the evidence behind each change.
+0.4.0 is the first public release of **ClimAID v2**; the previous public release was 0.1.2 (v1 only).
 
+* **ClimAID v2 (additive):** probabilistic forecasts with calibrated likely ranges, a climate-informed renewal
+  (transmission) model, a seasonal-naive benchmark, 21 models with compulsory leakage-safe tuning, rolling
+  backtests ("hindcasts"), and a hybrid near-term + CMIP6 scenario outlook (`DiseaseModel.project_v2()`).
+* **Plain-language reports** with a Good / Moderate / Low trust rating; technical details kept in a
+  collapsible section.
+* **Leakage fixes in v1** (annual-average climate feature, test-set reuse during lag optimisation, projection
+  features that did not match training). **v1 metrics from 0.1.x were optimistic; rerun before citing them.**
+* Dashboard with separate v2 (default) and v1 pages; documentation bundled offline (`climaid docs`).
 
+Full list, including every change that alters results:
+[CHANGELOG.md](https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md).
 
+---
 
+## Installation
+
+```bash
+pip install climaid              # core
+pip install "climaid[ml]"        # + XGBoost, LightGBM, CatBoost
+```
+
+Requires Python 3.10 or newer. For development: `pip install -e ".[test]"` from a clone of this repository.
+
+Optional local-LLM reports: install [Ollama](https://ollama.com) and run `ollama serve`. No extra Python package is
+needed; without it, ClimAID uses its built-in deterministic C-DSI reports.
+
+---
+
+## Two pipelines
+
+| | **ClimAID v2** (recommended) | **ClimAID v1** (legacy) |
+|---|---|---|
+| Purpose | Forecasts for the coming months, and climate-scenario outlooks to 2050–2100 | Lag-optimised point predictions and CMIP6 projections |
+| Output | Expected cases **with likely ranges** | Expected cases |
+| Models | 21, including a climate transmission model and v1's stacked model | Stacked base → residual → correction models |
+| Checked by | Held-out months, rolling backtests, calibrated ranges | One test year |
+| Report | Plain-language summary + technical details | C-DSI deterministic report |
+
+---
+
+## Quick examples
+
+```python
+from climaid.climaid_model import DiseaseModel
+
+dm = DiseaseModel(district="IND_Pune_MAHARASHTRA", disease_file="dengue.xlsx", disease_name="Dengue")
+
+# v2: probabilistic forecast for the next 12 months
+result = dm.forecast_v2(forecast_origin="2023-12-31", horizon=12, tuning="balanced", save_report=True)
+print(result["report_path"])
+
+# v2: climate-scenario outlook
+outlook = dm.project_v2(end_year=2050, ssps=["ssp245", "ssp585"])
+print(outlook["decades"])
+
+# v1 (legacy)
+dm.optimize_lags()
+dm.train_final_model()
+```
+
+Lower-level v2 engine and migration notes: [MIGRATION_v2.md](https://github.com/sam-as/ClimAID/blob/main/MIGRATION_v2.md).
+
+---
+
+## Interfaces
+
+```bash
+climaid browse    # browser dashboard (South Asian and global data); v2 and v1 pages
+climaid wizard    # terminal wizard (South Asian data); choose v1, v2 or both
+climaid docs      # open the documentation bundled with this installation (offline)
+climaid --version
+```
+
+---
+
+## Documentation and project files
+
+| Where | What |
+|---|---|
+| [sam-as.github.io/ClimAID](https://sam-as.github.io/ClimAID/) | User guide, API reference, status & validation, changelog |
+| [CHANGELOG.md](https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md) | All changes, by version |
+| [MIGRATION_v2.md](https://github.com/sam-as/ClimAID/blob/main/MIGRATION_v2.md) | Moving from v1 to v2 |
+| [V2_FEEDBACK_RESPONSE.md](https://github.com/sam-as/ClimAID/blob/main/V2_FEEDBACK_RESPONSE.md) | Reviewer concerns and how v2 addresses them |
+| [Claude-Testing_FINDINGS_2026-09.md](https://github.com/sam-as/ClimAID/blob/main/Claude-Testing_FINDINGS_2026-09.md) | Testing log: the evidence behind each fix |
+| [benchmarks/](https://github.com/sam-as/ClimAID/tree/main/benchmarks) | Synthetic datasets, benchmark runner and saved results |
+| [README_DOCS.md](https://github.com/sam-as/ClimAID/blob/main/README_DOCS.md) | Building and releasing the documentation |
+
+---
+
+## Designed for
+
+Epidemiologists, climate scientists, public-health analysts and data scientists.
+
+## Citation
+
+> Sam, A.K., Pathak, M., Phuleria, H.C. (2026). ClimAID: A Climate-Driven Disease Modelling Framework using CMIP6
+> Projections. Preprint: [https://doi.org/10.21203/rs.3.rs-9394047/v1](https://doi.org/10.21203/rs.3.rs-9394047/v1)
+
+## License
+
+MIT. Designed by **Avik Kumar Sam** & **Harish C. Phuleria** as open-access software. Full text:
+[LICENSE](https://github.com/sam-as/ClimAID/blob/main/LICENSE). For technical feedback:
+[avik.sam@iitb.ac.in](mailto:avik.sam@iitb.ac.in).

@@ -27,9 +27,15 @@ def _synthetic():
 
 
 def test_original_model_registry_preserved():
+    import importlib.util
     names = set(list_available_models())
-    expected = {"rf", "random_forest", "xgb", "xgboost", "lgbm", "lightgbm", "catboost", "poisson", "ridge", "lasso", "elasticnet", "linear", "mlp", "neural_net", "nn", "extra_trees", "extratrees", "gbr", "gradient_boosting", "isotonic"}
-    assert expected.issubset(names)
+    expected = {"rf", "random_forest", "poisson", "ridge", "lasso", "elasticnet", "linear", "mlp", "neural_net", "nn", "extra_trees", "extratrees", "gbr", "gradient_boosting", "isotonic"}
+    # Gradient-boosting libraries are optional (pip install "climaid[ml]"); check them only when installed.
+    optional = {"xgboost": {"xgb", "xgboost"}, "lightgbm": {"lgbm", "lightgbm"}, "catboost": {"catboost"}}
+    for module, model_names in optional.items():
+        if importlib.util.find_spec(module) is not None:
+            expected |= model_names
+    assert expected.issubset(names), sorted(expected - names)
 
 
 def test_original_deterministic_report_preserved():

@@ -6,7 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Climate-informed disease modelling, forecasting and CMIP6 scenario analysis">
       
+      
+      
+        <link rel="canonical" href="https://sam-as.github.io/ClimAID/changelog/">
       
       
         <link rel="prev" href="../guide/benchmarks/">
@@ -89,7 +93,7 @@
           <div class="md-banner__inner md-grid md-typeset">
             
             
-  <strong>ClimAID 0.3.0 is under active testing.</strong>
+  <strong>ClimAID 0.4.0 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
     <a href="../guide/status/">What has been tested</a>
@@ -100,6 +104,10 @@
         </aside>
       
     </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
     
     
       
@@ -722,22 +730,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#030" class="md-nav__link">
+  <a href="#040-2026-09-29" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0.3.0
+        0.4.0 — 2026-09-29
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="0.3.0">
+    <nav class="md-nav" aria-label="0.4.0 — 2026-09-29">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#changed-behaviour-results-will-differ-from-020" class="md-nav__link">
+  <a href="#climaid-v2-new-additive" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Changed behaviour (results will differ from 0.2.0)
+        ClimAID v2 (new, additive)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed-behaviour-results-will-differ-from-earlier-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed behaviour (results will differ from earlier versions)
       
     </span>
   </a>
@@ -767,6 +786,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#documentation-and-packaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation and packaging
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#known-limitations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -779,6 +809,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.1.2
+      
+    </span>
+  </a>
   
 </li>
       
@@ -1408,14 +1449,42 @@
   
 
 
-<div class="admonition warning">
-<p class="admonition-title">Under testing</p>
-<p>Version 0.3.0 is a beta under active testing. Several changes below <strong>alter results</strong> compared with 0.2.0;
-rerun analyses before comparing or citing them.</p>
-</div>
+<!-- This page includes the repository's CHANGELOG.md (pymdownx.snippets). Edit CHANGELOG.md, not this file. -->
+
 <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h1>
-<h2 id="030">0.3.0<a class="headerlink" href="#030" title="Permanent link">&para;</a></h2>
-<h3 id="changed-behaviour-results-will-differ-from-020">Changed behaviour (results will differ from 0.2.0)<a class="headerlink" href="#changed-behaviour-results-will-differ-from-020" title="Permanent link">&para;</a></h3>
+<p>All notable changes to ClimAID are recorded here. This file is the single source for the
+changelog: the documentation page (<code>site_docs/changelog.md</code>) includes it unchanged.</p>
+<p>ClimAID is in the 0.x series and <strong>under active testing</strong>: behaviour and APIs may still change between
+minor versions, and changes that alter results are always listed under <em>Changed behaviour</em>.</p>
+<h2 id="040-2026-09-29">0.4.0 — 2026-09-29<a class="headerlink" href="#040-2026-09-29" title="Permanent link">&para;</a></h2>
+<p>First public release of <strong>ClimAID v2</strong>. The previous public release was 0.1.2 (v1 only).</p>
+<p>The version numbers 0.2.0 and 0.3.0 were used for development builds of v2 and were not released;
+everything they contained is included in 0.4.0 and described below. Where an entry says a behaviour
+changed, the comparison is with those builds or with 0.1.x.</p>
+<blockquote>
+<p><strong>Rerun v1 analyses.</strong> Several leakage bugs in the v1 pipeline were fixed (see <em>Changed behaviour</em>).
+Metrics reported with 0.1.x were optimistic; rerun analyses before comparing or citing them.</p>
+</blockquote>
+<h3 id="climaid-v2-new-additive">ClimAID v2 (new, additive)<a class="headerlink" href="#climaid-v2-new-additive" title="Permanent link">&para;</a></h3>
+<p>ClimAID v2 is an additive upgrade: the v1 disease model, full model registry, CMIP6/SSP projection
+engine, visualisation, deterministic C-DSI reporting, optional local-LLM reporting, terminal wizard,
+browser interface and dataset utilities remain available and import-compatible.
+- Climate-mandatory probabilistic forecasting engine (<code>climaid.forecasting_v2</code>,
+  <code>DiseaseModel.forecast_v2()</code>).
+- Climate-informed stochastic renewal model with a discretised gamma generation interval;
+  susceptible depletion when a valid population at risk is supplied, otherwise a relative-incidence
+  formulation (no population is invented).
+- Seasonal-naive probabilistic baseline, used as the benchmark in every report.
+- v2 wrappers around all installed v1 model families, with temporal out-of-fold residual learning.
+- Probabilistic quantile forecasts; WIS, RMSE, MAE and 50/80/95% interval coverage.
+- Rolling historical hindcasts from explicit forecast origins.
+- Explicit forecast-origin climate source (<code>forecast_climate_source</code>: <code>observed</code>, <code>projection</code>, <code>auto</code>).
+- v2 forecast report with a validation contract and methodological warnings, optionally including the
+  v1 C-DSI report.
+- Hardening: future disease observations are never used as predictors; climate feature statistics
+  are fitted only on data available at the origin; browser uploads use unique temporary filenames;
+  the browser launcher waits for the API server; reports are served from <code>/reports/</code>.</p>
+<h3 id="changed-behaviour-results-will-differ-from-earlier-versions">Changed behaviour (results will differ from earlier versions)<a class="headerlink" href="#changed-behaviour-results-will-differ-from-earlier-versions" title="Permanent link">&para;</a></h3>
 <ul>
 <li>v1 <code>YA_*</code> climate feature is a trailing 12-month mean (was the whole-calendar-year mean,
   which included future months).</li>
@@ -1498,6 +1567,23 @@ rerun analyses before comparing or citing them.</p>
   hindcast failures silently swallowed; several wizard <code>NameError</code>/<code>UnboundLocalError</code> paths;
   <code>project_multi_model_ssp</code> <code>KeyError</code> without RMSE.</li>
 </ul>
+<h3 id="documentation-and-packaging">Documentation and packaging<a class="headerlink" href="#documentation-and-packaging" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Packaging fix:</strong> the built-in South Asia climate data (<code>climaid/data/*.csv</code>) is included in the package
+  again. It had been dropped from the package-data list after 0.1.2, so an installed copy could not load the
+  built-in climate data.</li>
+<li>The package version is defined once, in <code>climaid/__init__.py</code>; <code>pyproject.toml</code>, the dashboard and the
+  documentation banner read it from there. A test checks that every version mention in the documentation
+  matches it.</li>
+<li>One changelog (this file); the former <code>CHANGELOG_v2.md</code> is merged into the 0.4.0 entry above.</li>
+<li>Documentation rebuilt and re-bundled for 0.4.0 (fixes garbled characters and stale 0.3.0 references in the
+  bundled pages); <code>site_docs/</code> is tracked in git again (it had been listed in <code>.gitignore</code>).</li>
+<li><code>pyproject.toml</code>: project links (documentation, changelog, paper), classifiers and licence file for PyPI.</li>
+<li><code>climaid --version</code> prints the installed version. The PyPI publish workflow refuses a release whose tag
+  does not match the package version.</li>
+<li>The model-registry test checks XGBoost, LightGBM and CatBoost only when they are installed, so the fast CI
+  job (installed without <code>[ml]</code>) passes.</li>
+</ul>
 <h3 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Single-district scenario projections can understate warming effects when temperature,
@@ -1507,6 +1593,10 @@ rerun analyses before comparing or citing them.</p>
   against the source before publication.</li>
 <li><code>generate_report(style="policy")</code> does not route to <code>policy_brief()</code> (open decision).</li>
 </ul>
+<h2 id="012">0.1.2<a class="headerlink" href="#012" title="Permanent link">&para;</a></h2>
+<p>Last v1-only release: stacked (base → residual → correction) climate–disease model with lag
+optimisation, CMIP6/SSP projections, C-DSI and optional local-LLM reports, terminal wizard and
+browser interface.</p>
 
 
 
@@ -1539,7 +1629,8 @@ rerun analyses before comparing or citing them.</p>
          title="National Disease Modelling Consortium">
   </div>
   
-    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria</div>
+    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria
+</div>
   
   
     Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
@@ -1559,7 +1650,7 @@ rerun analyses before comparing or citing them.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

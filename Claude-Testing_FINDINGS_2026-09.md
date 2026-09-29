@@ -1,3 +1,9 @@
+> **Note (release 0.4.0).** This is the testing log written during development, kept as a record. The
+> development builds it mentions as 0.2.0 and 0.3.0 were released together as **0.4.0**; code described here as
+> "0.3.0" is the 0.4.0 release. `V2_REVIEW_RESPONSE.md` is now `V2_FEEDBACK_RESPONSE.md`, and
+> `CHANGELOG_v2.md` is merged into `CHANGELOG.md`. For the current state see `CHANGELOG.md` and the
+> [Status & validation](https://sam-as.github.io/ClimAID/guide/status/) page.
+
 # ClimAID v2 — Review Findings (this pass)
 
 I read `README.md`, `MIGRATION_v2.md`, `CHANGELOG_v2.md` and `V2_REVIEW_RESPONSE.md`

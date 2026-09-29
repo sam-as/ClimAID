@@ -1,6 +1,11 @@
 # Migrating to ClimAID v2
 
-ClimAID v2 does not require users to abandon the existing API.
+ClimAID v2 ships with ClimAID **0.4.0** (upgrading from 0.1.x). It is additive: it does not require users to
+abandon the existing API.
+
+> **v1 results change in 0.4.0.** Leakage bugs in the v1 pipeline were fixed, so v1 metrics produced with 0.1.x
+> were optimistic. Rerun v1 analyses before comparing or citing them. Every change that alters results is listed
+> under *Changed behaviour* in [CHANGELOG.md](CHANGELOG.md).
 
 ## Existing v1 usage remains
 
@@ -39,8 +44,14 @@ result = model.forecast_v2(
     population_at_risk=None,
     forecast_climate_source="projection",
     run_hindcasts=True,
+    tuning="balanced",          # fast | balanced | deep | an integer number of trials (tuning is always on)
+    exclude_period="2020",      # COVID-19 period: "2020" (default), "YYYY-MM:YYYY-MM" or "none"
 )
 ```
+
+Omit `models` to use the six defaults (`seasonal_naive, renewal, poisson, random_forest, extra_trees,
+gradient_boosting`). For climate-scenario outlooks use `model.project_v2(...)`; see the
+[documentation](https://sam-as.github.io/ClimAID/guide/scenarios/).
 
 ## Population
 
@@ -53,3 +64,9 @@ A population value is **not** fabricated when unavailable. With no population co
 - `auto`: use observed climate for historical hindcasts when a full post-origin horizon exists; otherwise use projection climate.
 
 Use the explicit source options for operational workflows so the information set is unambiguous.
+
+## Further reading
+
+- User guide: [v2 forecasting](https://sam-as.github.io/ClimAID/guide/v2_forecasting/)
+- API reference: [ClimAID v2 API](https://sam-as.github.io/ClimAID/api/v2/)
+- Reviewer concerns and responses: [V2_FEEDBACK_RESPONSE.md](V2_FEEDBACK_RESPONSE.md)

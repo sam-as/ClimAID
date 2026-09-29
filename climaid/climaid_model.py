@@ -1188,7 +1188,7 @@ class DiseaseModel:
         many candidates biases its resulting score optimistically (the more
         candidates compared, the larger the bias) -- this is true even when
         none of the candidate features carry real signal. See
-        REVIEW_FINDINGS for a numeric demonstration.
+        Claude-Testing_FINDINGS_2026-09.md for a numeric demonstration.
 
         This method carves a genuine validation slice out of `self.train_df`
         alone (never touching `self.test_df`), which optimize_lags() then

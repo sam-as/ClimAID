@@ -1,5 +1,11 @@
 site_name: ClimAID
+site_description: Climate-informed disease modelling, forecasting and CMIP6 scenario analysis
+site_url: https://sam-as.github.io/ClimAID/
 docs_dir: site_docs
+
+# Sets config.extra.version from climaid/__init__.py (single source of the version).
+hooks:
+  - docs_hooks.py
 
 theme:
   name: material
@@ -65,6 +71,9 @@ nav:
       - Manuscript & Sample Datasets: api/resources.md
 
 markdown_extensions:
+  - pymdownx.snippets:          # site_docs/changelog.md includes the repository CHANGELOG.md
+      base_path: [.]
+      check_paths: true
   - pymdownx.highlight
   - pymdownx.superfences
   - pymdownx.tabbed:

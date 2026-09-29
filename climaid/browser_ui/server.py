@@ -10,9 +10,10 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
+from .. import __version__
 from .api import router, REPORT_DIR
 
-app = FastAPI(title="ClimAID Wizard", version="0.3.0")
+app = FastAPI(title="ClimAID Wizard", version=__version__)
 app.include_router(router)
 
 STATIC_DIR = Path(__file__).parent / "static"
@@ -27,3 +28,4 @@ DOCS_DIR = Path(__file__).resolve().parents[1] / "documentation"
 if (DOCS_DIR / "index.html").exists():
     app.mount("/documentation", StaticFiles(directory=DOCS_DIR, html=True), name="documentation")
 app.mount("/", StaticFiles(directory=STATIC_DIR, html=True), name="static")
+

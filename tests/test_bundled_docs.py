@@ -40,3 +40,9 @@ def test_cli_has_docs_command():
     from climaid.cli import app
     r = CliRunner().invoke(app, ["--help"])
     assert "docs" in r.output
+
+
+def test_package_data_includes_the_built_in_climate_data():
+    toml = (ROOT / "pyproject.toml").read_text()
+    assert '"data/*.csv"' in toml, "built-in South Asia climate data would be missing from the wheel"
+    assert (ROOT / "climaid" / "data" / "SouthAsia_weather_data.csv").exists()

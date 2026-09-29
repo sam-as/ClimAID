@@ -6,7 +6,9 @@ Author: Avik Sam
 Created: January 28, 2026
 Website: https://sites.google.com/view/aviksam
 
-This example demonstrates the complete ClimAID pipeline:
+This example demonstrates the complete ClimAID v1 pipeline (ClimAID 0.4.0). For the v2
+probabilistic forecast and scenario outlook, see DiseaseModel.forecast_v2() and
+DiseaseModel.project_v2() in the documentation: https://sam-as.github.io/ClimAID/
 
 1. Load disease and climate data
 2. Detect historical outbreaks
@@ -33,8 +35,8 @@ from climaid.llm_client import LocalOllamaLLM
 # -------------------------------------------------------------
 
 dm = DiseaseModel(
-    district="Pune_MAHARASHTRA",
-    disease_file=r"C:\Users\Avik\OneDrive\Desktop\Epidemiology_PhD\Dengue\Climate Change India Library\ClimAID\data\Pune_urban_dengue_data.xlsx",
+    district="IND_Pune_MAHARASHTRA",
+    disease_file="dengue_data.xlsx",   # path to your disease data (Excel or CSV)
     disease_name="Dengue",
     random_state=42,
 )
@@ -191,7 +193,7 @@ print(response)
 report = dm.generate_report(
     projection_summary=projection_summary,
     llm_client=llm,
-    style="policy_brief",
+    style="policy",
     open_browser=True,
 )
 

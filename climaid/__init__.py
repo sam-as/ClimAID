@@ -1,3 +1,7 @@
-__version__ = "0.3.0"
+"""ClimAID: climate-informed disease modelling, forecasting and CMIP6 scenario analysis."""
 
-# ClimAID v2 is additive; legacy modules remain import-compatible.
+# Single source of the package version. pyproject.toml, the dashboard (FastAPI app)
+# and the documentation banner all read it from here; change it only here.
+__version__ = "0.4.0"
+
+# ClimAID v2 is additive; the v1 modules remain import-compatible.

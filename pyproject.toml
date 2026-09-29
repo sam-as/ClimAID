@@ -1,15 +1,27 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "climaid"
-version = "0.4.0"
+dynamic = ["version"]         # single source: climaid/__init__.py (__version__)
 description = "ClimAID: climate-informed disease modelling, forecasting and CMIP6 scenario analysis"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{name="Avik Kumar Sam"}]
 license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["climate", "health", "epidemiology", "dengue", "malaria", "forecasting", "CMIP6"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Atmospheric Science",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
 dependencies = [
   "numpy>=1.24",
   "pandas>=2.0",
@@ -31,6 +43,13 @@ dependencies = [
   "pooch>=1.8",
 ]
 
+[project.urls]
+Homepage = "https://github.com/sam-as/ClimAID"
+Documentation = "https://sam-as.github.io/ClimAID/"
+Changelog = "https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md"
+Issues = "https://github.com/sam-as/ClimAID/issues"
+Paper = "https://doi.org/10.21203/rs.3.rs-9394047/v1"
+
 [project.optional-dependencies]
 ml = ["xgboost>=2.0", "lightgbm>=4.0", "catboost>=1.2"]
 all = ["xgboost>=2.0", "lightgbm>=4.0", "catboost>=1.2"]
@@ -39,10 +58,14 @@ test = ["pytest>=7.0", "httpx>=0.24"]
 [project.scripts]
 climaid = "climaid.cli:app"
 
+[tool.setuptools.dynamic]
+version = {attr = "climaid.__version__"}
+
 [tool.setuptools.packages.find]
 include = ["climaid*"]
 
 [tool.setuptools.package-data]
 climaid = ["assets/*", "browser_ui/static/*", "docs/*", "docs/dataset_samples/*",
+           "data/*.csv", "data/*.parquet", "data/*.xlsx", "data/*.xls",   # built-in South Asia climate data
            "documentation/*", "documentation/*/*", "documentation/*/*/*", "documentation/*/*/*/*",
            "documentation/*/*/*/*/*", "documentation/*/*/*/*/*/*"]

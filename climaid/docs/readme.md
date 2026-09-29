@@ -1,6 +1,10 @@
-# ClimAID: An AI-integrated Reproducible Climate-Driven Modelling Framework for Multi-Disease Risk Projection under CMIP6 Climate Scenarios 
+# ClimAID: An AI-integrated Reproducible Climate-Driven Modelling Framework for Multi-Disease Risk Projection under CMIP6 Climate Scenarios
 
-ClimAID (Climate Change Impact on Infectious Diseases Toolkit for India) is an offline-first, scientific Python library for climate-driven disease modelling, forecasting, and future risk projection using CMIP6 climate scenarios.
+**Version 0.4.0 (beta, under active testing).** Full, current documentation:
+[https://sam-as.github.io/ClimAID/](https://sam-as.github.io/ClimAID/), or offline with `climaid docs`.
+Methods have been checked on synthetic data only; results on real data are not yet validated.
+
+ClimAID (Climate change impact using AI on Diseases) is an offline-first, scientific Python library for climate-driven disease modelling, forecasting, and future risk projection using CMIP6 climate scenarios.
 
 Originally developed for dengue modelling in India, ClimAID is now a generalized framework for climate-sensitive infectious diseases including malaria, dengue, and other vector-borne diseases.
 
@@ -62,11 +66,14 @@ Run the full pipeline with guided prompts:
 pip install climaid
 ```
 
-Optional (for full features including local LLM):
+Optional gradient-boosting libraries (XGBoost, LightGBM, CatBoost):
 
 ```bash
-pip install climaid[full]
+pip install "climaid[ml]"
 ```
+
+Optional local LLM reports: install [Ollama](https://ollama.com) and run `ollama serve` (no extra Python
+package is needed).
 
 ---
 
@@ -75,7 +82,8 @@ pip install climaid[full]
 Run the complete climate-disease modelling pipeline:
 
 ```bash
-    climaid
+climaid wizard     # terminal wizard (choose v1, v2 or both)
+climaid browse     # browser dashboard
 ```
 
 The wizard will:
@@ -92,27 +100,31 @@ The wizard will:
 ## Programmatic Usage (Advanced Users)
 
 ```python
-    from climaid.climaid_model import DiseaseModel
+from climaid.climaid_model import DiseaseModel
 
-    dm = DiseaseModel(
-        district="Pune_MAHARASHTRA",
-        disease_file="dengue_data.xlsx",
-        disease_name="Dengue",
-        random_state=42
-    )
+dm = DiseaseModel(
+    district="IND_Pune_MAHARASHTRA",
+    disease_file="dengue_data.xlsx",
+    disease_name="Dengue",
+    random_state=42,
+)
 
-    # Optimize lag structure
-    lag_result, best_config = dm.optimize_lags()
+# v2: probabilistic forecast with calibrated likely ranges
+result = dm.forecast_v2(forecast_origin="2023-12-31", horizon=12, save_report=True)
 
-    # Train final stacked model
-    final_out = dm.train_final_model()
+# v2: climate-scenario outlook
+outlook = dm.project_v2(end_year=2050, ssps=["ssp245", "ssp585"])
 
-    # Generate projections and report
-    report = dm.generate_report(
-        projection_summary=projection_summary,
-        style="policy_brief",
-        open_browser=True
-    )
+# v1: optimise lag structure and train the stacked model
+feature_metadata, lag_search_result, best_config = dm.optimize_lags()
+final_out = dm.train_final_model()
+
+# v1: report (projection_summary from DiseaseProjection.build_projection_summary; see sample_code.py)
+report = dm.generate_report(
+    projection_summary=projection_summary,
+    style="policy",
+    open_browser=True,
+)
 ```
 
 ---
@@ -123,13 +135,16 @@ The wizard will:
     * XGBoost (xgb)
     * ExtraTrees 
     * LightGBM (lgbm)
-    * Gradient Boosting Regreesion
     * CatBoost
     * ElasticNet / Lasso / Ridge
     * Poisson Regression (epidemiology-friendly)
     * Gradient Boosting
     * Neural Networks (mlp/nn)
     * Isotonic calibration layer
+
+ClimAID v2 adds a climate renewal (transmission) model, a seasonal-naive benchmark, Tweedie,
+spline Poisson, Bayesian ridge, Huber, histogram gradient boosting, SVR and nearest neighbours
+(21 v2 models in total), each tuned automatically.
 
 ---
 
@@ -171,7 +186,12 @@ climaid/
     ├── model_parameters.py
     ├── model_registry.py
     ├── utils.py
-    ├── browse.py
+    ├── cli.py                  (climaid browse | wizard | docs)
+    ├── exclusion.py            (COVID-19 period handling)
+    ├── reporting_v2.py, reporting_scenario.py, reporting_plain.py
+    ├── forecasting_v2/         (ClimAID v2 engine)
+    ├── browser_ui/             (dashboard)
+    ├── documentation/          (bundled documentation site)
     └── data/
 ```
 
@@ -202,7 +222,7 @@ Key capabilities:
 
 * Climate risk interpretation from CMIP6 projections
 * District-level disease risk summaries
-* Policy brief–style outputs
+* Policy-style outputs
 * Publication-ready HTML dashboards
 * Deterministic fallback reports (no LLM dependency)
 
@@ -223,7 +243,7 @@ llm = LocalOllamaLLM(model="phi3")
 report = dm.generate_report(
     projection_summary=projection_summary,
     llm_client=llm,
-    style="policy_brief",
+    style="policy",
     open_browser=True
 )
 ```

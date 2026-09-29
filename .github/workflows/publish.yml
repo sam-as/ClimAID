@@ -18,6 +18,16 @@ jobs:
         with:
           python-version: "3.x"
 
+      - name: Check that the release tag matches the package version
+        run: |
+          VERSION=$(python -c "import re; print(re.search(r'__version__\s*=\s*\"([^\"]+)\"', open('climaid/__init__.py', encoding='utf-8').read()).group(1))")
+          TAG="${GITHUB_REF_NAME#v}"
+          echo "package version: $VERSION   release tag: $GITHUB_REF_NAME"
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "::error::Release tag $GITHUB_REF_NAME does not match climaid.__version__ $VERSION"
+            exit 1
+          fi
+
       - name: Install build tools
         run: pip install build
 

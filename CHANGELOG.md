@@ -1,8 +1,43 @@
 # Changelog
 
-## 0.3.0
+All notable changes to ClimAID are recorded here. This file is the single source for the
+changelog: the documentation page (`site_docs/changelog.md`) includes it unchanged.
 
-### Changed behaviour (results will differ from 0.2.0)
+ClimAID is in the 0.x series and **under active testing**: behaviour and APIs may still change between
+minor versions, and changes that alter results are always listed under *Changed behaviour*.
+
+## 0.4.0 — 2026-09-29
+
+First public release of **ClimAID v2**. The previous public release was 0.1.2 (v1 only).
+
+The version numbers 0.2.0 and 0.3.0 were used for development builds of v2 and were not released;
+everything they contained is included in 0.4.0 and described below. Where an entry says a behaviour
+changed, the comparison is with those builds or with 0.1.x.
+
+> **Rerun v1 analyses.** Several leakage bugs in the v1 pipeline were fixed (see *Changed behaviour*).
+> Metrics reported with 0.1.x were optimistic; rerun analyses before comparing or citing them.
+
+### ClimAID v2 (new, additive)
+ClimAID v2 is an additive upgrade: the v1 disease model, full model registry, CMIP6/SSP projection
+engine, visualisation, deterministic C-DSI reporting, optional local-LLM reporting, terminal wizard,
+browser interface and dataset utilities remain available and import-compatible.
+- Climate-mandatory probabilistic forecasting engine (`climaid.forecasting_v2`,
+  `DiseaseModel.forecast_v2()`).
+- Climate-informed stochastic renewal model with a discretised gamma generation interval;
+  susceptible depletion when a valid population at risk is supplied, otherwise a relative-incidence
+  formulation (no population is invented).
+- Seasonal-naive probabilistic baseline, used as the benchmark in every report.
+- v2 wrappers around all installed v1 model families, with temporal out-of-fold residual learning.
+- Probabilistic quantile forecasts; WIS, RMSE, MAE and 50/80/95% interval coverage.
+- Rolling historical hindcasts from explicit forecast origins.
+- Explicit forecast-origin climate source (`forecast_climate_source`: `observed`, `projection`, `auto`).
+- v2 forecast report with a validation contract and methodological warnings, optionally including the
+  v1 C-DSI report.
+- Hardening: future disease observations are never used as predictors; climate feature statistics
+  are fitted only on data available at the origin; browser uploads use unique temporary filenames;
+  the browser launcher waits for the API server; reports are served from `/reports/`.
+
+### Changed behaviour (results will differ from earlier versions)
 - v1 `YA_*` climate feature is a trailing 12-month mean (was the whole-calendar-year mean,
   which included future months).
 - v1 lag optimisation selects configurations on a selection-validation split inside the
@@ -82,6 +117,22 @@
   hindcast failures silently swallowed; several wizard `NameError`/`UnboundLocalError` paths;
   `project_multi_model_ssp` `KeyError` without RMSE.
 
+### Documentation and packaging
+- **Packaging fix:** the built-in South Asia climate data (`climaid/data/*.csv`) is included in the package
+  again. It had been dropped from the package-data list after 0.1.2, so an installed copy could not load the
+  built-in climate data.
+- The package version is defined once, in `climaid/__init__.py`; `pyproject.toml`, the dashboard and the
+  documentation banner read it from there. A test checks that every version mention in the documentation
+  matches it.
+- One changelog (this file); the former `CHANGELOG_v2.md` is merged into the 0.4.0 entry above.
+- Documentation rebuilt and re-bundled for 0.4.0 (fixes garbled characters and stale 0.3.0 references in the
+  bundled pages); `site_docs/` is tracked in git again (it had been listed in `.gitignore`).
+- `pyproject.toml`: project links (documentation, changelog, paper), classifiers and licence file for PyPI.
+- `climaid --version` prints the installed version. The PyPI publish workflow refuses a release whose tag
+  does not match the package version.
+- The model-registry test checks XGBoost, LightGBM and CatBoost only when they are installed, so the fast CI
+  job (installed without `[ml]`) passes.
+
 ### Known limitations
 - Single-district scenario projections can understate warming effects when temperature,
   rainfall and humidity share a seasonal cycle; use `extra_districts`, `lag_selection="v1"`
@@ -89,3 +140,9 @@
 - The `aedes_aegypti_mordecai2017` curve values (17.8 / 29.1 / 34.6 °C) must be verified
   against the source before publication.
 - `generate_report(style="policy")` does not route to `policy_brief()` (open decision).
+
+## 0.1.2
+
+Last v1-only release: stacked (base → residual → correction) climate–disease model with lag
+optimisation, CMIP6/SSP projections, C-DSI and optional local-LLM reports, terminal wizard and
+browser interface.

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block announce %}
-  <strong>ClimAID 0.4.0 is under active testing.</strong>
+  <strong>ClimAID {{ config.extra.version }} is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   {% if config.use_directory_urls %}
     <a href="{{ 'guide/status/' | url }}">What has been tested</a>

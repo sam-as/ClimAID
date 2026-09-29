@@ -11,6 +11,19 @@ import typer
 
 app = typer.Typer()
 
+
+def _print_version(value: bool):
+    if value:
+        from climaid import __version__
+        typer.echo(f"ClimAID {__version__}")
+        raise typer.Exit()
+
+
+@app.callback()
+def main(version: bool = typer.Option(False, "--version", callback=_print_version, is_eager=True,
+                                      help="Show the ClimAID version and exit.")):
+    """ClimAID: climate-informed disease modelling, forecasting and CMIP6 scenario analysis."""
+
 @app.command()
 def browse():
     """Launch ClimAID browser wizard"""

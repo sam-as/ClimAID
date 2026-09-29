@@ -34,9 +34,9 @@ htmlcov/
 climaid_outputs/
 catboost_info/
 
-# Local documentation build artifacts
+# Local documentation build output (published with `mkdocs gh-deploy`).
+# site_docs/ is the documentation SOURCE and must stay tracked.
 site/
-site_docs/
 
 # OS/editor
 .DS_Store

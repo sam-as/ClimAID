@@ -6,7 +6,11 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Climate-informed disease modelling, forecasting and CMIP6 scenario analysis">
       
+      
+      
+        <link rel="canonical" href="https://sam-as.github.io/ClimAID/guide/status/">
       
       
         <link rel="prev" href="../..">
@@ -89,7 +93,7 @@
           <div class="md-banner__inner md-grid md-typeset">
             
             
-  <strong>ClimAID 0.3.0 is under active testing.</strong>
+  <strong>ClimAID 0.4.0 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
     <a href="./">What has been tested</a>
@@ -100,6 +104,10 @@
         </aside>
       
     </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
     
     
       
@@ -1415,13 +1423,13 @@
 
 <h1 id="status-validation">Status &amp; validation<a class="headerlink" href="#status-validation" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
-<p class="admonition-title">ClimAID 0.3.0 is under active testing</p>
+<p class="admonition-title">ClimAID 0.4.0 is under active testing</p>
 <p>The methods have been checked on <strong>synthetic data with a known answer</strong>. They have <strong>not yet been
 validated on real surveillance data or on real CMIP6 projections</strong>. Until that is done, treat all outputs as
 research estimates: check them against local knowledge and surveillance experience, and do not use them as
 the sole basis for public-health decisions.</p>
 </div>
-<p>This page is updated as testing progresses. Last update: version 0.3.0.</p>
+<p>This page is updated as testing progresses. Last update: version 0.4.0.</p>
 <hr />
 <h2 id="what-has-been-tested">What has been tested<a class="headerlink" href="#what-has-been-tested" title="Permanent link">&para;</a></h2>
 <table>
@@ -1441,7 +1449,7 @@ the sole basis for public-health decisions.</p>
 <tr>
 <td>Leakage</td>
 <td>Tests that models never see data after the forecast start (v1 selection, v2 hindcasts, climate features, CMIP6 features)</td>
-<td>Fixed and tested in 0.3.0</td>
+<td>Fixed and tested in 0.4.0</td>
 </tr>
 <tr>
 <td>v2 forecast accuracy</td>
@@ -1591,7 +1599,7 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
 <li>Climate cannot predict serotype shifts, reporting changes, testing campaigns or control interventions.</li>
 <li>Single-district climate projections can understate warming effects (see <a href="../scenarios/#known-limitations-read-before-using">scenario limitations</a>).</li>
 <li>The <em>Aedes aegypti</em> thermal-curve preset values must be verified against the source before publication.</li>
-<li>v1 results produced with versions before 0.3.0 were optimistic because of leakage bugs; rerun them.</li>
+<li>v1 results produced with versions before 0.4.0 (0.1.x) were optimistic because of leakage bugs; rerun them.</li>
 </ul>
 <hr />
 <h2 id="help-us-test">Help us test<a class="headerlink" href="#help-us-test" title="Permanent link">&para;</a></h2>
@@ -1630,7 +1638,8 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
          title="National Disease Modelling Consortium">
   </div>
   
-    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria</div>
+    <div class="md-copyright__highlight">© 2025 ClimAID · Open-access software for climate-driven disease modelling · Developed by Avik Kumar Sam & Harish C. Phuleria
+</div>
   
   
     Made with <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">Material for MkDocs</a>
@@ -1650,7 +1659,7 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
