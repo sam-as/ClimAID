@@ -94,6 +94,6 @@ proportion to the number of trials. Details: [Tuning & optimisation trials](tuni
 ## Help us test
 
 If you run ClimAID on real data, we would like to hear how it performed, especially the trust rating and the
-"what actually happened" column. Email [avik.sam@iitb.ac.in](mailto:avik.sam@iitb.ac.in) or open an issue on
+"what actually happened" column. Email [avik.sam@iitb.ac.in](mailto:avik.sam@iitb.ac.in), [avik.sam@nus.edu.sg](mailto:avik.sam@nus.edu.sg) or open an issue on
 [GitHub](https://github.com/sam-as/ClimAID/issues).
 

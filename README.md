@@ -125,4 +125,4 @@ Epidemiologists, climate scientists, public-health analysts and data scientists.
 
 MIT. Designed by **Avik Kumar Sam** & **Harish C. Phuleria** as open-access software. Full text:
 [LICENSE](https://github.com/sam-as/ClimAID/blob/main/LICENSE). For technical feedback:
-[avik.sam@iitb.ac.in](mailto:avik.sam@iitb.ac.in).
+[avik.sam@iitb.ac.in](mailto:avik.sam@iitb.ac.in) | [avik.sam@nus.edu.sg](mailto:avik.sam@nus.edu.sg).
