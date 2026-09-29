@@ -1553,6 +1553,13 @@ browser interface and dataset utilities remain available and import-compatible.
 </ul>
 <h3 id="fixed">Fixed<a class="headerlink" href="#fixed" title="Permanent link">&para;</a></h3>
 <ul>
+<li><strong>Reproducibility on multi-core machines.</strong> Tree ensembles and boosting libraries were built with
+  <code>n_jobs=-1</code>. Multi-threaded Random Forest adds up its trees' predictions in whatever order the threads
+  finish, so the same data and <code>random_state</code> gave slightly different v1 lag-search results from run to run
+  (seen in CI as <code>val_rmse</code> 3.33332 vs 3.33371); v2's tree models were built the same way. Every model ClimAID
+  builds now runs single-threaded (<code>model_registry.single_threaded</code>); parallelism stays at the configuration
+  level (<code>optimize_lags(n_jobs=...)</code>), where it does not change results. Repeated runs now give identical
+  results.</li>
 <li><code>v1_stack</code> ran a lighter search than ClimAID v1 (3–15 trials, narrower lags); it now uses v1's own
   Fast / Balanced / Deep modes exactly. v1 modes are defined once (<code>model_parameters.V1_MODES</code>) and used
   by the dashboard, wizard and v2.</li>
