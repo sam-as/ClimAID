@@ -178,14 +178,75 @@ body {
 .md-typeset .doc-method {
     margin-bottom: 25px;
 }
-/* ================= "UNDER TESTING" BANNER ================= */
-.md-banner { font-size: 0.72rem; }
-.md-banner a { color: #ffffff; text-decoration: underline; font-weight: 600; }
 
-/* ================= NDMC LOGO (footer, every page) ================= */
-.md-copyright__partner { margin-bottom: 0.6rem; }
-.md-copyright__partner img {
-    height: 44px; background: #ffffff; padding: 6px 10px; border-radius: 8px; display: inline-block;
+
+/* ================= "UNDER TESTING" BANNER ================= */
+
+.md-banner {
+    font-size: 0.72rem;
 }
-/* NDMC logo on the home page */
-.md-typeset img.partner-logo-home { height: 70px; width: auto; margin-top: 0.4rem; }
+
+.md-banner a {
+    color: #ffffff;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+
+/* ================= FOOTER ================= */
+
+/* Our mauve instead of Material's near-black (the colour scheme is set on <body>,
+   so the scheme selectors are needed as well as :root) */
+:root,
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+    --md-footer-bg-color: #7b5b64;
+    --md-footer-bg-color--dark: #7b5b64;
+    --md-footer-fg-color--lighter: rgba(255, 255, 255, 0.75);
+}
+
+/* Text on the left, NDMC logo on the right */
+.md-copyright.climaid-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.md-copyright.climaid-footer a {
+    color: #ffffff;
+}
+
+/* On narrow screens the logo moves under the text */
+@media screen and (max-width: 44.9375em) {
+    .md-copyright.climaid-footer {
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ================= NDMC LOGO ================= */
+
+/* Footer (every page except the home page) */
+.md-copyright__partner {
+    flex-shrink: 0;
+}
+
+.md-copyright__partner img {
+    display: inline-block;
+    margin: 0;                /* undo the general .md-typeset img rule (the footer is .md-typeset) */
+    max-width: none;
+    box-shadow: none;
+    height: 44px;
+    padding: 6px 10px;
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+/* Home page, License section */
+.md-typeset img.partner-logo-home {
+    height: 70px;
+    width: auto;
+    margin-top: 0.4rem;
+}

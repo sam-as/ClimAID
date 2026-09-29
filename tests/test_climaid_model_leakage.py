@@ -225,37 +225,53 @@ def test_lag_search_results_use_validation_metrics_not_test_metrics():
 
 
 def test_config_selection_is_unaffected_by_corrupting_the_test_set():
-    """If optimize_lags() genuinely never uses test_df for screening/ranking,
-    corrupting test_df's target values after the train/test split (but
-    before running optimize_lags) must not change which configuration gets
-    selected, and must not prevent the search from completing cleanly."""
+    """If optimize_lags() never uses the test years for screening/ranking,
+    corrupting the target values of the test years must not change which
+    configuration is selected or its validation score.
+
+    The corruption is applied to df_merged, the table optimize_lags() rebuilds
+    its train/test split from. (An earlier version of this test corrupted
+    dm.test_df, which optimize_lags() overwrites, so the two runs were in fact
+    identical; it then failed on multi-core CI because of thread-order
+    nondeterminism, fixed by model_registry.single_threaded.)"""
     dm_clean = _make_real_model()
     dm_clean._train_test_split(train_year=None, test_year=None)
-    clean_test_df = dm_clean.test_df.copy()
+    train_year = int(dm_clean.train_df["Year"].max())
+    test_year = int(dm_clean.test_df["Year"].min())
 
     dm_corrupt = _make_real_model()
-    dm_corrupt._train_test_split(train_year=None, test_year=None)
-    # Wildly out-of-distribution / NaN-laced target values in the test set.
-    dm_corrupt.test_df = dm_corrupt.test_df.copy()
-    dm_corrupt.test_df["Count"] = np.nan
+    test_rows = pd.to_numeric(dm_corrupt.df_merged["Year"], errors="coerce") >= test_year
+    assert test_rows.any()
+    # Wildly out-of-distribution target values in the test years only.
+    dm_corrupt.df_merged.loc[test_rows, "Count"] = 1e6
 
     kwargs = _tiny_search_kwargs()
-    # Force both runs through the exact same split so optimize_lags() reuses
-    # the train/test split already set above rather than recomputing it.
-    dm_clean.train_year = dm_clean.train_df["Year"].max()
-    dm_clean.test_year = clean_test_df["Year"].min()
-    dm_corrupt.train_year = dm_corrupt.train_df["Year"].max()
-    dm_corrupt.test_year = dm_corrupt.test_df["Year"].min()
+    for dm in (dm_clean, dm_corrupt):
+        dm.train_year, dm.test_year = train_year, test_year
+        dm.optimize_lags(**kwargs)
 
-    dm_clean.optimize_lags(**kwargs)
-    dm_corrupt.optimize_lags(**kwargs)
-
-    # A NaN-corrupted test set must not poison the search (it would, if any
-    # screening/ranking step evaluated a fit against test_df).
+    # The test set really was corrupted, and the search never saw it.
+    assert (dm_corrupt.test_df["Count"] != dm_clean.test_df["Count"]).all()
     assert np.isfinite(dm_corrupt.best_config["val_rmse"])
-    assert dm_corrupt.best_config["val_rmse"] == pytest.approx(
-        dm_clean.best_config["val_rmse"]
-    )
+    assert dm_corrupt.best_config["val_rmse"] == dm_clean.best_config["val_rmse"]
+    assert list(dm_corrupt.best_config["features"]) == list(dm_clean.best_config["features"])
+
+
+def test_lag_search_is_reproducible_with_multithreaded_model_defaults(monkeypatch):
+    """Same data + same random_state must give the same search result even when
+    the model defaults ask for several threads (n_jobs > 1). Before the fix,
+    RandomForest's thread-order-dependent prediction sums made val_rmse differ
+    between runs on multi-core machines."""
+    import climaid.model_parameters as mp
+    rf_defaults = dict(mp.DEFAULT_PARAMS["rf"], n_jobs=4)   # 4 threads even on a 1-core machine
+    monkeypatch.setitem(mp.DEFAULT_PARAMS, "rf", rf_defaults)
+
+    scores = []
+    for _ in range(3):
+        dm = _make_real_model()
+        dm.optimize_lags(**_tiny_search_kwargs())
+        scores.append(float(dm.best_config["val_rmse"]))
+    assert len(set(scores)) == 1, scores
 
 
 def test_train_final_model_trusts_search_decision_without_reconsulting_test_set():

@@ -173,6 +173,8 @@ def build_estimator(name, params=None, random_state=42):
         base.setdefault("max_iter", 2000)
     if name in ("poisson",):
         base["max_iter"] = max(int(base.get("max_iter", 0)), 2000)   # v1 default 300 does not converge
+    from ..model_registry import single_threaded
+    base = single_threaded(cls, base)     # reproducible on multi-core machines (see its docstring)
     try:
         est = cls(**base)
     except TypeError:

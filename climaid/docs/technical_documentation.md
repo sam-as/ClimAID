@@ -367,7 +367,7 @@ The LLM layer does not replace epidemiological modelling but functions as an int
 8. Ranges pool count noise, parameter uncertainty (bootstrap), structural uncertainty and
    climate-model spread.
 
-Validation on synthetic data with known truth (see `Claude-Testing_FINDINGS_2026-09.md` in the repository and the
+Validation on synthetic data with known truth (see the
 [Status & validation](https://sam-as.github.io/ClimAID/guide/status/) page):
 single-district projections of a temperature-driven series were biased low (e.g. +27% vs a true
 +60% change) with the truth inside the 10–90% range; pooling across six districts recovered the

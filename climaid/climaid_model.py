@@ -12,7 +12,7 @@ from sklearn.metrics import r2_score, root_mean_squared_error
 from sklearn.isotonic import IsotonicRegression
 
 from .climate_data import ClimateData
-from .model_registry import MODEL_REGISTRY, is_model_available
+from .model_registry import MODEL_REGISTRY, is_model_available, single_threaded as _single_threaded
 from .model_parameters import DEFAULT_PARAMS, SEARCH_SPACES
 
 # ======================================================
@@ -165,7 +165,7 @@ def _optuna_objective(
     if random_state is not None and _accepts_random_state(model_cls):
         params["random_state"] = random_state
 
-    model = model_cls(**params)
+    model = model_cls(**_single_threaded(model_cls, params))
     model.fit(X_train, y_train)
 
     # Evaluate on a held-out chronological validation split when one is
@@ -274,7 +274,7 @@ def find_best_split_year(
         y_val = val_part[target_col]
 
         try:
-            model = MODEL_REGISTRY[model_name](**DEFAULT_PARAMS.get(model_name, {}))
+            model = MODEL_REGISTRY[model_name](**_single_threaded(MODEL_REGISTRY[model_name], DEFAULT_PARAMS.get(model_name, {})))
             model.fit(X_tr, y_tr)
 
             preds = model.predict(X_val)
@@ -371,7 +371,7 @@ def _evaluate_configuration(
     if random_state is not None and _accepts_random_state(MODEL_REGISTRY[base_model]):
         base_params["random_state"] = random_state
 
-    base = MODEL_REGISTRY[base_model](**base_params)
+    base = MODEL_REGISTRY[base_model](**_single_threaded(MODEL_REGISTRY[base_model], base_params))
     base.fit(X_train, y_train)
     y_base_train = base.predict(X_train)
     y_base_test = base.predict(X_test)
@@ -406,7 +406,7 @@ def _evaluate_configuration(
             if random_state is not None and _accepts_random_state(model_cls):
                 params["random_state"] = random_state
 
-            model = model_cls(**params)
+            model = model_cls(**_single_threaded(model_cls, params))
 
             y_base_tr = y_base_train[train_mask]
             y_base_val = y_base_train[val_mask]
@@ -424,7 +424,7 @@ def _evaluate_configuration(
     if random_state is not None and _accepts_random_state(MODEL_REGISTRY[residual_model]):
         res_params["random_state"] = random_state
 
-    res = MODEL_REGISTRY[residual_model](**res_params)
+    res = MODEL_REGISTRY[residual_model](**_single_threaded(MODEL_REGISTRY[residual_model], res_params))
     res.fit(X_train, resid_train)
     y_res_train = res.predict(X_train)
     y_res_test = res.predict(X_test)
@@ -478,7 +478,7 @@ def _evaluate_configuration(
                 if random_state is not None and _accepts_random_state(model_cls):
                     params["random_state"] = random_state
 
-                model = model_cls(**params)
+                model = model_cls(**_single_threaded(model_cls, params))
 
                 X_corr_tr = X_corr_train[train_mask]
                 X_corr_val = X_corr_train[val_mask]
@@ -498,7 +498,7 @@ def _evaluate_configuration(
         if random_state is not None and _accepts_random_state(MODEL_REGISTRY[correction_model]):
             corr_params["random_state"] = random_state
 
-        corr_model = MODEL_REGISTRY[correction_model](**corr_params)
+        corr_model = MODEL_REGISTRY[correction_model](**_single_threaded(MODEL_REGISTRY[correction_model], corr_params))
         corr_model.fit(X_corr_train, y_train)
         final_test = corr_model.predict(X_corr_test)
         corr_final_params = best_corr_params
@@ -1187,8 +1187,7 @@ class DiseaseModel:
         model's "held-out" performance. Reusing a test set to choose among
         many candidates biases its resulting score optimistically (the more
         candidates compared, the larger the bias) -- this is true even when
-        none of the candidate features carry real signal. See
-        Claude-Testing_FINDINGS_2026-09.md for a numeric demonstration.
+        none of the candidate features carry real signal.
 
         This method carves a genuine validation slice out of `self.train_df`
         alone (never touching `self.test_df`), which optimize_lags() then
@@ -1649,10 +1648,7 @@ class DiseaseModel:
                 if seed is not None and _accepts_random_state(MODEL_REGISTRY[base_model]):
                     base_defaults["random_state"] = seed
 
-                if "n_jobs" in str(MODEL_REGISTRY[base_model]):
-                    base_defaults["n_jobs"] = 1
-
-                model = MODEL_REGISTRY[base_model](**base_defaults)
+                model = MODEL_REGISTRY[base_model](**_single_threaded(MODEL_REGISTRY[base_model], base_defaults))
 
                 model.fit(X_train, y_train)
 
@@ -1847,7 +1843,7 @@ class DiseaseModel:
         if self.random_state is not None and _accepts_random_state(MODEL_REGISTRY[base_model_name]):
             base_params["random_state"] = self.random_state
 
-        self.base = MODEL_REGISTRY[base_model_name](**base_params)
+        self.base = MODEL_REGISTRY[base_model_name](**_single_threaded(MODEL_REGISTRY[base_model_name], base_params))
         self.base.fit(X_train, y_train)
 
         y_base_train = self.base.predict(X_train)
@@ -1868,7 +1864,7 @@ class DiseaseModel:
             if self.random_state is not None and _accepts_random_state(MODEL_REGISTRY[res_model_name]):
                 res_params["random_state"] = self.random_state
 
-            self.res = MODEL_REGISTRY[res_model_name](**res_params)
+            self.res = MODEL_REGISTRY[res_model_name](**_single_threaded(MODEL_REGISTRY[res_model_name], res_params))
             self.res.fit(X_train, y_train - y_base_train)
 
             y_res_train = self.res.predict(X_train)
@@ -1917,7 +1913,7 @@ class DiseaseModel:
             if self.random_state is not None and _accepts_random_state(MODEL_REGISTRY[corr_model_name]):
                 corr_params["random_state"] = self.random_state
 
-            self.corr = MODEL_REGISTRY[corr_model_name](**corr_params)
+            self.corr = MODEL_REGISTRY[corr_model_name](**_single_threaded(MODEL_REGISTRY[corr_model_name], corr_params))
 
             X_corr_train = np.asarray(raw_train_preds).reshape(-1, 1)
             X_corr_test = np.asarray(raw_test_preds).reshape(-1, 1)
