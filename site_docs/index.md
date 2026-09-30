@@ -100,7 +100,7 @@ ClimAID has two interfaces.
 
     ![ClimAID browser interface](assets/ClimAID_Browser_interface.png)
 
-    Figure 1: Guide to the ClimAID Browser Interface.
+    Figure 1: Guide to the ClimAID Browser Interface (version 1). The version 2 has major changes, and the new figure will be updated in due course of time. 
 
 * **ClimAID Wizard Interface** (South Asian countries)
 
@@ -111,7 +111,7 @@ ClimAID has two interfaces.
 
     ![ClimAID wizard interface](assets/ClimAID_Wizard_interface.png)
 
-    Figure 2: Guide to the ClimAID Wizard Interface.
+    Figure 2: Guide to the ClimAID Wizard Interface (version 1). The version 2 has major changes, and the new figure will be updated in due course of time. 
 
 * **This documentation, offline**
 
