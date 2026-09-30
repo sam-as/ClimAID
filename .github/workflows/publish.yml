@@ -1,7 +1,8 @@
-name: Publish to PyPI
+﻿name: Publish to PyPI
 
 on:
-  release:
+  workflow_dispatch:
+    release:
     types: [published]
 
 jobs:
@@ -36,3 +37,4 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
