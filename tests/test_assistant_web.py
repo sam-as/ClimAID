@@ -1,4 +1,7 @@
 """The assistant's chat page API (climaid/browser_ui/assistant_api.py)."""
+import copy
+import faulthandler
+import shutil
 import time
 
 import pytest
@@ -10,29 +13,50 @@ from climaid.browser_ui.server import app
 from test_assistant import DISTRICTS, RecordingRunner, _synthetic
 
 
+@pytest.fixture(scope="module")
+def precomputed(tmp_path_factory):
+    """One real (small) v2 forecast, computed up front in the main thread.
+
+    These tests check the chat page's plumbing (uploads, background runs, polling, report links); the
+    forecast itself is tested in test_assistant.py. Computing it once here keeps the background thread
+    short and independent of the machine's speed or thread scheduling.
+    """
+    tmp = tmp_path_factory.mktemp("precomputed")
+    rec = RecordingRunner(tmp)
+    dm = rec.load_model({"disease_name": "Dengue", "district": "NPL_Kathmandu_BAGMATI"})
+    raw = rec.forecast(dm, {"forecast_origin": "2023-12-31", "horizon": 6})
+    return raw
+
+
 @pytest.fixture
-def client(monkeypatch, tmp_path):
+def client(monkeypatch, tmp_path, precomputed):
     monkeypatch.setattr(core.Assistant, "districts", property(lambda self: DISTRICTS))
     monkeypatch.setattr(aa, "ASSISTANT_REPORTS", aa.REPORT_DIR / "assistant_test")
     rec = RecordingRunner(tmp_path)
     monkeypatch.setattr(aa.WebRunner, "load_model", lambda self, settings: rec.load_model(settings))
 
     def forecast(self, dm, settings):
+        assert settings["horizon"] == 6 and settings["forecast_origin"] == "2023-12-31"
         self.out_dir.mkdir(parents=True, exist_ok=True)
-        return self._unique(RecordingRunner(self.out_dir).forecast(dm, dict(settings)), "forecast")
+        result = copy.deepcopy(precomputed)
+        report = self.out_dir / "climaid_v2_forecast.html"
+        shutil.copyfile(precomputed["report_path"], report)
+        result["report_path"] = str(report)
+        return self._unique(result, "forecast")
     monkeypatch.setattr(aa.WebRunner, "forecast", forecast)
     aa._sessions.clear()
     return TestClient(app)
 
 
-def _wait(client, sid, timeout=120):
+def _wait(client, sid, timeout=300):
     start = time.time()
     while time.time() - start < timeout:
         data = client.get("/assistant/messages", headers={"X-ClimAID-Session": sid}).json()
         if not data["busy"]:
             return data
         time.sleep(0.2)
-    raise AssertionError("assistant still busy")
+    faulthandler.dump_traceback(all_threads=True)      # shows where the background run is stuck
+    raise AssertionError(f"assistant still busy after {timeout} s; thread stacks printed above")
 
 
 def _say(client, sid, text):
