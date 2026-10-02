@@ -21,7 +21,7 @@ def _wait_for_server(host: str, port: int, timeout: float = 12.0) -> bool:
     return False
 
 
-def launch_browser_ui():
+def launch_browser_ui(path: str = "/"):
     """Start the ClimAID FastAPI app and open the browser.
 
     Startup exceptions are captured from the background thread and surfaced to
@@ -55,7 +55,7 @@ def launch_browser_ui():
                 f"Original error: {type(exc).__name__}: {exc}"
             ) from exc
         if _wait_for_server(host, port, timeout=0.25):
-            webbrowser.open(url)
+            webbrowser.open(url + path)
             # Keep the CLI process alive while the browser server runs.
             # The server thread is intentionally non-daemon so it is not
             # terminated as soon as this function returns.

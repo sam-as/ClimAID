@@ -1,6 +1,6 @@
 # ClimAID: An AI-integrated Reproducible Climate-Driven Modelling Framework for Multi-Disease Risk Projection under CMIP6 Climate Scenarios
 
-**Version 0.4.0 (beta, under active testing).** Full, current documentation:
+**Version 0.4.1 (beta, under active testing).** Full, current documentation:
 [https://sam-as.github.io/ClimAID/](https://sam-as.github.io/ClimAID/), or offline with `climaid docs`.
 Methods have been checked on synthetic data only; results on real data are not yet validated.
 
@@ -82,6 +82,7 @@ package is needed).
 Run the complete climate-disease modelling pipeline:
 
 ```bash
+climaid ai         # built-in assistant (plain-language guidance, offline)
 climaid wizard     # terminal wizard (choose v1, v2 or both)
 climaid browse     # browser dashboard
 ```
@@ -142,9 +143,9 @@ report = dm.generate_report(
     * Neural Networks (mlp/nn)
     * Isotonic calibration layer
 
-ClimAID v2 adds a climate renewal (transmission) model, a seasonal-naive benchmark, Tweedie,
+ClimAID v2 adds a climate renewal (transmission) model, a seasonal-naive benchmark, SARIMAX, Tweedie,
 spline Poisson, Bayesian ridge, Huber, histogram gradient boosting, SVR and nearest neighbours
-(21 v2 models in total), each tuned automatically.
+SARIMAX (22 v2 models in total), each tuned automatically.
 
 ---
 
@@ -186,10 +187,11 @@ climaid/
     ├── model_parameters.py
     ├── model_registry.py
     ├── utils.py
-    ├── cli.py                  (climaid browse | wizard | docs)
+    ├── cli.py                  (climaid ai | browse | wizard | docs)
     ├── exclusion.py            (COVID-19 period handling)
     ├── reporting_v2.py, reporting_scenario.py, reporting_plain.py
     ├── forecasting_v2/         (ClimAID v2 engine)
+    ├── assistant/              (climaid ai)
     ├── browser_ui/             (dashboard)
     ├── documentation/          (bundled documentation site)
     └── data/

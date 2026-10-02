@@ -2811,7 +2811,7 @@ def _climaid_v2_project(self, forecast_origin=None, end_year=2050, ssps=None, gc
         seasonal cycles coincide in this district but not elsewhere.
     temperature_curve : str or (T_min, T_opt, T_max), optional
         Constrain the temperature response to a thermal-suitability curve
-        (e.g. "aedes_aegypti_mordecai2017"; verify the values before use).
+        (e.g. "aedes_aegypti_mordecai2017", values from Mordecai et al. 2017).
     population_projection : DataFrame(year, population[, ssp]), optional
         Also report results scaled by projected population (constant incidence
         per person). Climate-only results are always reported.

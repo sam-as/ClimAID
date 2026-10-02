@@ -43,6 +43,7 @@ nav:
 
   - User guide:
       - "Status & validation (under testing)": guide/status.md
+      - "ClimAID assistant (climaid ai)": guide/assistant.md
       - v2 forecasting: guide/v2_forecasting.md
       - Tuning & optimisation trials: guide/tuning.md
       - Climate scenario outlook: guide/scenarios.md

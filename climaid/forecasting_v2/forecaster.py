@@ -40,7 +40,7 @@ class ClimaidV2Forecaster:
     Parameters
     ----------
     models : iterable[str]
-        Any combination of ``seasonal_naive``, ``renewal`` and all model names
+        Any combination of ``seasonal_naive``, ``renewal``, ``sarimax``, ``v1_stack`` and all model names
         available in the original ClimAID registry.
     population_at_risk : float, optional
         Used by the renewal component only when the disease data do not contain
@@ -76,7 +76,7 @@ class ClimaidV2Forecaster:
 
     @staticmethod
     def available_models():
-        return ["seasonal_naive", "renewal"] + ClimateMLModelFactory.available_models() + ["v1_stack"]
+        return ["seasonal_naive", "renewal", "sarimax"] + ClimateMLModelFactory.available_models() + ["v1_stack"]
 
     @staticmethod
     def _seasonal_period(disease: pd.DataFrame, date_col="time") -> int:
@@ -139,6 +139,16 @@ class ClimaidV2Forecaster:
         self.ml_ = {}
         for model_name in self.models:
             if model_name in ("seasonal_naive", "renewal"):
+                continue
+            if model_name == "sarimax":
+                from .sarimax import SarimaxForecaster
+                try:
+                    self.ml_[model_name] = SarimaxForecaster(date_col=self.date_col, case_col=self.case_col,
+                                                             random_state=self.random_state, tuning=self.tuning,
+                                                             ).fit(self.disease_, c, self.cutoff_)
+                    self.fitted_models_.append(model_name)
+                except Exception as exc:          # convergence or data problems: skip SARIMAX, keep the run
+                    self.model_warnings_.append(f"SARIMAX could not be fitted and was left out: {exc}")
                 continue
             if model_name == "v1_stack":
                 from .v1_stack import V1StackForecaster

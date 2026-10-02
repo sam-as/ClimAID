@@ -1,6 +1,6 @@
 # ClimAID v2 — Feedback-to-Implementation Map
 
-How reviewer concerns are addressed in ClimAID 0.4.0 (the first release with v2). What has been tested, and
+How reviewer concerns are addressed in ClimAID v2 (introduced in 0.4.0; current version 0.4.1). What has been tested, and
 how, is on the [Status & validation](https://sam-as.github.io/ClimAID/guide/status/) page; the full list of
 changes is in [CHANGELOG.md](CHANGELOG.md).
 

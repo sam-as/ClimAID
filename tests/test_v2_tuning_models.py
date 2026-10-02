@@ -79,6 +79,6 @@ def test_forecast_records_tuning_per_model():
 
 def test_all_listed_models_are_constructible():
     for name in ClimaidV2Forecaster.available_models():
-        if name in ("seasonal_naive", "renewal", "v1_stack"):   # not single estimators
+        if name in ("seasonal_naive", "renewal", "sarimax", "v1_stack"):   # not single estimators (tested separately)
             continue
         build_estimator({"rf": "random_forest"}.get(name, name))

@@ -28,18 +28,19 @@ every value, and tests itself on the past before you rely on it.
 
 ---
 
-## Models (21)
+## Models (22)
 
 | Group | Models |
 |---|---|
 | Baselines | **Seasonal naïve** ("same as recent years", the benchmark to beat) |
 | Mechanistic | **Climate renewal** transmission model (optional susceptible depletion if population is given) |
+| Time series | **SARIMAX** (`sarimax`): seasonal ARIMA with climate as external inputs, on log(1 + cases); tuning chooses the orders (p, d, q)(P, D, Q)₁₂ and the climate lag (0–3 months). Monthly data only. Not a default: best on the non-seasonal benchmark but weaker on the realistic one (see [Benchmarks](benchmarks.md#sarimax)); slower than the regression models |
 | Regression | Linear, Ridge, Lasso, Elastic net, **Poisson**, Tweedie, Smooth-curve Poisson (GAM-style), Bayesian ridge, Huber (spike-resistant) |
 | Tree ensembles | **Random forest**, **Extra trees**, **Gradient boosting**, Hist gradient boosting (Poisson), XGBoost*, LightGBM*, CatBoost* |
 | Other | Neural network (MLP), Support vector regression, Nearest neighbours |
 | v1 inside v2 | **ClimAID v1 stacked model** (`v1_stack`): the full v1 pipeline in your chosen v1 mode (Fast 50 / Balanced 200 / Deep 500 trials, v1's models and full lag ranges), re-run at every backtest start date and tested exactly like the others. Slow. |
 
-Default selection in **bold** (excluding `v1_stack`). \*Needs `pip install "climaid[ml]"`.
+Default selection in **bold** (excluding `sarimax` and `v1_stack`). \*Needs `pip install "climaid[ml]"`.
 Each machine-learning model is paired with a residual model trained on its time-ordered out-of-fold errors,
 and all selected models are also combined into an **ensemble** (the median of their forecasts).
 
@@ -87,7 +88,7 @@ See [Tuning & optimisation trials](tuning.md) for how accuracy and runtime chang
 |---|---|---|
 | `forecast_origin` | last observation | Use data up to this date |
 | `horizon` | 12 | Months to forecast |
-| `models` | 6 defaults | Any of the 21 models |
+| `models` | 6 defaults | Any of the 22 models |
 | `tuning` | `"balanced"` | Tuning effort (cannot be switched off) |
 | `run_hindcasts` / `hindcast_origins` | True / 4 | Backtests used for checking and calibration |
 | `calibrate_intervals` | True | Calibrate likely ranges from the backtests |

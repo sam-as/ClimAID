@@ -1,12 +1,12 @@
 # Status & validation
 
-!!! warning "ClimAID 0.4.0 is under active testing"
+!!! warning "ClimAID 0.4.1 is under active testing"
     The methods have been checked on **synthetic data with a known answer**. They have **not yet been
     validated on real surveillance data or on real CMIP6 projections**. Until that is done, treat all outputs as
     research estimates: check them against local knowledge and surveillance experience, and do not use them as
     the sole basis for public-health decisions.
 
-This page is updated as testing progresses. Last update: version 0.4.0.
+This page is updated as testing progresses. Last update: version 0.4.1.
 
 ---
 
@@ -86,7 +86,8 @@ proportion to the number of trials. Details: [Tuning & optimisation trials](tuni
 * Synthetic data flatter the models; even the "realistic" dataset has clean climate inputs.
 * Climate cannot predict serotype shifts, reporting changes, testing campaigns or control interventions.
 * Single-district climate projections can understate warming effects (see [scenario limitations](scenarios.md#known-limitations-read-before-using)).
-* The *Aedes aegypti* thermal-curve preset values must be verified against the source before publication.
+* The *Aedes aegypti* thermal-curve preset uses the values from Mordecai et al. (2017) in a simple
+  suitability shape; it is not a re-implementation of their transmission model.
 * v1 results produced with versions before 0.4.0 (0.1.x) were optimistic because of leakage bugs; rerun them.
 
 ---

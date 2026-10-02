@@ -948,7 +948,8 @@ async function loadAvailableV2Models(){
             hist_gradient_boosting:"Hist Gradient Boosting (Poisson)",
             svr:"Support Vector Regression",
             knn:"Nearest Neighbours (KNN)",
-            v1_stack:"ClimAID v1 stacked model"
+            v1_stack:"ClimAID v1 stacked model",
+            sarimax:"SARIMAX (seasonal ARIMA)"
         };
         const defaults=data.defaults || ["seasonal_naive","renewal","poisson","random_forest","extra_trees","gradient_boosting"];
         models.forEach(model=>{
@@ -1009,6 +1010,7 @@ const MODEL_TIPS = {
     hist_gradient_boosting:"Fast gradient boosting with a Poisson loss, designed for count data.",
     svr:"Support vector regression: fits a smooth curve while ignoring small errors. Often weaker on short series.",
     knn:"Predicts from the most similar past months. Simple, but usually weaker on short series and cannot extrapolate.",
+    sarimax:"Seasonal ARIMA with climate as external inputs: the classic time-series benchmark in climate-and-disease studies. Fitted on log(1 + cases); tuning picks its orders and the climate lag. Monthly data only; slower than the regression models.",
     v1_stack:"The full ClimAID v1 pipeline (lag search, then base, residual and correction models) run inside v2, so it is tested and given likely ranges exactly like the other models. Slow: about a minute per fit on Fast tuning, and it is refitted at every hindcast start date."
 };
 const MODEL_ALIASES = {rf:"random_forest", extratrees:"extra_trees", gbr:"gradient_boosting", xgb:"xgboost",

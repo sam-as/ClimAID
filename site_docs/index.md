@@ -1,7 +1,7 @@
 # ClimAID - **Climate change impact using AI on Diseases**
 
-!!! warning "Under active testing — version 0.4.0 (beta)"
-    ClimAID 0.4.0 is under active testing. Its methods have been checked on synthetic data with a known
+!!! warning "Under active testing — version 0.4.1 (beta)"
+    ClimAID 0.4.1 is under active testing. Its methods have been checked on synthetic data with a known
     answer, but **not yet validated on real surveillance data or real CMIP6 projections**. Treat outputs as
     research estimates, check them against local knowledge, and do not use them as the sole basis for
     public-health decisions. See [Status & validation](guide/status.md) for what has and has not been tested.
@@ -32,7 +32,7 @@ dengue and malaria, using machine learning, a climate-informed transmission mode
 * Analyse historical disease patterns and detect past outbreak signals
 * Link cases to temperature, rainfall, humidity and El Niño (ENSO), including lagged and interaction effects
 * **Forecast** the coming months with likely ranges that are calibrated against past performance
-* Compare 21 models, all tuned automatically, against a simple "same as recent years" baseline
+* Compare 22 models, all tuned automatically, against a simple "same as recent years" baseline
 * **Project** how cases could change under CMIP6 climate scenarios, with uncertainty from climate models,
   statistics and model structure
 * Generate reports written for non-specialists, with full technical details for specialists
@@ -89,7 +89,17 @@ Python 3.10 or newer. Package on PyPI: [pypi.org/project/climaid](https://pypi.o
 
 ## Workflow
 
-ClimAID has two interfaces.
+ClimAID has three interfaces.
+
+* **ClimAID assistant** (South Asian data, or your own climate file)
+
+    ```text
+    climaid ai              # terminal
+    climaid ai --browser    # chat page in your browser (also under "Assistant" in the dashboard)
+    ```
+    Describe what you want in plain words ("forecast dengue in Pune for the next 6 months"); the assistant asks
+    for anything missing, runs ClimAID and explains the results. Built in and offline, with no AI model. See
+    [ClimAID assistant](guide/assistant.md).
 
 * **ClimAID Browser Interface** (South Asian and global countries)
 
@@ -130,7 +140,7 @@ ClimAID has two interfaces.
 * **[Climate scenario outlook](guide/scenarios.md)** — how projections are made and how to read them
 * **[Reading the reports](guide/reports.md)** — the plain-language report and its trust rating
 * **[Benchmarks & synthetic data](guide/benchmarks.md)** — how ClimAID is tested
-* **[Changelog](changelog.md)** — what changed in 0.4.0, including changes that alter results
+* **[Changelog](changelog.md)** — what changed in each version, including changes that alter results
 * API reference for all modules (sidebar)
 
 ---

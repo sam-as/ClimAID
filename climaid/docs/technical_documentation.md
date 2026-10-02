@@ -309,7 +309,9 @@ The LLM layer does not replace epidemiological modelling but functions as an int
 
 ### 13.1 Probabilistic forecasting (`DiseaseModel.forecast_v2`)
 
-* Models (21): seasonal naïve benchmark, climate renewal model, and 19 statistical/ML learners:
+* Models (22): seasonal naïve benchmark, climate renewal model, SARIMAX (seasonal ARIMA with lagged,
+  standardised climate regressors on log(1 + cases), orders and climate lag chosen by time-ordered CV),
+  and 19 statistical/ML learners:
   linear, ridge, lasso, elastic net, Poisson, Tweedie, spline Poisson (GAM-style), Bayesian ridge,
   Huber, random forest, extra trees, gradient boosting, Poisson histogram gradient boosting,
   XGBoost, LightGBM, CatBoost, MLP, SVR and k-nearest neighbours. Each ML learner is paired with a

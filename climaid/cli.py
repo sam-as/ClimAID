@@ -66,5 +66,22 @@ def docs(port: int = typer.Option(0, help="Port to serve on (0 = any free port)"
         server.shutdown()
 
 
+
+@app.command()
+def ai(browser: bool = typer.Option(False, "--browser", "-b",
+                                    help="Open the assistant's chat page in your web browser instead.")):
+    """Chat with the built-in ClimAID assistant (offline, no AI model).
+
+    It guides you through a forecast or climate outlook, runs it, and explains the results
+    and the documentation. Also available as a chat page in the dashboard (climaid browse).
+    """
+    if browser:
+        from climaid.browser_ui.launcher import launch_browser_ui
+        launch_browser_ui("/assistant.html")
+        return
+    from climaid.assistant.terminal import run_terminal
+    run_terminal()
+
+
 if __name__ == "__main__":
     app()

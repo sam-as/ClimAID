@@ -2,74 +2,78 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://sam-as.github.io/ClimAID/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/changelog/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/climate/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/datasets/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/llmclient/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/model/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/plots/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/projections/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/reporting/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/resources/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/utils/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/api/v2/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
+    </url>
+    <url>
+         <loc>https://sam-as.github.io/ClimAID/guide/assistant/</loc>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/guide/benchmarks/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/guide/reports/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/guide/scenarios/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/guide/status/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/guide/tuning/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
     <url>
          <loc>https://sam-as.github.io/ClimAID/guide/v2_forecasting/</loc>
-         <lastmod>2026-09-29</lastmod>
+         <lastmod>2026-10-02</lastmod>
     </url>
 </urlset>

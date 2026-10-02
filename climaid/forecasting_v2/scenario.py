@@ -62,9 +62,7 @@ QCOLS = [f"q{int(round(p * 1000)):03d}" for p in DEFAULT_PROBS]
 # Thermal-suitability presets: (T_min, T_opt, T_max) in degrees C.
 # aedes_aegypti_mordecai2017: thermal limits and optimum of the mechanistic
 # R0(T) for dengue transmission by Aedes aegypti, as reported by Mordecai et
-# al. (2017, PLoS Neglected Tropical Diseases). These values were entered from
-# memory of that paper and could not be checked against it from the
-# development environment -- verify them before publication.
+# al. (2017, PLoS Neglected Tropical Diseases, doi:10.1371/journal.pntd.0005568).
 TEMPERATURE_CURVES = {"aedes_aegypti_mordecai2017": (17.8, 29.1, 34.6)}
 
 

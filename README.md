@@ -1,6 +1,6 @@
 # ClimAID — Climate change impact using AI on Diseases
 
-**Version 0.4.0 (beta, under active testing)** · [Documentation](https://sam-as.github.io/ClimAID/) ·
+**Version 0.4.1 (beta, under active testing)** · [Documentation](https://sam-as.github.io/ClimAID/) ·
 [PyPI](https://pypi.org/project/climaid/) · [Changelog](https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md) ·
 [Paper](https://doi.org/10.21203/rs.3.rs-9394047/v1)
 
@@ -12,25 +12,28 @@ ensembles.
   Bangladesh.
 * Data from other countries are supported through the global mode of the browser interface.
 
-> **Under active testing.** ClimAID 0.4.0 has been checked on synthetic data with a known answer, but **not yet
+> **Under active testing.** ClimAID 0.4.1 has been checked on synthetic data with a known answer, but **not yet
 > validated on real surveillance data or real CMIP6 projections**. Treat outputs as research estimates and do not
 > use them as the sole basis for public-health decisions. See
 > [Status & validation](https://sam-as.github.io/ClimAID/guide/status/).
 
 ---
 
-## What's new in 0.4.0
+## What's new in 0.4.1
 
-0.4.0 is the first public release of **ClimAID v2**; the previous public release was 0.1.2 (v1 only).
+* **`climaid ai`: built-in assistant.** Describe what you want in plain language ("forecast dengue in Pune for
+  the next 6 months"); it asks for anything missing, runs the forecast or climate outlook, and explains the
+  results and the methods. Fully offline and with no AI model: every number comes from ClimAID's own results.
+  In the terminal, or as a chat page (`climaid ai --browser`, or *Assistant* in the dashboard).
+* **SARIMAX** as an optional v2 model (seasonal ARIMA with climate inputs), tuned, backtested and calibrated
+  like every other model. Best of all models on the non-seasonal synthetic benchmark; weaker on the realistic
+  one, so not a default.
 
-* **ClimAID v2 (additive):** probabilistic forecasts with calibrated likely ranges, a climate-informed renewal
-  (transmission) model, a seasonal-naive benchmark, 21 models with compulsory leakage-safe tuning, rolling
-  backtests ("hindcasts"), and a hybrid near-term + CMIP6 scenario outlook (`DiseaseModel.project_v2()`).
-* **Plain-language reports** with a Good / Moderate / Low trust rating; technical details kept in a
-  collapsible section.
-* **Leakage fixes in v1** (annual-average climate feature, test-set reuse during lag optimisation, projection
-  features that did not match training). **v1 metrics from 0.1.x were optimistic; rerun before citing them.**
-* Dashboard with separate v2 (default) and v1 pages; documentation bundled offline (`climaid docs`).
+**0.4.0** was the first public release of **ClimAID v2** (the previous public release was 0.1.2, v1 only):
+probabilistic forecasts with calibrated likely ranges, a climate-informed renewal (transmission) model, a
+seasonal-naive benchmark, models with compulsory leakage-safe tuning, rolling backtests ("hindcasts"), a hybrid
+near-term + CMIP6 scenario outlook (`DiseaseModel.project_v2()`), plain-language reports with a trust rating,
+and leakage fixes in v1. **v1 metrics from 0.1.x were optimistic; rerun before citing them.**
 
 Full list, including every change that alters results:
 [CHANGELOG.md](https://github.com/sam-as/ClimAID/blob/main/CHANGELOG.md).
@@ -90,6 +93,8 @@ Lower-level v2 engine and migration notes: [MIGRATION_v2.md](https://github.com/
 ## Interfaces
 
 ```bash
+climaid ai        # built-in assistant: describe what you want; it guides you and runs ClimAID (offline)
+climaid ai -b     # the same assistant as a chat page in your browser (also in the dashboard menu)
 climaid browse    # browser dashboard (South Asian and global data); v2 and v1 pages
 climaid wizard    # terminal wizard (South Asian data); choose v1, v2 or both
 climaid docs      # open the documentation bundled with this installation (offline)

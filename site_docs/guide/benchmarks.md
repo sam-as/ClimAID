@@ -42,3 +42,33 @@ It makes 12-month forecasts from four start dates for each dataset through the f
 **below 1.0 means better than the baseline**.
 
 Results are summarised on the [Status & validation](status.md) page.
+
+`--models a,b,...` chooses the models (default: seasonal naive, Poisson, random forest, gradient boosting).
+
+---
+
+## SARIMAX
+
+SARIMAX was benchmarked alongside the four standard benchmark models (same run, Fast tuning, 12-month forecasts
+from four start dates; results in `benchmarks/results/sarimax/`):
+
+```bash
+python benchmarks/run_benchmarks.py --tuning fast \
+    --models seasonal_naive,poisson,random_forest,gradient_boosting,sarimax --out benchmarks/results/sarimax
+```
+
+Score relative to the baseline (WIS ratio; lower is better) and coverage of the 80% likely range:
+
+| Dataset | SARIMAX | Best other single model | Ensemble (with SARIMAX) | SARIMAX 80% coverage |
+|---|---|---|---|---|
+| Seasonal (clean) | **0.63** | 0.63 (random forest) | 0.60 | 0.98 |
+| Non-seasonal (clean) | **0.58** | 1.04 (Poisson) | 0.86 | 0.94 |
+| Realistic (hard) | 0.84 | **0.63** (Poisson) | 0.63 | 0.72 |
+
+SARIMAX was the best single model on the non-seasonal data, where the other models were no better than the
+baseline, and tied for best on the seasonal data. On the realistic dataset (reporting change, outbreak years,
+missing months, data-entry errors) it was clearly worse than Poisson regression and the tree models, and its
+80% ranges contained the truth only 72% of the time. Adding it improved the ensemble slightly on the clean
+datasets and left it unchanged on the realistic one. Because the realistic case is the closest to real
+surveillance data, SARIMAX is offered as an optional model and benchmark rather than a default; this can be
+revisited once ClimAID has been tested on real data.

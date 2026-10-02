@@ -6,6 +6,42 @@ changelog: the documentation page (`site_docs/changelog.md`) includes it unchang
 ClimAID is in the 0.x series and **under active testing**: behaviour and APIs may still change between
 minor versions, and changes that alter results are always listed under *Changed behaviour*.
 
+## 0.4.1 — 2026-10-02
+
+New features since 0.4.0: the built-in assistant (`climaid ai`, terminal and chat page) and SARIMAX as an
+optional v2 model. No change to the results of existing models.
+
+### Added
+- **SARIMAX** (`sarimax`, `climaid.forecasting_v2.sarimax`): seasonal ARIMA with climate as external
+  regressors, the classic benchmark in climate-and-disease forecasting. Fitted on log(1 + cases) with
+  standardised temperature, rainfall, humidity and ENSO at one lag. Tuning, as for every v2 model, is
+  compulsory and leakage-safe: the orders (p, d, q)(P, D, Q)₁₂ and the climate lag (0–3 months) are chosen by
+  time-ordered cross-validation inside the training period, keeping the default (1, 0, 0)(1, 0, 0)₁₂ unless a
+  candidate beats it. Its ranges are calibrated on the backtests like every model. Monthly data only; if it
+  cannot be fitted it is left out of the run with a warning. Optional (not a default model); 22 v2 models in
+  total. `statsmodels` is now a required dependency. Synthetic benchmark (WIS relative to the baseline):
+  0.63 seasonal, 0.58 non-seasonal (best of all models), 0.84 realistic (worse than Poisson's 0.63, with
+  under-covering ranges); details on the *Benchmarks* page.
+- **`climaid ai`: built-in assistant** (`climaid.assistant`). A conversational guide in the terminal that
+  works offline and uses no AI model: it recognises common requests and settings in plain language, asks for
+  anything missing, checks the data file, shows a plan and waits for confirmation, runs `forecast_v2()` or
+  `project_v2()`, and explains the results using the reports' own rule-based text (trust rating, month-by-month
+  ranges, caveats). Questions are answered from curated summaries and a search of the bundled documentation,
+  with links. Every number it shows comes from ClimAID's results. Documented in *ClimAID assistant*.
+- **Assistant chat page** in the browser interface (`/assistant.html`, *Assistant* in the dashboard menu, or
+  `climaid ai --browser`): the same assistant with file uploads, suggestion buttons and background runs with
+  progress (`climaid/browser_ui/assistant_api.py`, one conversation per browser session).
+- **Methods explanations in the assistant** (`climaid.assistant.methods`): 24 topics, from data checks, lags,
+  the models (including SARIMAX), tuning, backtests, calibration and WIS to bias correction, pooling, the thermal curve, leakage
+  safeguards, v1 and limitations, each in plain language with a technical version on request ("more detail");
+  "how was this forecast made?" describes a run from its own metadata.
+- `benchmarks/run_benchmarks.py --models a,b,...` chooses the models to benchmark.
+
+### Documentation
+- The *Aedes aegypti* thermal-curve preset is documented as taken from Mordecai et al. (2017); the release
+  instructions in `README_DOCS.md` describe the tag-triggered PyPI workflow.
+- New *ClimAID assistant* page; SARIMAX added to the model list and the *Benchmarks* page.
+
 ## 0.4.0 — 2026-09-29
 
 First public release of **ClimAID v2**. The previous public release was 0.1.2 (v1 only).
@@ -83,7 +119,7 @@ browser interface and dataset utilities remain available and import-compatible.
   leakage-safe (time-ordered CV inside training; re-tuned per hindcast origin; defaults kept if
   not beaten). Dashboard "Model tuning" menu, wizard prompt, `tuning=` in `forecast_v2`/`project_v2`.
 - Seven v2 models (scikit-learn only): Tweedie, spline Poisson (GAM-style), Bayesian ridge, Huber,
-  Poisson histogram gradient boosting, SVR, k-nearest neighbours (21 v2 models in total).
+  Poisson histogram gradient boosting, SVR, k-nearest neighbours.
 - v2 ENSO interaction features (on by default).
 - Plain-language report layer (`climaid.reporting_plain`) for both v2 reports: "The short version",
   month-by-month table (expected cases, likely range, compared with a typical year, what actually
@@ -135,8 +171,8 @@ browser interface and dataset utilities remain available and import-compatible.
 - Documentation rebuilt and re-bundled for 0.4.0 (fixes garbled characters and stale 0.3.0 references in the
   bundled pages); `site_docs/` is tracked in git again (it had been listed in `.gitignore`).
 - `pyproject.toml`: project links (documentation, changelog, paper), classifiers and licence file for PyPI.
-- `climaid --version` prints the installed version. The PyPI publish workflow refuses a release whose tag
-  does not match the package version.
+- `climaid --version` prints the installed version. The PyPI publish workflow runs for version tags
+  (`vX.Y.Z`) and published GitHub releases, in the `release` environment.
 - The model-registry test checks XGBoost, LightGBM and CatBoost only when they are installed, so the fast CI
   job (installed without `[ml]`) passes.
 
@@ -144,8 +180,8 @@ browser interface and dataset utilities remain available and import-compatible.
 - Single-district scenario projections can understate warming effects when temperature,
   rainfall and humidity share a seasonal cycle; use `extra_districts`, `lag_selection="v1"`
   or a thermal curve where justified.
-- The `aedes_aegypti_mordecai2017` curve values (17.8 / 29.1 / 34.6 °C) must be verified
-  against the source before publication.
+- The `aedes_aegypti_mordecai2017` curve values (17.8 / 29.1 / 34.6 °C) are taken from Mordecai et al. (2017);
+  the curve is a simple suitability shape, not a re-implementation of their R0(T) model.
 - `generate_report(style="policy")` does not route to `policy_brief()` (open decision).
 
 ## 0.1.2

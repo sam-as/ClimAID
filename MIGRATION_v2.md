@@ -1,6 +1,6 @@
 # Migrating to ClimAID v2
 
-ClimAID v2 ships with ClimAID **0.4.0** (upgrading from 0.1.x). It is additive: it does not require users to
+ClimAID v2 was introduced in ClimAID **0.4.0** (upgrading from 0.1.x); the current version is 0.4.1. It is additive: it does not require users to
 abandon the existing API.
 
 > **v1 results change in 0.4.0.** Leakage bugs in the v1 pipeline were fixed, so v1 metrics produced with 0.1.x

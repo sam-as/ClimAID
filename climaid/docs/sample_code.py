@@ -6,7 +6,7 @@ Author: Avik Sam
 Created: January 28, 2026
 Website: https://sites.google.com/view/aviksam
 
-This example demonstrates the complete ClimAID v1 pipeline (ClimAID 0.4.0). For the v2
+This example demonstrates the complete ClimAID v1 pipeline (ClimAID 0.4.1). For the v2
 probabilistic forecast and scenario outlook, see DiseaseModel.forecast_v2() and
 DiseaseModel.project_v2() in the documentation: https://sam-as.github.io/ClimAID/
 

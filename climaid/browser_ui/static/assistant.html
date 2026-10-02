@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClimAID Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="nav-container">
+<div class="nav-left">
+    <a href="/" class="logo-link">
+        <span class="short-text">ClimAID</span>
+        <span class="full-text">Climate change impact using AI on diseases</span>
+    </a>
+</div>
+<div class="nav-right">
+    <a href="/">Dashboard</a>
+    <a href="/assistant.html" aria-current="page">Assistant</a>
+    <a href="/documentation/">Documentation</a>
+    <a href="https://github.com/sam-as" target="_blank" rel="noopener">GitHub</a>
+</div>
+</div>
+</nav>
+
+<div class="page">
+<div class="wizard chat-wizard">
+
+<header class="header">
+<div class="header-text">
+    <h1>ClimAID Assistant</h1>
+    <p class="subtitle">
+        Describe what you want in plain words. The assistant guides you, runs ClimAID and explains the results.
+    </p>
+</div>
+<div class="header-logos">
+    <img src="ClimAID logo.png" class="logo" alt="ClimAID">
+    <span class="logo-divider" aria-hidden="true"></span>
+    <img src="ndmc_logo.png" class="logo partner-logo" alt="National Disease Modelling Consortium (NDMC)"
+         title="National Disease Modelling Consortium">
+</div>
+</header>
+
+<p class="chat-note">
+    Built in and offline: no AI model is used. Every number comes from ClimAID's own calculations and reports.
+    ClimAID is under active testing; treat results as research estimates.
+    <a href="/documentation/guide/assistant/">How the assistant works</a>
+</p>
+
+<div id="chat" class="chat-log" role="log" aria-live="polite" aria-label="Conversation"></div>
+
+<div id="chat-busy" class="chat-busy" hidden>
+    <span class="chat-spinner" aria-hidden="true"></span>
+    <span id="chat-busy-text">Working…</span>
+</div>
+
+<div id="chat-chips" class="chat-chips" aria-label="Suggestions"></div>
+
+<form id="chat-form" class="chat-form" autocomplete="off">
+    <div class="chat-attach">
+        <button type="button" id="attach-btn" class="chat-icon-btn" title="Upload a data file"
+                aria-haspopup="true" aria-expanded="false">📎</button>
+        <div id="attach-menu" class="attach-menu" hidden>
+            <button type="button" data-kind="disease">Disease data (CSV / Excel)</button>
+            <button type="button" data-kind="weather">My own climate data</button>
+            <button type="button" data-kind="projection">My own climate projections</button>
+        </div>
+        <input type="file" id="chat-file" hidden>
+    </div>
+    <input id="chat-input" type="text" maxlength="2000"
+           placeholder="e.g. forecast dengue in Pune for the next 6 months" aria-label="Message">
+    <button type="submit" id="send-btn" class="run-btn chat-send">Send</button>
+</form>
+
+<div class="chat-footer-actions">
+    <button type="button" id="new-chat" class="link-btn">Start a new conversation</button>
+</div>
+
+</div>
+
+<footer class="footer">
+<div class="footer-container">
+<span>ClimAID — Climate change impact using AI on diseases</span>
+<span>Developed by Avik Kumar Sam &amp; Harish C. Phuleria, IIT Bombay</span>
+</div>
+</footer>
+</div>
+
+<script src="assistant.js"></script>
+</body>
+</html>

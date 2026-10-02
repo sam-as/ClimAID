@@ -30,8 +30,9 @@ from the package docstrings. Stay on MkDocs 1.x; MkDocs 2.0 removes plugins and 
 4. Run `pytest -m "not slow"`. `tests/test_version_consistency.py` fails if any of the above still names
    another version, if the bundled documentation is stale, or if a file has a byte-order mark or garbled
    characters.
-5. Commit, publish the website with `mkdocs gh-deploy`, then create a GitHub release tagged `vX.Y.Z`. The
-   *Publish to PyPI* workflow checks that the tag matches the package version before uploading.
+5. Commit, publish the website with `mkdocs gh-deploy`, then push a tag `vX.Y.Z` (matching `__version__`).
+   The *Publish to PyPI* workflow builds and uploads the package for that tag (it also runs when a GitHub
+   release is published; do one or the other, as PyPI refuses a second upload of the same version).
 
 ## Editing on Windows
 

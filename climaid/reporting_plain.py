@@ -52,6 +52,7 @@ MODEL_PLAIN = {
     "tweedie": "Tweedie regression", "spline_poisson": "smooth-curve Poisson model", "bayesian_ridge": "Bayesian ridge regression",
     "huber": "spike-resistant (Huber) regression", "hist_gradient_boosting": "fast gradient boosting",
     "svr": "support vector regression", "knn": "nearest-neighbour method", "v1_stack": "ClimAID v1 stacked model",
+    "sarimax": "SARIMAX time-series model",
 }
 RATING_STYLE = {"Good": "good", "Moderate": "moderate", "Low": "low", "Not tested": "unknown"}
 

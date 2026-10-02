@@ -12,9 +12,11 @@ from pathlib import Path
 
 from .. import __version__
 from .api import router, REPORT_DIR
+from .assistant_api import router as assistant_router
 
 app = FastAPI(title="ClimAID Wizard", version=__version__)
 app.include_router(router)
+app.include_router(assistant_router)        # chat page: the built-in assistant (climaid.assistant)
 
 STATIC_DIR = Path(__file__).parent / "static"
 REPORT_DIR.mkdir(parents=True, exist_ok=True)
