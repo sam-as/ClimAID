@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../assets/ClimAID_logo_AS.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -93,7 +93,7 @@
           <div class="md-banner__inner md-grid md-typeset">
             
             
-  <strong>ClimAID 0.4.0 is under active testing.</strong>
+  <strong>ClimAID 0.4.1 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
     <a href="../guide/status/">What has been tested</a>
@@ -530,6 +530,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../guide/assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimAID assistant (climaid ai)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../guide/v2_forecasting/" class="md-nav__link">
         
   
@@ -730,6 +758,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#041-2026-10-02" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.4.1 — 2026-10-02
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="0.4.1 — 2026-10-02">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Documentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#040-2026-09-29" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -764,7 +831,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -1456,6 +1523,42 @@
 changelog: the documentation page (<code>site_docs/changelog.md</code>) includes it unchanged.</p>
 <p>ClimAID is in the 0.x series and <strong>under active testing</strong>: behaviour and APIs may still change between
 minor versions, and changes that alter results are always listed under <em>Changed behaviour</em>.</p>
+<h2 id="041-2026-10-02">0.4.1 — 2026-10-02<a class="headerlink" href="#041-2026-10-02" title="Permanent link">&para;</a></h2>
+<p>New features since 0.4.0: the built-in assistant (<code>climaid ai</code>, terminal and chat page) and SARIMAX as an
+optional v2 model. No change to the results of existing models.</p>
+<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>SARIMAX</strong> (<code>sarimax</code>, <code>climaid.forecasting_v2.sarimax</code>): seasonal ARIMA with climate as external
+  regressors, the classic benchmark in climate-and-disease forecasting. Fitted on log(1 + cases) with
+  standardised temperature, rainfall, humidity and ENSO at one lag. Tuning, as for every v2 model, is
+  compulsory and leakage-safe: the orders (p, d, q)(P, D, Q)₁₂ and the climate lag (0–3 months) are chosen by
+  time-ordered cross-validation inside the training period, keeping the default (1, 0, 0)(1, 0, 0)₁₂ unless a
+  candidate beats it. Its ranges are calibrated on the backtests like every model. Monthly data only; if it
+  cannot be fitted it is left out of the run with a warning. Optional (not a default model); 22 v2 models in
+  total. <code>statsmodels</code> is now a required dependency. Synthetic benchmark (WIS relative to the baseline):
+  0.63 seasonal, 0.58 non-seasonal (best of all models), 0.84 realistic (worse than Poisson's 0.63, with
+  under-covering ranges); details on the <em>Benchmarks</em> page.</li>
+<li><strong><code>climaid ai</code>: built-in assistant</strong> (<code>climaid.assistant</code>). A conversational guide in the terminal that
+  works offline and uses no AI model: it recognises common requests and settings in plain language, asks for
+  anything missing, checks the data file, shows a plan and waits for confirmation, runs <code>forecast_v2()</code> or
+  <code>project_v2()</code>, and explains the results using the reports' own rule-based text (trust rating, month-by-month
+  ranges, caveats). Questions are answered from curated summaries and a search of the bundled documentation,
+  with links. Every number it shows comes from ClimAID's results. Documented in <em>ClimAID assistant</em>.</li>
+<li><strong>Assistant chat page</strong> in the browser interface (<code>/assistant.html</code>, <em>Assistant</em> in the dashboard menu, or
+  <code>climaid ai --browser</code>): the same assistant with file uploads, suggestion buttons and background runs with
+  progress (<code>climaid/browser_ui/assistant_api.py</code>, one conversation per browser session).</li>
+<li><strong>Methods explanations in the assistant</strong> (<code>climaid.assistant.methods</code>): 24 topics, from data checks, lags,
+  the models (including SARIMAX), tuning, backtests, calibration and WIS to bias correction, pooling, the thermal curve, leakage
+  safeguards, v1 and limitations, each in plain language with a technical version on request ("more detail");
+  "how was this forecast made?" describes a run from its own metadata.</li>
+<li><code>benchmarks/run_benchmarks.py --models a,b,...</code> chooses the models to benchmark.</li>
+</ul>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The <em>Aedes aegypti</em> thermal-curve preset is documented as taken from Mordecai et al. (2017); the release
+  instructions in <code>README_DOCS.md</code> describe the tag-triggered PyPI workflow.</li>
+<li>New <em>ClimAID assistant</em> page; SARIMAX added to the model list and the <em>Benchmarks</em> page.</li>
+</ul>
 <h2 id="040-2026-09-29">0.4.0 — 2026-09-29<a class="headerlink" href="#040-2026-09-29" title="Permanent link">&para;</a></h2>
 <p>First public release of <strong>ClimAID v2</strong>. The previous public release was 0.1.2 (v1 only).</p>
 <p>The version numbers 0.2.0 and 0.3.0 were used for development builds of v2 and were not released;
@@ -1506,7 +1609,7 @@ browser interface and dataset utilities remain available and import-compatible.
   whole-trajectory trend sentence; model-disagreement flag; recalibration note.</li>
 <li>WIS uses the canonical (K + 1/2) normalisation; seasonal-naive uses weekly lags on weekly data.</li>
 </ul>
-<h3 id="added">Added<a class="headerlink" href="#added" title="Permanent link">&para;</a></h3>
+<h3 id="added_1">Added<a class="headerlink" href="#added_1" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Documentation bundled in the package (<code>climaid/documentation</code>): served by the dashboard at
   <code>/documentation/</code>, opened offline with <code>climaid docs</code>. "How many trials do I need?" links next to the
@@ -1532,7 +1635,7 @@ browser interface and dataset utilities remain available and import-compatible.
   leakage-safe (time-ordered CV inside training; re-tuned per hindcast origin; defaults kept if
   not beaten). Dashboard "Model tuning" menu, wizard prompt, <code>tuning=</code> in <code>forecast_v2</code>/<code>project_v2</code>.</li>
 <li>Seven v2 models (scikit-learn only): Tweedie, spline Poisson (GAM-style), Bayesian ridge, Huber,
-  Poisson histogram gradient boosting, SVR, k-nearest neighbours (21 v2 models in total).</li>
+  Poisson histogram gradient boosting, SVR, k-nearest neighbours.</li>
 <li>v2 ENSO interaction features (on by default).</li>
 <li>Plain-language report layer (<code>climaid.reporting_plain</code>) for both v2 reports: "The short version",
   month-by-month table (expected cases, likely range, compared with a typical year, what actually
@@ -1586,8 +1689,8 @@ browser interface and dataset utilities remain available and import-compatible.
 <li>Documentation rebuilt and re-bundled for 0.4.0 (fixes garbled characters and stale 0.3.0 references in the
   bundled pages); <code>site_docs/</code> is tracked in git again (it had been listed in <code>.gitignore</code>).</li>
 <li><code>pyproject.toml</code>: project links (documentation, changelog, paper), classifiers and licence file for PyPI.</li>
-<li><code>climaid --version</code> prints the installed version. The PyPI publish workflow refuses a release whose tag
-  does not match the package version.</li>
+<li><code>climaid --version</code> prints the installed version. The PyPI publish workflow runs for version tags
+  (<code>vX.Y.Z</code>) and published GitHub releases, in the <code>release</code> environment.</li>
 <li>The model-registry test checks XGBoost, LightGBM and CatBoost only when they are installed, so the fast CI
   job (installed without <code>[ml]</code>) passes.</li>
 </ul>
@@ -1596,8 +1699,8 @@ browser interface and dataset utilities remain available and import-compatible.
 <li>Single-district scenario projections can understate warming effects when temperature,
   rainfall and humidity share a seasonal cycle; use <code>extra_districts</code>, <code>lag_selection="v1"</code>
   or a thermal curve where justified.</li>
-<li>The <code>aedes_aegypti_mordecai2017</code> curve values (17.8 / 29.1 / 34.6 °C) must be verified
-  against the source before publication.</li>
+<li>The <code>aedes_aegypti_mordecai2017</code> curve values (17.8 / 29.1 / 34.6 °C) are taken from Mordecai et al. (2017);
+  the curve is a simple suitability shape, not a re-implementation of their R0(T) model.</li>
 <li><code>generate_report(style="policy")</code> does not route to <code>policy_brief()</code> (open decision).</li>
 </ul>
 <h2 id="012">0.1.2<a class="headerlink" href="#012" title="Permanent link">&para;</a></h2>
@@ -1660,10 +1763,10 @@ browser interface.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.1"}</script>
     
     
-      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

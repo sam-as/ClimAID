@@ -16,14 +16,14 @@
         <link rel="prev" href="../..">
       
       
-        <link rel="next" href="../v2_forecasting/">
+        <link rel="next" href="../assistant/">
       
       
         
       
       
       <link rel="icon" href="../../assets/ClimAID_logo_AS.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -93,7 +93,7 @@
           <div class="md-banner__inner md-grid md-typeset">
             
             
-  <strong>ClimAID 0.4.0 is under active testing.</strong>
+  <strong>ClimAID 0.4.1 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
     <a href="./">What has been tested</a>
@@ -631,6 +631,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimAID assistant (climaid ai)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1423,13 +1451,13 @@
 
 <h1 id="status-validation">Status &amp; validation<a class="headerlink" href="#status-validation" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
-<p class="admonition-title">ClimAID 0.4.0 is under active testing</p>
+<p class="admonition-title">ClimAID 0.4.1 is under active testing</p>
 <p>The methods have been checked on <strong>synthetic data with a known answer</strong>. They have <strong>not yet been
 validated on real surveillance data or on real CMIP6 projections</strong>. Until that is done, treat all outputs as
 research estimates: check them against local knowledge and surveillance experience, and do not use them as
 the sole basis for public-health decisions.</p>
 </div>
-<p>This page is updated as testing progresses. Last update: version 0.4.0.</p>
+<p>This page is updated as testing progresses. Last update: version 0.4.1.</p>
 <hr />
 <h2 id="what-has-been-tested">What has been tested<a class="headerlink" href="#what-has-been-tested" title="Permanent link">&para;</a></h2>
 <table>
@@ -1598,7 +1626,8 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
 <li>Synthetic data flatter the models; even the "realistic" dataset has clean climate inputs.</li>
 <li>Climate cannot predict serotype shifts, reporting changes, testing campaigns or control interventions.</li>
 <li>Single-district climate projections can understate warming effects (see <a href="../scenarios/#known-limitations-read-before-using">scenario limitations</a>).</li>
-<li>The <em>Aedes aegypti</em> thermal-curve preset values must be verified against the source before publication.</li>
+<li>The <em>Aedes aegypti</em> thermal-curve preset uses the values from Mordecai et al. (2017) in a simple
+  suitability shape; it is not a re-implementation of their transmission model.</li>
 <li>v1 results produced with versions before 0.4.0 (0.1.x) were optimistic because of leakage bugs; rerun them.</li>
 </ul>
 <hr />
@@ -1662,10 +1691,10 @@ proportion to the number of trials. Details: <a href="../tuning/">Tuning &amp; o
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.1"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

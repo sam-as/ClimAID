@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://sam-as.github.io/ClimAID/api/llmclient/">
+        <link rel="canonical" href="https://sam-as.github.io/ClimAID/guide/assistant/">
       
       
-        <link rel="prev" href="../plots/">
+        <link rel="prev" href="../status/">
       
       
-        <link rel="next" href="../reporting/">
+        <link rel="next" href="../v2_forecasting/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>LLM Client - ClimAID</title>
+        <title>ClimAID assistant (climaid ai) - ClimAID</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#llm-client" class="md-skip">
+        <a href="#climaid-assistant-climaid-ai" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
   <strong>ClimAID 0.4.1 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
-    <a href="../../guide/status/">What has been tested</a>
+    <a href="../status/">What has been tested</a>
   
 
           </div>
@@ -133,7 +133,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              LLM Client
+              ClimAID assistant (climaid ai)
             
           </span>
         </div>
@@ -247,11 +247,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../../guide/status/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../status/" class="md-tabs__link">
           
   
   
@@ -271,7 +273,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../model/" class="md-tabs__link">
+        <a href="../../api/model/" class="md-tabs__link">
           
   
   
@@ -291,7 +293,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../datasets/" class="md-tabs__link">
+        <a href="../../api/datasets/" class="md-tabs__link">
           
   
   
@@ -307,13 +309,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../../api/llmclient/" class="md-tabs__link">
           
   
   
@@ -333,7 +333,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../utils/" class="md-tabs__link">
+        <a href="../../api/utils/" class="md-tabs__link">
           
   
   
@@ -353,7 +353,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../resources/" class="md-tabs__link">
+        <a href="../../api/resources/" class="md-tabs__link">
           
   
   
@@ -442,28 +442,31 @@
       
   
   
+    
   
   
+  
     
     
     
     
+      
+        
+        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -481,7 +484,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -499,7 +502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/status/" class="md-nav__link">
+      <a href="../status/" class="md-nav__link">
         
   
   
@@ -524,10 +527,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../guide/assistant/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimAID assistant (climaid ai)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -543,6 +573,81 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#an-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        An example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the browser
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-can-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it can do
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explaining-the-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Explaining the methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -555,7 +660,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/v2_forecasting/" class="md-nav__link">
+      <a href="../v2_forecasting/" class="md-nav__link">
         
   
   
@@ -583,7 +688,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/tuning/" class="md-nav__link">
+      <a href="../tuning/" class="md-nav__link">
         
   
   
@@ -611,7 +716,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/scenarios/" class="md-nav__link">
+      <a href="../scenarios/" class="md-nav__link">
         
   
   
@@ -639,7 +744,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/reports/" class="md-nav__link">
+      <a href="../reports/" class="md-nav__link">
         
   
   
@@ -667,7 +772,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../guide/benchmarks/" class="md-nav__link">
+      <a href="../benchmarks/" class="md-nav__link">
         
   
   
@@ -784,7 +889,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../model/" class="md-nav__link">
+      <a href="../../api/model/" class="md-nav__link">
         
   
   
@@ -812,7 +917,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../v2/" class="md-nav__link">
+      <a href="../../api/v2/" class="md-nav__link">
         
   
   
@@ -840,7 +945,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../climate/" class="md-nav__link">
+      <a href="../../api/climate/" class="md-nav__link">
         
   
   
@@ -929,7 +1034,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../datasets/" class="md-nav__link">
+      <a href="../../api/datasets/" class="md-nav__link">
         
   
   
@@ -957,7 +1062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../projections/" class="md-nav__link">
+      <a href="../../api/projections/" class="md-nav__link">
         
   
   
@@ -985,7 +1090,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../plots/" class="md-nav__link">
+      <a href="../../api/plots/" class="md-nav__link">
         
   
   
@@ -1017,31 +1122,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
         
           
-          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
@@ -1059,7 +1161,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
             
@@ -1074,37 +1176,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    LLM Client
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../api/llmclient/" class="md-nav__link">
         
   
   
@@ -1120,142 +1195,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#using-local-llm-ollama-with-climaid" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Using Local LLM (Ollama) with ClimAID
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Using Local LLM (Ollama) with ClimAID">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#step-1-install-ollama" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 1 — Install Ollama
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-2-start-the-ollama-server" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 2 — Start the Ollama Server
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-3-download-a-language-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 3 — Download a Language Model
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-4-use-with-climaid" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4 — Use with ClimAID
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#step-5-generate-reports" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 5 — Generate Reports
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#notes" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Notes
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#api-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        API Reference
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#climaid.llm_client.LocalOllamaLLM" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        LocalOllamaLLM
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1268,7 +1207,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../reporting/" class="md-nav__link">
+      <a href="../../api/reporting/" class="md-nav__link">
         
   
   
@@ -1357,7 +1296,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../utils/" class="md-nav__link">
+      <a href="../../api/utils/" class="md-nav__link">
         
   
   
@@ -1446,7 +1385,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../resources/" class="md-nav__link">
+      <a href="../../api/resources/" class="md-nav__link">
         
   
   
@@ -1491,7 +1430,7 @@
 
 
   
-    <a href="https://github.com/sam-as/ClimAID/edit/main/site_docs/api/llmclient.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/sam-as/ClimAID/edit/main/site_docs/guide/assistant.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1499,136 +1438,178 @@
   
 
 
-<h1 id="llm-client">LLM Client<a class="headerlink" href="#llm-client" title="Permanent link">&para;</a></h1>
-<h2 id="using-local-llm-ollama-with-climaid">Using Local LLM (Ollama) with ClimAID<a class="headerlink" href="#using-local-llm-ollama-with-climaid" title="Permanent link">&para;</a></h2>
-<p>ClimAID includes built-in support for generating <strong>AI-powered reports using local language models</strong> via Ollama. This allows you to create detailed, scientific summaries of disease projections <strong>without requiring internet access or API keys</strong>.</p>
-<hr />
-<h3 id="step-1-install-ollama">Step 1 — Install Ollama<a class="headerlink" href="#step-1-install-ollama" title="Permanent link">&para;</a></h3>
-<p>Before using the LLM features, you need to install Ollama on your system.</p>
-<ol>
-<li>
-<p>Visit the official website:
-   https://ollama.com/download</p>
-</li>
-<li>
-<p>Download and install the version for your operating system (Windows, macOS, or Linux).</p>
-</li>
-</ol>
-<hr />
-<h3 id="step-2-start-the-ollama-server">Step 2 — Start the Ollama Server<a class="headerlink" href="#step-2-start-the-ollama-server" title="Permanent link">&para;</a></h3>
-<p>After installation, start the Ollama service:</p>
-<div class="highlight"><pre><span></span><code>ollama<span class="w"> </span>serve
-</code></pre></div>
-<p>This will launch a local server at:</p>
-<div class="highlight"><pre><span></span><code>http://localhost:11434
-</code></pre></div>
-<p>ClimAID connects to this server to generate reports.</p>
-<hr />
-<h3 id="step-3-download-a-language-model">Step 3 — Download a Language Model<a class="headerlink" href="#step-3-download-a-language-model" title="Permanent link">&para;</a></h3>
-<p>You must download at least one model before using the LLM.</p>
-<p>Recommended:</p>
-<div class="highlight"><pre><span></span><code>ollama<span class="w"> </span>pull<span class="w"> </span>mistral
-</code></pre></div>
-<p>Other options include:</p>
-<ul>
-<li><code>llama3</code> (strong reasoning)</li>
-<li><code>phi3</code> (lightweight, faster)</li>
-<li><code>mixtral</code> (larger, more powerful)</li>
-</ul>
-<hr />
-<h3 id="step-4-use-with-climaid">Step 4 — Use with ClimAID<a class="headerlink" href="#step-4-use-with-climaid" title="Permanent link">&para;</a></h3>
-<p>Once Ollama is running and a model is installed, you can use it directly:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">climaid.llm_client</span><span class="w"> </span><span class="kn">import</span> <span class="n">LocalOllamaLLM</span>
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">LocalOllamaLLM</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;mistral&quot;</span><span class="p">)</span>
-</code></pre></div>
-<hr />
-<h3 id="step-5-generate-reports">Step 5 — Generate Reports<a class="headerlink" href="#step-5-generate-reports" title="Permanent link">&para;</a></h3>
-<p>Pass the LLM client into the reporting pipeline:</p>
-<div class="highlight"><pre><span></span><code><span class="n">report</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate_report</span><span class="p">(</span>
-    <span class="n">projection_summary</span><span class="o">=</span><span class="n">summary</span><span class="p">,</span>
-    <span class="n">llm_client</span><span class="o">=</span><span class="n">llm</span><span class="p">,</span>
-    <span class="n">open_browser</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-</code></pre></div>
-<p>ClimAID will automatically:</p>
-<ul>
-<li>Process projection outputs</li>
-<li>Generate structured summaries</li>
-<li>Use the LLM to create a readable scientific report</li>
-</ul>
-<hr />
-<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
-<p><strong>Ollama not running</strong></p>
-<div class="highlight"><pre><span></span><code>Ollama is not running
-</code></pre></div>
-<p>Fix:</p>
-<div class="highlight"><pre><span></span><code>ollama<span class="w"> </span>serve
-</code></pre></div>
-<hr />
-<p><strong>Model not found</strong></p>
-<p>Fix:</p>
-<div class="highlight"><pre><span></span><code>ollama<span class="w"> </span>pull<span class="w"> </span>mistral
-</code></pre></div>
-<hr />
-<p><strong>Timeout error</strong></p>
-<ul>
-<li>Use a smaller model (<code>phi3</code>)</li>
-<li>Reduce input size</li>
-</ul>
-<hr />
-<h3 id="notes">Notes<a class="headerlink" href="#notes" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Runs fully offline</li>
-<li>No API keys required</li>
-<li>Ideal for secure or research environments</li>
-<li>Performance depends on your local machine</li>
-</ul>
-<hr />
-<h3 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h3>
-<p>Below is the full API for the LLM client:</p>
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<a id="climaid.llm_client.LocalOllamaLLM"></a>
-    <div class="doc doc-contents first">
-
-
-
-        <p>Local LLM client using Ollama API (offline &amp; free).
-Compatible with DiseaseReporter.</p>
-
-
-
-
-
-
-
-
-
-
-
-<div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
+<h1 id="climaid-assistant-climaid-ai">ClimAID assistant (<code>climaid ai</code>)<a class="headerlink" href="#climaid-assistant-climaid-ai" title="Permanent link">&para;</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Under testing</p>
+<p>The assistant is new in 0.4.1 and under active testing. It runs the same ClimAID v2 methods as the
+dashboard and wizard, so everything on the <a href="../status/">Status &amp; validation</a> page applies to its results.</p>
 </div>
+<div class="highlight"><pre><span></span><code>climaid ai              # in the terminal
+climaid ai --browser    # as a chat page in your web browser
+</code></pre></div>
+<p>The assistant is a conversational guide, in the terminal or as a chat page in the browser interface
+(<strong>Assistant</strong> in the dashboard's menu, or <code>climaid ai --browser</code>). You describe what you want in plain words; it asks
+for anything missing, shows a plan, runs ClimAID when you say yes, and explains the results.</p>
+<p><strong>It is built in and works offline.</strong> It does not use an AI language model, local or online: it recognises
+common requests from keywords and phrases, and every number and sentence about your results comes from
+ClimAID's own calculations and its rule-based reports. It cannot invent results. When it does not understand
+something, it says so and suggests what you can type.</p>
+<hr />
+<h2 id="an-example">An example<a class="headerlink" href="#an-example" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>you&gt; I want a dengue forecast in Pune for the next 6 months
+     I found several districts with that name. Which one?
+       1. IND_Pune_MAHARASHTRA  ...
+you&gt; 1
+     Where is your disease data file? ...
+you&gt; data/pune_dengue.xlsx
+     Data file looks good: 156 monthly records from January 2012 to December 2024 ...
+     Here&#39;s the plan: a Dengue forecast for IND_Pune_MAHARASHTRA, 6 months ahead ...
+     Shall I run it? (yes / no, or tell me what to change)
+you&gt; quick tuning, use data up to December 2023
+you&gt; yes
+     ... expected cases month by month, likely ranges, trust rating, link to the full report
+you&gt; how reliable is this?
+you&gt; what about 2050 under high emissions?
+</code></pre></div>
+<hr />
+<h2 id="in-the-browser">In the browser<a class="headerlink" href="#in-the-browser" title="Permanent link">&para;</a></h2>
+<p>The chat page works the same way, with a few conveniences:</p>
+<ul>
+<li><strong>📎 Upload</strong> your disease data (and, outside South Asia, your own climate data or climate projections)
+  instead of typing a path.</li>
+<li><strong>Suggestion buttons</strong> under the conversation: <em>Yes, run it</em>, district choices, follow-up questions.</li>
+<li><strong>Long runs</strong> continue in the background; the page shows how long the run has taken so far. Keep the
+  <code>climaid browse</code> (or <code>climaid ai --browser</code>) terminal open until it finishes.</li>
+<li><strong>Links</strong> open the saved report and the bundled documentation directly.</li>
+</ul>
+<p>Each browser keeps its own conversation; <em>Start a new conversation</em> clears it.</p>
+<hr />
+<h2 id="what-it-can-do">What it can do<a class="headerlink" href="#what-it-can-do" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Ask for</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A forecast of the coming months</td>
+<td><code>forecast dengue in Pune for the next 12 months</code></td>
+</tr>
+<tr>
+<td>A climate-change outlook</td>
+<td><code>what could happen by 2050 under SSP2-4.5 and SSP5-8.5?</code></td>
+</tr>
+<tr>
+<td>How much to trust a result</td>
+<td><code>how reliable is this?</code></td>
+</tr>
+<tr>
+<td>An explanation of results</td>
+<td><code>explain the results</code>, <code>open the report</code></td>
+</tr>
+<tr>
+<td>Answers from the documentation</td>
+<td><code>what is WIS?</code>, <code>why is 2020 excluded?</code>, <code>how many trials do I need?</code></td>
+</tr>
+<tr>
+<td>How the methods work</td>
+<td><code>methods</code>, <code>how does calibration work?</code>, then <code>more detail</code></td>
+</tr>
+<tr>
+<td>How a run was made</td>
+<td><code>how was this forecast made?</code></td>
+</tr>
+<tr>
+<td>Finding a district</td>
+<td><code>find district Kathmandu</code></td>
+</tr>
+<tr>
+<td>Your current settings</td>
+<td><code>settings</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="explaining-the-methods">Explaining the methods<a class="headerlink" href="#explaining-the-methods" title="Permanent link">&para;</a></h2>
+<p>Type <strong><code>methods</code></strong> for a numbered list of topics, or ask about any of them directly ("how does tuning work?",
+"what is the renewal model?", "how are climate models bias-corrected?"). Each answer comes in plain language
+first; say <strong><code>more detail</code></strong> for the technical version (equations, defaults, lag ranges), with a link to the
+documentation page.</p>
+<table>
+<thead>
+<tr>
+<th>Forecasting</th>
+<th>Climate outlook</th>
+<th>General</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data checks; the COVID-19 period; climate inputs and lags; distributed lags; the models; the baseline; the transmission (renewal) model; residual learning and the ensemble; tuning; backtests; calibrated likely ranges; scoring (WIS)</td>
+<td>How the outlook is built; bias correction; seasonal vs anomaly response; lag structure; pooling districts; thermal-suitability curve</td>
+<td>Overview; the trust rating; avoiding leakage; ClimAID v1; limitations</td>
+</tr>
+</tbody>
+</table>
+<p>After a run, <strong>"how was this forecast made?"</strong> describes that particular run from its own record: the data
+period, the models compared, which models tuning improved and which kept their defaults, the backtest start
+dates, the calibration, the COVID-19 handling and why the model in the summary was chosen.</p>
+<p>Settings it understands anywhere in a sentence:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Say</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data file</td>
+<td>a path ending in <code>.csv</code>, <code>.xlsx</code> or <code>.xls</code> (in quotes if it has spaces)</td>
+</tr>
+<tr>
+<td>Forecast start</td>
+<td><code>use data up to December 2023</code>, <code>from 2023-12</code></td>
+</tr>
+<tr>
+<td>Months ahead</td>
+<td><code>6 months</code>, <code>next year</code> (1–36; for longer, use the outlook)</td>
+</tr>
+<tr>
+<td>Tuning</td>
+<td><code>quick</code> / <code>balanced</code> / <code>thorough</code>, or <code>50 trials</code></td>
+</tr>
+<tr>
+<td>COVID-19 period</td>
+<td><code>keep 2020</code>, <code>exclude 2020-03 to 2020-12</code></td>
+</tr>
+<tr>
+<td>Emissions pathways</td>
+<td><code>SSP2-4.5</code>, <code>high emissions</code>, <code>all scenarios</code>; <code>also include ...</code> adds to the list</td>
+</tr>
+<tr>
+<td>Outlook end</td>
+<td><code>by 2050</code>, <code>to 2080</code></td>
+</tr>
+<tr>
+<td>Your own climate data</td>
+<td><code>my climate file is "weather.csv"</code> (places outside the built-in South Asia data); for outlooks also <code>my projection file is "cmip6.csv"</code></td>
+</tr>
+</tbody>
+</table>
+<p>The assistant always shows the plan and waits for <strong>yes</strong> before running anything. Reports are saved in
+<code>climaid_outputs/reports</code>; ClimAID's progress messages go to <code>climaid_outputs/assistant_log.txt</code>.</p>
+<hr />
+<h2 id="limits">Limits<a class="headerlink" href="#limits" title="Permanent link">&para;</a></h2>
+<ul>
+<li>It understands common phrasings, not every possible sentence. Rephrase, or type <code>help</code> for examples.</li>
+<li>It runs one district at a time with ClimAID's default v2 models. Pooling several districts
+  (<code>extra_districts</code>), choosing individual models and other advanced options are available from Python
+  (see the <a href="../../api/v2/">v2 API</a>) and the dashboard.</li>
+<li>Documentation answers are short summaries with a link; the linked page has the full explanation.</li>
+<li>The first run for a region downloads ClimAID's climate data, which needs an internet connection once.</li>
+</ul>
 
 
 

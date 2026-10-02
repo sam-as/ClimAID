@@ -21,7 +21,7 @@
       
       
       <link rel="icon" href="assets/ClimAID_logo_AS.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -91,7 +91,7 @@
           <div class="md-banner__inner md-grid md-typeset">
             
             
-  <strong>ClimAID 0.4.0 is under active testing.</strong>
+  <strong>ClimAID 0.4.1 is under active testing.</strong>
   Methods are checked on synthetic data only; results on real data are not yet validated.
   
     <a href="guide/status/">What has been tested</a>
@@ -679,6 +679,34 @@
     
   
     Status & validation (under testing)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="guide/assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ClimAID assistant (climaid ai)
   
 
     
@@ -1479,8 +1507,8 @@
 
 <h1 id="climaid-climate-change-impact-using-ai-on-diseases">ClimAID - <strong>Climate change impact using AI on Diseases</strong><a class="headerlink" href="#climaid-climate-change-impact-using-ai-on-diseases" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
-<p class="admonition-title">Under active testing — version 0.4.0 (beta)</p>
-<p>ClimAID 0.4.0 is under active testing. Its methods have been checked on synthetic data with a known
+<p class="admonition-title">Under active testing — version 0.4.1 (beta)</p>
+<p>ClimAID 0.4.1 is under active testing. Its methods have been checked on synthetic data with a known
 answer, but <strong>not yet validated on real surveillance data or real CMIP6 projections</strong>. Treat outputs as
 research estimates, check them against local knowledge, and do not use them as the sole basis for
 public-health decisions. See <a href="guide/status/">Status &amp; validation</a> for what has and has not been tested.</p>
@@ -1536,7 +1564,7 @@ dengue and malaria, using machine learning, a climate-informed transmission mode
 <li>Analyse historical disease patterns and detect past outbreak signals</li>
 <li>Link cases to temperature, rainfall, humidity and El Niño (ENSO), including lagged and interaction effects</li>
 <li><strong>Forecast</strong> the coming months with likely ranges that are calibrated against past performance</li>
-<li>Compare 21 models, all tuned automatically, against a simple "same as recent years" baseline</li>
+<li>Compare 22 models, all tuned automatically, against a simple "same as recent years" baseline</li>
 <li><strong>Project</strong> how cases could change under CMIP6 climate scenarios, with uncertainty from climate models,
   statistics and model structure</li>
 <li>Generate reports written for non-specialists, with full technical details for specialists</li>
@@ -1582,8 +1610,17 @@ pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="
 </div>
 <hr />
 <h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h2>
-<p>ClimAID has two interfaces.</p>
+<p>ClimAID has three interfaces.</p>
 <ul>
+<li>
+<p><strong>ClimAID assistant</strong> (South Asian data, or your own climate file)</p>
+<p><div class="highlight"><pre><span></span><code>climaid ai              # terminal
+climaid ai --browser    # chat page in your browser (also under &quot;Assistant&quot; in the dashboard)
+</code></pre></div>
+Describe what you want in plain words ("forecast dengue in Pune for the next 6 months"); the assistant asks
+for anything missing, runs ClimAID and explains the results. Built in and offline, with no AI model. See
+<a href="guide/assistant/">ClimAID assistant</a>.</p>
+</li>
 <li>
 <p><strong>ClimAID Browser Interface</strong> (South Asian and global countries)</p>
 <p><div class="highlight"><pre><span></span><code>climaid browse
@@ -1616,7 +1653,7 @@ Opens the copy of this site that ships with your installation (also linked from 
 <li><strong><a href="guide/scenarios/">Climate scenario outlook</a></strong> — how projections are made and how to read them</li>
 <li><strong><a href="guide/reports/">Reading the reports</a></strong> — the plain-language report and its trust rating</li>
 <li><strong><a href="guide/benchmarks/">Benchmarks &amp; synthetic data</a></strong> — how ClimAID is tested</li>
-<li><strong><a href="changelog/">Changelog</a></strong> — what changed in 0.4.0, including changes that alter results</li>
+<li><strong><a href="changelog/">Changelog</a></strong> — what changed in each version, including changes that alter results</li>
 <li>API reference for all modules (sidebar)</li>
 </ul>
 <hr />
@@ -1737,10 +1774,10 @@ no extra Python package is needed. Without it, ClimAID uses its built-in determi
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit", "toc.integrate", "header.autohide"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.4.1"}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
